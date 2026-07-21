@@ -398,7 +398,7 @@
       </div>
 
       <!-- 纵向路线画布（时间线结构） -->
-      <section>
+      <section data-fmm-role="exhibit-list">
         <!-- 入口节点 -->
         <div class="flex items-center gap-3">
           <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent">
@@ -413,14 +413,14 @@
         <!-- 虚线连接 -->
         <div class="ml-5 h-6 border-l-2 border-dashed border-border"></div>
 
-        <!-- 展品节点 1: 1978 搪瓷杯 (妈妈—01) -->
-        <div class="rounded-lg border border-border bg-card p-3">
+        <!-- 展品节点 1: 70年代 搪瓷杯 (妈妈—01) -->
+        <div data-fmm-role="exhibit-node" data-exhibit-id="exhibit-001" class="rounded-lg border border-border bg-card p-3">
           <div class="flex items-start gap-3">
             <img src="../assets/exhibit-enamel-mug.jpg" alt="搪瓷杯" class="h-12 w-16 shrink-0 rounded-md object-cover">
             <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <span class="inline-flex items-center rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground">妈妈—01</span>
-                <span class="text-xs text-muted-foreground">1978</span>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="inline-flex items-center rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground shrink-0 whitespace-nowrap">妈妈—01</span>
+                <span class="text-xs text-muted-foreground">70年代</span>
               </div>
               <div class="font-serif text-sm text-foreground mt-1">搪瓷杯</div>
               <div class="text-xs text-muted-foreground mt-0.5 leading-snug">为什么放在这里：陪伴的起点</div>
@@ -435,14 +435,14 @@
         <!-- 虚线连接 -->
         <div class="ml-5 h-6 border-l-2 border-dashed border-border"></div>
 
-        <!-- 展品节点 2: 1980s 相册 (外婆—02) -->
-        <div class="rounded-lg border border-border bg-card p-3">
+        <!-- 展品节点 2: 80年代 相册 (外婆—02) -->
+        <div data-fmm-role="exhibit-node" data-exhibit-id="exhibit-002" class="rounded-lg border border-border bg-card p-3">
           <div class="flex items-start gap-3">
             <img src="../assets/exhibit-photo-album.jpg" alt="相册" class="h-12 w-16 shrink-0 rounded-md object-cover">
             <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <span class="inline-flex items-center rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground">外婆—02</span>
-                <span class="text-xs text-muted-foreground">1980s</span>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="inline-flex items-center rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground shrink-0 whitespace-nowrap">外婆—02</span>
+                <span class="text-xs text-muted-foreground">80年代</span>
               </div>
               <div class="font-serif text-sm text-foreground mt-1">相册</div>
               <div class="text-xs text-muted-foreground mt-0.5 leading-snug">为什么放在这里：一家人的脸慢慢多了</div>
@@ -457,14 +457,14 @@
         <!-- 虚线连接 -->
         <div class="ml-5 h-6 border-l-2 border-dashed border-border"></div>
 
-        <!-- 展品节点 3: 1990s 机械表 (爸爸—03) -->
-        <div class="rounded-lg border border-border bg-card p-3">
+        <!-- 展品节点 3: 90年代 机械表 (爸爸—03) -->
+        <div data-fmm-role="exhibit-node" data-exhibit-id="exhibit-003" class="rounded-lg border border-border bg-card p-3">
           <div class="flex items-start gap-3">
             <img src="../assets/exhibit-mechanical-watch.jpg" alt="机械表" class="h-12 w-16 shrink-0 rounded-md object-cover">
             <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <span class="inline-flex items-center rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground">爸爸—03</span>
-                <span class="text-xs text-muted-foreground">1990s</span>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="inline-flex items-center rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground shrink-0 whitespace-nowrap">爸爸—03</span>
+                <span class="text-xs text-muted-foreground">90年代</span>
               </div>
               <div class="font-serif text-sm text-foreground mt-1">机械表</div>
               <div class="text-xs text-muted-foreground mt-0.5 leading-snug">为什么放在这里：上发条的习惯留到现在</div>
@@ -479,14 +479,14 @@
         <!-- 虚线连接 -->
         <div class="ml-5 h-6 border-l-2 border-dashed border-border"></div>
 
-        <!-- 展品节点 4: 2023 课本 (孩子—04) -->
-        <div class="rounded-lg border border-border bg-card p-3">
+        <!-- 展品节点 4: 20年代 课本 (孩子—04) -->
+        <div data-fmm-role="exhibit-node" data-exhibit-id="exhibit-004" class="rounded-lg border border-border bg-card p-3">
           <div class="flex items-start gap-3">
             <img src="../assets/exhibit-textbook.jpg" alt="课本" class="h-12 w-16 shrink-0 rounded-md object-cover">
             <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <span class="inline-flex items-center rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground">孩子—04</span>
-                <span class="text-xs text-muted-foreground">2023</span>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="inline-flex items-center rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground shrink-0 whitespace-nowrap">孩子—04</span>
+                <span class="text-xs text-muted-foreground">20年代</span>
               </div>
               <div class="font-serif text-sm text-foreground mt-1">课本</div>
               <div class="text-xs text-muted-foreground mt-0.5 leading-snug">为什么放在这里：孩子写下"慢慢来"</div>
@@ -501,14 +501,14 @@
         <!-- 虚线连接 -->
         <div class="ml-5 h-6 border-l-2 border-dashed border-border"></div>
 
-        <!-- 展品节点 5: 1980s 钢笔 (外公—05) -->
-        <div class="rounded-lg border border-border bg-card p-3">
+        <!-- 展品节点 5: 80年代 钢笔 (外公—05) -->
+        <div data-fmm-role="exhibit-node" data-exhibit-id="exhibit-005" class="rounded-lg border border-border bg-card p-3">
           <div class="flex items-start gap-3">
             <img src="../assets/exhibit-fountain-pen.jpg" alt="钢笔" class="h-12 w-16 shrink-0 rounded-md object-cover">
             <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <span class="inline-flex items-center rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground">外公—05</span>
-                <span class="text-xs text-muted-foreground">1980s</span>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="inline-flex items-center rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground shrink-0 whitespace-nowrap">外公—05</span>
+                <span class="text-xs text-muted-foreground">80年代</span>
               </div>
               <div class="font-serif text-sm text-foreground mt-1">钢笔</div>
               <div class="text-xs text-muted-foreground mt-0.5 leading-snug">为什么放在这里：每天早起练字的习惯留了一辈子</div>
@@ -696,6 +696,70 @@
       document.querySelectorAll('[data-dom-id="fmm-nav-mine"]').forEach(function(el){
         el.addEventListener('click', function(e){ e.preventDefault(); alert('个人中心 · 待开发'); });
       });
+
+      /* —— 拖动重排展品节点（HTML5 drag-and-drop + touch 触摸支持） —— */
+      var exhibitList = document.querySelector('[data-fmm-role="exhibit-list"]');
+      if(exhibitList){
+        var dragEl = null, touchDragEl = null;
+
+        /* 获取某节点紧跟其后的虚线连接 div（class 含 border-dashed），无则返回 null */
+        function getFollowingConnector(node){
+          var next = node.nextElementSibling;
+          if(next && next.className && next.className.indexOf('border-dashed') !== -1){ return next; }
+          return null;
+        }
+        /* 将 src 节点（连同它的虚线连接）移动到 target 之前或之后 */
+        function moveUnit(src, target, after){
+          if(!src || !target || src === target) return;
+          var srcConnector = getFollowingConnector(src);
+          var targetConnector = getFollowingConnector(target);
+          var parent = src.parentNode;
+          if(after){
+            var refNode = targetConnector ? targetConnector.nextSibling : target.nextSibling;
+            parent.insertBefore(src, refNode);
+            if(srcConnector){ parent.insertBefore(srcConnector, src.nextSibling); }
+          } else {
+            parent.insertBefore(src, target);
+            if(srcConnector){ parent.insertBefore(srcConnector, src.nextSibling); }
+          }
+        }
+        /* drop / touchend 后保存新顺序到 FMM 并更新所有 badge 编号 */
+        function saveOrder(){
+          var d = FMM.load();
+          var newIds = Array.prototype.slice.call(document.querySelectorAll('[data-fmm-role="exhibit-node"]')).map(function(n){ return n.getAttribute('data-exhibit-id'); });
+          d.exhibits = newIds.map(function(id){ return d.exhibits.find(function(e){ return e.id === id; }); }).filter(Boolean);
+          FMM.save(d);
+          document.querySelectorAll('[data-fmm-role="exhibit-node"]').forEach(function(n, i){
+            var badge = n.querySelector('span.bg-accent');
+            if(badge){ var ex = d.exhibits[i]; if(ex){ badge.textContent = ex.owner + '—' + String(i+1).padStart(2,'0'); } }
+          });
+        }
+
+        document.querySelectorAll('[data-fmm-role="exhibit-node"]').forEach(function(node){
+          node.setAttribute('draggable', 'true');
+          node.style.cursor = 'grab';
+          /* —— HTML5 拖拽 —— */
+          node.addEventListener('dragstart', function(e){ dragEl = node; node.style.opacity = '0.4'; e.dataTransfer.effectAllowed = 'move'; });
+          node.addEventListener('dragend', function(){ node.style.opacity = '1'; dragEl = null; });
+          node.addEventListener('dragover', function(e){ e.preventDefault(); if(dragEl && dragEl !== node){ var rect = node.getBoundingClientRect(); var after = (e.clientY > rect.top + rect.height/2); moveUnit(dragEl, node, after); } });
+          node.addEventListener('drop', function(e){ e.preventDefault(); saveOrder(); });
+          /* —— 触摸拖拽（移动端） —— */
+          node.addEventListener('touchstart', function(){ touchDragEl = node; node.style.opacity = '0.4'; }, {passive: true});
+          node.addEventListener('touchmove', function(e){
+            if(!touchDragEl) return;
+            e.preventDefault();
+            var touch = e.touches[0];
+            var el = document.elementFromPoint(touch.clientX, touch.clientY);
+            var target = el ? el.closest('[data-fmm-role="exhibit-node"]') : null;
+            if(target && target !== touchDragEl){
+              var rect = target.getBoundingClientRect();
+              var after = (touch.clientY > rect.top + rect.height/2);
+              moveUnit(touchDragEl, target, after);
+            }
+          }, {passive: false});
+          node.addEventListener('touchend', function(){ if(!touchDragEl) return; touchDragEl.style.opacity = '1'; saveOrder(); touchDragEl = null; });
+        });
+      }
     });
   })();
   </script>

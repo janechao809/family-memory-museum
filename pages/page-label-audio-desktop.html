@@ -364,7 +364,7 @@
   <!--
     桌面策展人 shell（document-scroll）—— 照搬 partials/curator-desktop.html
     - sticky 左侧栏 240px（w-60）：展览名 + 五项导航，create 高亮（activeItemClasses: text-primary bg-secondary font-medium）
-    - 顶栏：curatorTopbar 规范（策展工作台 + 预览参观 + 头像）
+    - 顶栏：策展工作台文字
     - 右侧内容区 main slot：双列 展品预览 / 展签表单+语音导览
   -->
   <div class="mx-auto flex w-full max-w-[1440px] min-h-screen bg-background">
@@ -385,13 +385,9 @@
 
     <!-- 右侧：顶栏 + 内容区 -->
     <div class="flex min-h-screen flex-1 flex-col">
-      <!-- 顶栏：curatorTopbar 规范 -->
-      <header class="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card/80 px-8 py-3 backdrop-blur">
+      <!-- 顶栏：策展工作台 -->
+      <header class="sticky top-0 z-30 flex items-center border-b border-border bg-card/80 px-8 py-3 backdrop-blur">
         <div class="text-sm text-muted-foreground">策展工作台 · 一件物品里的陪伴</div>
-        <div class="flex items-center gap-4">
-          <a data-dom-id="fmm-enter-visit" class="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground hover:bg-muted"><i data-lucide="eye" class="h-4 w-4"></i>预览参观</a>
-          <div class="h-8 w-8 rounded-full bg-secondary text-center text-xs leading-8 text-primary">满</div>
-        </div>
       </header>
 
       <!-- 内容区 main slot -->
@@ -426,7 +422,7 @@
                 <span data-fmm-preview="number" class="absolute left-3 top-3 inline-flex items-center rounded-md bg-accent px-2 py-1 font-serif text-[12px] font-medium text-accent-foreground">妈妈—01</span>
               </div>
               <h2 data-fmm-preview="name" class="mt-3 font-serif text-[22px] leading-7 text-foreground">搪瓷杯</h2>
-              <p data-fmm-preview="subtitle" class="mt-1 text-[13px] text-muted-foreground">约 1978 年 · 外婆陪嫁 · 讲述者 林雯</p>
+              <p data-fmm-preview="subtitle" class="mt-1 text-[13px] text-muted-foreground">70年代 · 外婆陪嫁 · 讲述者 林雯</p>
             </div>
 
             <!-- 展签预览卡：模拟打印展签外观（bg-card border rounded-lg p-5，编辑感排版 font-serif） -->
@@ -445,7 +441,7 @@
                   <span class="text-[11px] uppercase tracking-[0.15em] text-muted-foreground">展品 NO.02</span>
                 </div>
                 <h3 data-fmm-preview="name" class="mt-2 font-serif text-[28px] leading-8 text-foreground">搪瓷杯</h3>
-                <p data-fmm-preview="subtitle" class="mt-1.5 text-[12px] leading-5 text-muted-foreground">约 1978 年 · 外婆陪嫁 · 讲述者 林雯</p>
+                <p data-fmm-preview="subtitle" class="mt-1.5 text-[12px] leading-5 text-muted-foreground">70年代 · 外婆陪嫁 · 讲述者 林雯</p>
 
                 <!-- 分隔细线 -->
                 <div class="my-4 h-px w-full bg-border"></div>
@@ -493,7 +489,7 @@
                 <div class="grid grid-cols-3 gap-3">
                   <div>
                     <label class="text-[12px] font-medium text-muted-foreground">年代</label>
-                    <input type="text" data-fmm-field="year" value="约 1978" class="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-[13px] text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" />
+                    <input type="text" data-fmm-field="year" value="70年代" class="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-[13px] text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" />
                   </div>
                   <div>
                     <label class="text-[12px] font-medium text-muted-foreground">来源</label>
@@ -572,7 +568,7 @@
         <section class="mt-8 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p class="text-[12px] leading-snug text-muted-foreground">完成后进入参观视角，预览你的展览。</p>
           <div class="flex gap-3">
-            <button type="button" class="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-5 py-3 text-[15px] font-medium text-foreground hover:bg-muted active:opacity-90">
+            <button type="button" data-dom-id="fmm-prev-exhibit" class="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-5 py-3 text-[15px] font-medium text-foreground hover:bg-muted active:opacity-90">
               <i data-lucide="arrow-left" class="h-4 w-4"></i>
               <span>上一展品</span>
             </button>
@@ -648,8 +644,8 @@
         /* 展品图片：优先用户上传 photo，否则按 idx 取默认图 */
         var photoImg = document.getElementById('fmm-exhibit-photo');
         if(photoImg){
-          var PHOTO_MAP = ['exhibit-enamel-mug.jpg','exhibit-photo-album.jpg','exhibit-mechanical-watch.jpg','exhibit-textbook.jpg'];
-          var NAME_MAP = ['搪瓷杯','相册','机械表','课本'];
+          var PHOTO_MAP = ['exhibit-enamel-mug.jpg','exhibit-photo-album.jpg','exhibit-mechanical-watch.jpg','exhibit-textbook.jpg','exhibit-fountain-pen.jpg'];
+          var NAME_MAP = ['搪瓷杯','相册','机械表','课本','钢笔'];
           var idx = getIdx();
           if(ex.photo){ photoImg.src = ex.photo; }
           else if(PHOTO_MAP[idx]){ photoImg.src = '../assets/' + PHOTO_MAP[idx]; }
@@ -864,6 +860,16 @@
             if(p){ p.textContent = '已开启声音'; }
             replaceIcon(muteBtn.previousElementSibling, 'volume-2');
           }
+        });
+      }
+
+      /* 上一展品：退回档案卡页编辑上一件展品 */
+      var prevExhibitBtn = document.querySelector('[data-dom-id="fmm-prev-exhibit"]');
+      if(prevExhibitBtn){
+        prevExhibitBtn.addEventListener('click', function(){
+          var curIdx = FMM.currentIdx();
+          if(curIdx > 0){ FMM.setCurrentIdx(curIdx - 1); }
+          location.href = 'page-archive-card-desktop.html';
         });
       }
 

@@ -4,7 +4,7 @@
  */
 (function (global) {
   'use strict';
-  var FMM_KEY = 'fmm_museum_v2';
+  var FMM_KEY = 'fmm_museum_v3';
 
   /* 默认数据骨架：5 件家庭展品的占位信息 */
   function defaultData() {
@@ -12,27 +12,27 @@
       museum: { name: '我们家的小博物馆', cover: 0, identity: '妈妈', privacy: 'family' },
       theme: { selected: '一件物品里的陪伴', discussion: { support: '', missing: '', confirm: '' }, customTheme: '' },
       exhibits: [
-        { id: 'exhibit-001', owner: '妈妈', number: '01', name: '搪瓷杯', year: '约 1978', source: '外婆陪嫁', teller: '林雯',
-          what: '一只白底红花的搪瓷杯，1978 年随外婆的陪嫁来到这个家。杯口有一处米粒大的掉瓷，露出黑色的铁胎。',
+        { id: 'exhibit-001', owner: '妈妈', number: '01', name: '搪瓷杯', year: '70年代', source: '外婆陪嫁', teller: '林雯',
+          what: '一只白底红花的搪瓷杯，70年代随外婆的陪嫁来到这个家。杯口有一处米粒大的掉瓷，露出黑色的铁胎。',
           story: '一杯热水，三十年。杯口缺了一小块瓷，是表哥小时候磕的。外婆没舍得换，说缺口也是日子的一部分。',
           meaning: '它装的不只是水，是三十个被提前等好的清晨。缺口不是破损，是日子在杯上留下的记号。',
           emotion: ['温暖'], visibility: 'family', photo: '', audio: '', label: '一杯热水，三十年。杯口缺了一小块瓷，是表哥小时候磕的。外婆没舍得换，说缺口也是日子的一部分。' },
-        { id: 'exhibit-002', owner: '外婆', number: '02', name: '相册', year: '约 1980s', source: '外婆整理', teller: '外婆',
+        { id: 'exhibit-002', owner: '外婆', number: '02', name: '相册', year: '80年代', source: '外婆整理', teller: '外婆',
           what: '一本蓝布面的老式相册，丝脊已经磨毛，里面夹着黑白和褪色彩照。',
           story: '相册停在外婆四十岁那一年。那一页之后是空的，她说后面的日子都还在过着，不用拍。',
           meaning: '留下来的不是照片，是被照片接住的那段时间。',
           emotion: ['想念'], visibility: 'family', photo: '', audio: '', label: '' },
-        { id: 'exhibit-003', owner: '爸爸', number: '03', name: '机械表', year: '约 1990s', source: '爸爸的第一份工资', teller: '爸爸',
+        { id: 'exhibit-003', owner: '爸爸', number: '03', name: '机械表', year: '90年代', source: '爸爸的第一份工资', teller: '爸爸',
           what: '一块手动机械表，表盘有一道细划痕，秒针仍在走。',
           story: '爸爸用第一个月工资买的，戴了三十年。那道划痕是我出生那年磕的，他没修。',
           meaning: '时间一直在走，但有些瞬间被表盘记住了。',
           emotion: ['安心'], visibility: 'family', photo: '', audio: '', label: '' },
-        { id: 'exhibit-004', owner: '孩子', number: '04', name: '课本', year: '约 2023', source: '初一开学', teller: '孩子',
+        { id: 'exhibit-004', owner: '孩子', number: '04', name: '课本', year: '20年代', source: '初一开学', teller: '孩子',
           what: '初一数学课本，牛皮纸包皮，扉页有妈妈写的"慢慢来"三个字。',
           story: '初一开学那天，妈妈用牛皮纸把这本数学课本包好，在内页写了"慢慢来"三个字。那年我数学跟不上，她每晚陪我重做错题。',
           meaning: '三个字比任何辅导都管用，它让我知道跟不上也没关系。',
           emotion: ['陪伴'], visibility: 'family', photo: '', audio: '', label: '' },
-        { id: 'exhibit-005', owner: '外公', number: '05', name: '钢笔', year: '约 1980s', source: '外公退休留念', teller: '外公',
+        { id: 'exhibit-005', owner: '外公', number: '05', name: '钢笔', year: '80年代', source: '外公退休留念', teller: '外公',
           what: '一支墨绿色的老式钢笔，笔帽有一道细纹，笔尖磨出了外公握笔的凹痕。',
           story: '外公用了四十年的钢笔。他每天早起练字，写家信、记账都靠它。笔尖的凹痕，是几十年同一姿势留下的。',
           meaning: '一支笔写完了大半辈子，磨出的凹痕比任何字迹都更像他。',
@@ -94,27 +94,36 @@
     currentIdx: function () { return parseInt(sessionStorage.getItem('fmm_current_idx') || '0', 10) || 0; },
     setCurrentIdx: function (i) { sessionStorage.setItem('fmm_current_idx', String(i)); },
 
-    /* 背景音乐模块（Web Audio API · 纯前端生成温馨钢琴旋律） */
+    /* 背景音乐模块（HTML5 Audio · 播放温馨 MP3 背景音乐） */
     music: {
-      ctx: null, gain: null, playing: false, timer: null, noteIndex: 0,
-      /* 五声音阶温馨旋律 */
-      notes: [523.25,659.25,783.99,659.25,523.25,440,523.25,659.25,783.99,880,783.99,659.25,587.33,659.25,523.25,440],
-      init: function(){ if(this.ctx) return; try{ var AC=window.AudioContext||window.webkitAudioContext; this.ctx=new AC(); this.gain=this.ctx.createGain(); this.gain.gain.value=0.12; this.gain.connect(this.ctx.destination); }catch(e){} },
-      playNote: function(){
-        if(!this.ctx||!this.playing) return;
-        var f=this.notes[this.noteIndex%this.notes.length]; var t=this.ctx.currentTime;
-        var o=this.ctx.createOscillator(); var g=this.ctx.createGain();
-        o.type='sine'; o.frequency.value=f;
-        g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.22,t+0.05); g.gain.exponentialRampToValueAtTime(0.001,t+2);
-        o.connect(g); g.connect(this.gain); o.start(t); o.stop(t+2);
-        var o2=this.ctx.createOscillator(); var g2=this.ctx.createGain();
-        o2.type='triangle'; o2.frequency.value=f*2;
-        g2.gain.setValueAtTime(0,t); g2.gain.linearRampToValueAtTime(0.06,t+0.05); g2.gain.exponentialRampToValueAtTime(0.001,t+1.5);
-        o2.connect(g2); g2.connect(this.gain); o2.start(t); o2.stop(t+1.5);
-        this.noteIndex++;
+      el: null, playing: false,
+      init: function(){
+        if(this.el) return;
+        try {
+          var a = document.createElement('audio');
+          var base = (location.pathname.indexOf('/pages/') !== -1) ? '../assets/' : 'assets/';
+          a.src = base + 'bgm-warm.mp3';
+          a.loop = true;
+          a.volume = 0.45;
+          a.preload = 'auto';
+          this.el = a;
+        } catch(e){}
       },
-      start: function(){ this.init(); if(!this.ctx) return false; if(this.ctx.state==='suspended') this.ctx.resume(); this.playing=true; localStorage.setItem('fmm_music','on'); this.playNote(); var s=this; this.timer=setInterval(function(){ s.playNote(); },1800); return true; },
-      stop: function(){ this.playing=false; localStorage.setItem('fmm_music','off'); if(this.timer){ clearInterval(this.timer); this.timer=null; } },
+      start: function(){
+        this.init();
+        if(!this.el) return false;
+        var s = this;
+        try {
+          var p = this.el.play();
+          if(p && typeof p.then === 'function'){
+            p.then(function(){ s.playing = true; localStorage.setItem('fmm_music','on'); }).catch(function(){ s.playing = false; });
+          } else {
+            s.playing = true; localStorage.setItem('fmm_music','on');
+          }
+        } catch(e){ return false; }
+        return true;
+      },
+      stop: function(){ this.playing = false; localStorage.setItem('fmm_music','off'); if(this.el){ try{ this.el.pause(); }catch(e){} } },
       toggle: function(){ if(this.playing){ this.stop(); return false; } return this.start(); },
       isPlaying: function(){ return this.playing; },
       shouldPlay: function(){ return localStorage.getItem('fmm_music')==='on'; },

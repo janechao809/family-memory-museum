@@ -389,10 +389,6 @@
       <!-- 顶栏：curatorTopbar 规范 -->
       <header class="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card/80 px-8 py-3 backdrop-blur">
         <div class="text-sm text-muted-foreground">策展工作台 · 一件物品里的陪伴</div>
-        <div class="flex items-center gap-4">
-          <a data-dom-id="fmm-enter-visit" class="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground hover:bg-muted"><i data-lucide="eye" class="h-4 w-4"></i>预览参观</a>
-          <div class="h-8 w-8 rounded-full bg-secondary text-center text-xs leading-8 text-primary">满</div>
-        </div>
       </header>
 
       <!-- 内容区 main slot -->
@@ -448,22 +444,22 @@
                 <div class="min-w-0 flex-1">
                   <!-- 年代轴 -->
                   <div class="mb-2 flex justify-between px-10 text-[11px] font-medium text-muted-foreground">
-                    <span>1978</span>
-                    <span>1980s</span>
-                    <span>1990s</span>
-                    <span>约 2023</span>
+                    <span>70年代</span>
+                    <span>80年代</span>
+                    <span>90年代</span>
+                    <span>约 20年代</span>
                   </div>
                   <!-- 节点 + 连接线 -->
                   <div class="relative">
                     <!-- 横向连线（穿过 4 个展品节点中心） -->
                     <div class="absolute left-10 right-10 top-[43px] h-px bg-border"></div>
-                    <div class="flex justify-between">
+                    <div class="flex justify-between" data-fmm-role="exhibit-list">
 
-                      <!-- 展品节点 1：1978 搪瓷杯 妈妈—01 -->
-                      <div class="flex w-24 flex-col items-center">
+                      <!-- 展品节点 1：70年代 搪瓷杯 妈妈—01 -->
+                      <div data-fmm-role="exhibit-node" data-exhibit-id="exhibit-001" class="flex w-24 flex-col items-center">
                         <div class="relative">
                           <img src="../assets/exhibit-enamel-mug.jpg" alt="搪瓷杯" class="h-[88px] w-24 rounded-lg border border-border object-cover" />
-                          <span class="absolute -left-2 -top-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-mustard px-1.5 text-[11px] font-semibold text-foreground shadow-sm">妈妈—01</span>
+                          <span class="absolute -left-2 -top-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-mustard px-1.5 text-[11px] font-semibold text-foreground shadow-sm shrink-0 whitespace-nowrap">妈妈—01</span>
                         </div>
                         <div class="mt-2 flex items-center gap-1">
                           <i data-lucide="grip-vertical" class="h-3.5 w-3.5 cursor-grab text-muted-foreground"></i>
@@ -472,11 +468,11 @@
                         </div>
                       </div>
 
-                      <!-- 展品节点 2：1980s 相册 外婆—02 -->
-                      <div class="flex w-24 flex-col items-center">
+                      <!-- 展品节点 2：80年代 相册 外婆—02 -->
+                      <div data-fmm-role="exhibit-node" data-exhibit-id="exhibit-002" class="flex w-24 flex-col items-center">
                         <div class="relative">
                           <img src="../assets/exhibit-photo-album.jpg" alt="相册" class="h-[88px] w-24 rounded-lg border border-border object-cover" />
-                          <span class="absolute -left-2 -top-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-mustard px-1.5 text-[11px] font-semibold text-foreground shadow-sm">外婆—02</span>
+                          <span class="absolute -left-2 -top-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-mustard px-1.5 text-[11px] font-semibold text-foreground shadow-sm shrink-0 whitespace-nowrap">外婆—02</span>
                         </div>
                         <div class="mt-2 flex items-center gap-1">
                           <i data-lucide="grip-vertical" class="h-3.5 w-3.5 cursor-grab text-muted-foreground"></i>
@@ -485,11 +481,11 @@
                         </div>
                       </div>
 
-                      <!-- 展品节点 3：1990s 机械表 爸爸—03 -->
-                      <div class="flex w-24 flex-col items-center">
+                      <!-- 展品节点 3：90年代 机械表 爸爸—03 -->
+                      <div data-fmm-role="exhibit-node" data-exhibit-id="exhibit-003" class="flex w-24 flex-col items-center">
                         <div class="relative">
                           <img src="../assets/exhibit-mechanical-watch.jpg" alt="机械表" class="h-[88px] w-24 rounded-lg border border-border object-cover" />
-                          <span class="absolute -left-2 -top-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-mustard px-1.5 text-[11px] font-semibold text-foreground shadow-sm">爸爸—03</span>
+                          <span class="absolute -left-2 -top-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-mustard px-1.5 text-[11px] font-semibold text-foreground shadow-sm shrink-0 whitespace-nowrap">爸爸—03</span>
                         </div>
                         <div class="mt-2 flex items-center gap-1">
                           <i data-lucide="grip-vertical" class="h-3.5 w-3.5 cursor-grab text-muted-foreground"></i>
@@ -498,11 +494,11 @@
                         </div>
                       </div>
 
-                      <!-- 展品节点 4：约 2023 课本 孩子—04 -->
-                      <div class="flex w-24 flex-col items-center">
+                      <!-- 展品节点 4：约 20年代 课本 孩子—04 -->
+                      <div data-fmm-role="exhibit-node" data-exhibit-id="exhibit-004" class="flex w-24 flex-col items-center">
                         <div class="relative">
                           <img src="../assets/exhibit-textbook.jpg" alt="课本" class="h-[88px] w-24 rounded-lg border border-border object-cover" />
-                          <span class="absolute -left-2 -top-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-mustard px-1.5 text-[11px] font-semibold text-foreground shadow-sm">孩子—04</span>
+                          <span class="absolute -left-2 -top-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-mustard px-1.5 text-[11px] font-semibold text-foreground shadow-sm shrink-0 whitespace-nowrap">孩子—04</span>
                         </div>
                         <div class="mt-2 flex items-center gap-1">
                           <i data-lucide="grip-vertical" class="h-3.5 w-3.5 cursor-grab text-muted-foreground"></i>
@@ -511,11 +507,11 @@
                         </div>
                       </div>
 
-                      <!-- 展品节点 5：1980s 钢笔 外公—05 -->
-                      <div class="flex w-24 flex-col items-center">
+                      <!-- 展品节点 5：80年代 钢笔 外公—05 -->
+                      <div data-fmm-role="exhibit-node" data-exhibit-id="exhibit-005" class="flex w-24 flex-col items-center">
                         <div class="relative">
                           <img src="../assets/exhibit-fountain-pen.jpg" alt="钢笔" class="h-[88px] w-24 rounded-lg border border-border object-cover" />
-                          <span class="absolute -left-2 -top-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-mustard px-1.5 text-[11px] font-semibold text-foreground shadow-sm">外公—05</span>
+                          <span class="absolute -left-2 -top-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-mustard px-1.5 text-[11px] font-semibold text-foreground shadow-sm shrink-0 whitespace-nowrap">外公—05</span>
                         </div>
                         <div class="mt-2 flex items-center gap-1">
                           <i data-lucide="grip-vertical" class="h-3.5 w-3.5 cursor-grab text-muted-foreground"></i>
@@ -542,7 +538,7 @@
               <!-- 动线说明 -->
               <div class="mt-6 flex items-start gap-2 rounded-lg bg-secondary/40 p-3 text-xs leading-relaxed text-muted-foreground">
                 <i data-lucide="info" class="mt-0.5 h-3.5 w-3.5 shrink-0"></i>
-                <span>当前动线以时间为序：从外婆的相册入场，依次走过 1978 的搪瓷杯、1980s 的相册、1990s 的机械表，止于约 2023 的课本，尾厅留一句话收束。长按任一展品节点可重新排序，入口与尾厅位置固定。</span>
+                <span>当前动线以时间为序：从外婆的相册入场，依次走过 70年代 的搪瓷杯、80年代 的相册、90年代 的机械表，止于约 20年代 的课本，尾厅留一句话收束。长按任一展品节点可重新排序，入口与尾厅位置固定。</span>
               </div>
 
             </div>
@@ -602,7 +598,7 @@
                 </div>
 
                 <!-- 发布展览主按钮（bg-primary，触发隐私检查 modal） -->
-                <button data-dom-id="fmm-publish" class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-medium text-surface hover:bg-primary/90">
+                <button data-dom-id="fmm-publish" class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                   <i data-lucide="send" class="h-4 w-4"></i>
                   发布展览
                 </button>
@@ -682,14 +678,7 @@
         publishBtn2.addEventListener('click', function(e){ e.preventDefault(); var d = FMM.load(); FMM.save(d); location.href = 'page-label-audio-desktop.html'; });
       }
 
-      /* 预览参观 → 跳转 */
-      var enterVisit = document.querySelector('[data-dom-id="fmm-enter-visit"]');
-      if(enterVisit){
-        enterVisit.addEventListener('click', function(e){
-          e.preventDefault();
-          location.href = 'page-visit-exhibit-desktop.html';
-        });
-      }
+      /* 顶栏右侧入口已移除 */
 
       /* 编号样式互斥单选（卡片式：切换 border/bg/标签色）+ FMM 持久化 */
       var styleBtns = Array.prototype.slice.call(document.querySelectorAll('[data-style-opt]'));
@@ -732,6 +721,70 @@
       document.querySelectorAll('[data-dom-id="fmm-nav-mine"]').forEach(function(el){
         el.addEventListener('click', function(e){ e.preventDefault(); alert('个人中心 · 待开发'); });
       });
+
+      /* —— 拖动重排展品节点（HTML5 drag-and-drop + touch 触摸支持） —— */
+      var exhibitList = document.querySelector('[data-fmm-role="exhibit-list"]');
+      if(exhibitList){
+        var dragEl = null, touchDragEl = null;
+
+        /* 桌面横向布局无虚线连接 div，直接移动节点；getFollowingConnector 兼容纵向结构返回 null */
+        function getFollowingConnector(node){
+          var next = node.nextElementSibling;
+          if(next && next.className && next.className.indexOf('border-dashed') !== -1){ return next; }
+          return null;
+        }
+        /* 将 src 节点（连同它的虚线连接，若有）移动到 target 之前或之后 */
+        function moveUnit(src, target, after){
+          if(!src || !target || src === target) return;
+          var srcConnector = getFollowingConnector(src);
+          var targetConnector = getFollowingConnector(target);
+          var parent = src.parentNode;
+          if(after){
+            var refNode = targetConnector ? targetConnector.nextSibling : target.nextSibling;
+            parent.insertBefore(src, refNode);
+            if(srcConnector){ parent.insertBefore(srcConnector, src.nextSibling); }
+          } else {
+            parent.insertBefore(src, target);
+            if(srcConnector){ parent.insertBefore(srcConnector, src.nextSibling); }
+          }
+        }
+        /* drop / touchend 后保存新顺序到 FMM 并更新所有 badge 编号 */
+        function saveOrder(){
+          var d = FMM.load();
+          var newIds = Array.prototype.slice.call(document.querySelectorAll('[data-fmm-role="exhibit-node"]')).map(function(n){ return n.getAttribute('data-exhibit-id'); });
+          d.exhibits = newIds.map(function(id){ return d.exhibits.find(function(e){ return e.id === id; }); }).filter(Boolean);
+          FMM.save(d);
+          document.querySelectorAll('[data-fmm-role="exhibit-node"]').forEach(function(n, i){
+            var badge = n.querySelector('span.bg-mustard') || n.querySelector('span.bg-accent');
+            if(badge){ var ex = d.exhibits[i]; if(ex){ badge.textContent = ex.owner + '—' + String(i+1).padStart(2,'0'); } }
+          });
+        }
+
+        document.querySelectorAll('[data-fmm-role="exhibit-node"]').forEach(function(node){
+          node.setAttribute('draggable', 'true');
+          node.style.cursor = 'grab';
+          /* —— HTML5 拖拽（横向布局用 clientX 判定左右）—— */
+          node.addEventListener('dragstart', function(e){ dragEl = node; node.style.opacity = '0.4'; e.dataTransfer.effectAllowed = 'move'; });
+          node.addEventListener('dragend', function(){ node.style.opacity = '1'; dragEl = null; });
+          node.addEventListener('dragover', function(e){ e.preventDefault(); if(dragEl && dragEl !== node){ var rect = node.getBoundingClientRect(); var after = (e.clientX > rect.left + rect.width/2); moveUnit(dragEl, node, after); } });
+          node.addEventListener('drop', function(e){ e.preventDefault(); saveOrder(); });
+          /* —— 触摸拖拽（触屏 / 触控板）—— */
+          node.addEventListener('touchstart', function(){ touchDragEl = node; node.style.opacity = '0.4'; }, {passive: true});
+          node.addEventListener('touchmove', function(e){
+            if(!touchDragEl) return;
+            e.preventDefault();
+            var touch = e.touches[0];
+            var el = document.elementFromPoint(touch.clientX, touch.clientY);
+            var target = el ? el.closest('[data-fmm-role="exhibit-node"]') : null;
+            if(target && target !== touchDragEl){
+              var rect = target.getBoundingClientRect();
+              var after = (touch.clientX > rect.left + rect.width/2);
+              moveUnit(touchDragEl, target, after);
+            }
+          }, {passive: false});
+          node.addEventListener('touchend', function(){ if(!touchDragEl) return; touchDragEl.style.opacity = '1'; saveOrder(); touchDragEl = null; });
+        });
+      }
     });
   })();
   </script>

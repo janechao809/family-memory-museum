@@ -364,7 +364,7 @@
   <!--
     桌面策展人 shell（document-scroll）—— 照搬 partials/curator-desktop.html
     - sticky 左侧栏 240px（w-60）：展览名 + 五项导航，gallery 高亮（activeItemClasses: text-primary bg-secondary font-medium）
-    - 顶栏：curatorTopbar 规范（策展工作台 + 预览参观 + 头像）
+    - 顶栏：curatorTopbar 规范（策展工作台）
     - 右侧内容区 main slot
     - 侧栏 sticky top-0 h-screen；右确认栏 sticky top-24
   -->
@@ -389,10 +389,6 @@
       <!-- 顶栏：curatorTopbar 规范 -->
       <header class="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card/80 px-8 py-3 backdrop-blur">
         <div class="text-sm text-muted-foreground">策展工作台 · 一件物品里的陪伴</div>
-        <div class="flex items-center gap-4">
-          <a data-dom-id="fmm-enter-visit" class="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground hover:bg-muted"><i data-lucide="eye" class="h-4 w-4"></i>预览参观</a>
-          <div class="h-8 w-8 rounded-full bg-secondary text-center text-xs leading-8 text-primary">满</div>
-        </div>
       </header>
 
       <!-- 内容区 main slot -->
@@ -508,7 +504,7 @@
                     <span class="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/15 text-[12px] font-semibold text-accent">2</span>
                     <div class="min-w-0 flex-1">
                       <h3 class="font-serif text-[17px] leading-6 text-foreground">我们家如何度过变化</h3>
-                      <p class="mt-1.5 text-[12.5px] leading-5 text-muted-foreground">从 1978 到 2023，时间在物品上留下刻度。家是怎样穿过这些年的变化，又被什么接住。</p>
+                      <p class="mt-1.5 text-[12.5px] leading-5 text-muted-foreground">从 70 年代到 20 年代，时间在物品上留下刻度。家是怎样穿过这些年的变化，又被什么接住。</p>
                     </div>
                   </div>
                   <div class="mt-auto flex items-center justify-between pt-4">
@@ -602,54 +598,54 @@
               <!-- 分隔 -->
               <div class="my-4 h-px w-full bg-border"></div>
 
-              <!-- 已确认成员进度 2/4 -->
+              <!-- 已确认成员进度（根据 FMM 数据动态计算） -->
               <div class="mb-1.5 flex items-baseline justify-between">
                 <h4 class="text-[12px] font-medium text-foreground">家庭成员确认</h4>
-                <span class="rounded-full bg-secondary px-2 py-0.5 text-[11px] text-primary">2 / 5 已确认</span>
+                <span data-fmm-role="confirm-count" class="rounded-full bg-secondary px-2 py-0.5 text-[11px] text-primary">2 / 5 已确认</span>
               </div>
               <ul class="space-y-2">
-                <li class="flex items-center justify-between rounded-md bg-background px-3 py-2">
+                <li data-member="孩子" class="flex items-center justify-between rounded-md bg-background px-3 py-2">
                   <div class="flex items-center gap-2">
-                    <span class="h-6 w-6 rounded-full bg-secondary text-center text-[11px] leading-6 text-primary">孩</span>
+                    <span data-fmm-role="member-avatar" class="h-6 w-6 rounded-full bg-secondary text-center text-[11px] leading-6 text-primary">孩</span>
                     <span class="text-[13px] text-foreground">孩子</span>
                   </div>
-                  <span class="inline-flex items-center gap-1 text-[11px] text-primary">
+                  <span data-fmm-role="member-status" class="inline-flex items-center gap-1 text-[11px] text-primary">
                     <i data-lucide="check" class="h-3.5 w-3.5"></i>已确认
                   </span>
                 </li>
-                <li class="flex items-center justify-between rounded-md bg-background px-3 py-2">
+                <li data-member="妈妈" class="flex items-center justify-between rounded-md bg-background px-3 py-2">
                   <div class="flex items-center gap-2">
-                    <span class="h-6 w-6 rounded-full bg-secondary text-center text-[11px] leading-6 text-primary">妈</span>
+                    <span data-fmm-role="member-avatar" class="h-6 w-6 rounded-full bg-secondary text-center text-[11px] leading-6 text-primary">妈</span>
                     <span class="text-[13px] text-foreground">妈妈</span>
                   </div>
-                  <span class="inline-flex items-center gap-1 text-[11px] text-primary">
+                  <span data-fmm-role="member-status" class="inline-flex items-center gap-1 text-[11px] text-primary">
                     <i data-lucide="check" class="h-3.5 w-3.5"></i>已确认
                   </span>
                 </li>
-                <li class="flex items-center justify-between rounded-md bg-background px-3 py-2">
+                <li data-member="外婆" class="flex items-center justify-between rounded-md bg-background px-3 py-2">
                   <div class="flex items-center gap-2">
-                    <span class="h-6 w-6 rounded-full bg-muted text-center text-[11px] leading-6 text-muted-foreground">婆</span>
+                    <span data-fmm-role="member-avatar" class="h-6 w-6 rounded-full bg-muted text-center text-[11px] leading-6 text-muted-foreground">婆</span>
                     <span class="text-[13px] text-foreground">外婆</span>
                   </div>
-                  <span class="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+                  <span data-fmm-role="member-status" class="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
                     <i data-lucide="more-horizontal" class="h-3.5 w-3.5"></i>等待中
                   </span>
                 </li>
-                <li class="flex items-center justify-between rounded-md bg-background px-3 py-2">
+                <li data-member="爸爸" class="flex items-center justify-between rounded-md bg-background px-3 py-2">
                   <div class="flex items-center gap-2">
-                    <span class="h-6 w-6 rounded-full bg-muted text-center text-[11px] leading-6 text-muted-foreground">爸</span>
+                    <span data-fmm-role="member-avatar" class="h-6 w-6 rounded-full bg-muted text-center text-[11px] leading-6 text-muted-foreground">爸</span>
                     <span class="text-[13px] text-foreground">爸爸</span>
                   </div>
-                  <span class="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+                  <span data-fmm-role="member-status" class="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
                     <i data-lucide="more-horizontal" class="h-3.5 w-3.5"></i>等待中
                   </span>
                 </li>
-                <li class="flex items-center justify-between rounded-md bg-background px-3 py-2">
+                <li data-member="外公" class="flex items-center justify-between rounded-md bg-background px-3 py-2">
                   <div class="flex items-center gap-2">
-                    <span class="h-6 w-6 rounded-full bg-muted text-center text-[11px] leading-6 text-muted-foreground">公</span>
+                    <span data-fmm-role="member-avatar" class="h-6 w-6 rounded-full bg-muted text-center text-[11px] leading-6 text-muted-foreground">公</span>
                     <span class="text-[13px] text-foreground">外公</span>
                   </div>
-                  <span class="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+                  <span data-fmm-role="member-status" class="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
                     <i data-lucide="more-horizontal" class="h-3.5 w-3.5"></i>等待中
                   </span>
                 </li>
@@ -807,6 +803,44 @@
           location.href = 'page-exhibition-editor-desktop.html';
         });
       }
+
+      // 家庭成员确认状态：根据 FMM 展品 story 字段动态计算
+      // 判定规则：成员展品的 story 非空视为"已确认"（已在档案卡填写完成）
+      var confirmMembers = ['妈妈','外婆','外公','爸爸','孩子'];
+      var cData = FMM ? FMM.load() : null;
+      var cExhibits = cData ? (cData.exhibits || []) : [];
+      var confirmedCount = 0;
+      confirmMembers.forEach(function(m){
+        var ex = cExhibits.find(function(e){ return e.owner === m; });
+        var confirmed = !!(ex && ex.story && String(ex.story).trim().length > 0);
+        if(confirmed) confirmedCount++;
+        // 更新该成员行的状态文字、图标与样式
+        var row = document.querySelector('[data-member="'+m+'"]');
+        if(row){
+          row.classList.toggle('confirmed', confirmed);
+          var statusEl = row.querySelector('[data-fmm-role="member-status"]');
+          if(statusEl){
+            if(confirmed){
+              statusEl.setAttribute('class','inline-flex items-center gap-1 text-[11px] text-primary');
+              statusEl.innerHTML = '<i data-lucide="check" class="h-3.5 w-3.5"></i>已确认';
+            }else{
+              statusEl.setAttribute('class','inline-flex items-center gap-1 text-[11px] text-muted-foreground');
+              statusEl.innerHTML = '<i data-lucide="more-horizontal" class="h-3.5 w-3.5"></i>等待中';
+            }
+          }
+          var avatarEl = row.querySelector('[data-fmm-role="member-avatar"]');
+          if(avatarEl){
+            if(confirmed){
+              avatarEl.setAttribute('class','h-6 w-6 rounded-full bg-secondary text-center text-[11px] leading-6 text-primary');
+            }else{
+              avatarEl.setAttribute('class','h-6 w-6 rounded-full bg-muted text-center text-[11px] leading-6 text-muted-foreground');
+            }
+          }
+        }
+      });
+      var confirmCounter = document.querySelector('[data-fmm-role="confirm-count"]');
+      if(confirmCounter){ confirmCounter.textContent = confirmedCount + ' / 5 已确认'; }
+      if(window.lucide){ lucide.createIcons(); }
 
       // 侧栏 nav 跳转
       var navJumps = {

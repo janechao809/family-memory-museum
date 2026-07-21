@@ -433,7 +433,7 @@
             <div class="min-w-0">
               <p data-fmm-role="exhibit-name" class="font-serif text-[16px] leading-tight text-foreground">初一数学课本</p>
               <p data-fmm-role="exhibit-year" class="mt-0.5 flex items-center gap-1.5 text-[12px] text-muted-foreground">
-                <i data-lucide="calendar" class="h-3 w-3"></i>约 2023
+                <i data-lucide="calendar" class="h-3 w-3"></i>20年代
               </p>
             </div>
             <span data-fmm-role="exhibit-number" class="inline-flex shrink-0 items-center gap-1 rounded-full bg-accent/15 px-2.5 py-1 text-[11px] font-medium text-accent">
@@ -502,7 +502,7 @@
       <!-- ⑥ 底部双按钮：保存草稿（surface 描边）+ 下一步（bg-primary） -->
       <section class="pt-6">
         <div class="flex gap-3">
-          <button type="button" class="flex-1 rounded-lg border border-border bg-card px-5 py-3 text-[15px] font-medium text-foreground active:opacity-90">
+          <button type="button" data-dom-id="fmm-save-draft" class="flex-1 rounded-lg border border-border bg-card px-5 py-3 text-[15px] font-medium text-foreground active:opacity-90">
             保存草稿
           </button>
           <button type="button" data-dom-id="fmm-step-next" class="flex flex-[1.4] items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground active:opacity-90">
@@ -743,9 +743,20 @@
       });
     }
 
+    /* —— 保存草稿 + 下一步前置保存 —— */
+    var saveDraftBtn = document.querySelector('[data-dom-id="fmm-save-draft"]');
+    if(saveDraftBtn){
+      saveDraftBtn.addEventListener('click', function(){
+        FMM.setExhibit(idx, { story: storyInput.value, emotion: savedEmotions.slice() });
+        var orig = saveDraftBtn.textContent;
+        saveDraftBtn.textContent = '已保存 ✓';
+        setTimeout(function(){ saveDraftBtn.textContent = orig; }, 2000);
+      });
+    }
+
     /* —— 跳转 —— */
     var nextBtn = document.querySelector('[data-dom-id="fmm-step-next"]');
-    if(nextBtn){ nextBtn.addEventListener('click', function(){ location.href = 'page-theme-cocuration-mobile.html'; }); }
+    if(nextBtn){ nextBtn.addEventListener('click', function(){ FMM.setExhibit(idx, { story: storyInput.value, emotion: savedEmotions.slice() }); location.href = 'page-theme-cocuration-mobile.html'; }); }
     var navJumps = {
       'fmm-nav-home': 'page-welcome-setup-mobile.html',
       'fmm-nav-gallery': 'page-theme-cocuration-mobile.html',

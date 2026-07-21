@@ -388,10 +388,6 @@
       <!-- 顶栏：curatorTopbar 规范 -->
       <header class="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card/80 px-8 py-3 backdrop-blur">
         <div class="text-sm text-muted-foreground">策展工作台 · 一件物品里的陪伴</div>
-        <div class="flex items-center gap-4">
-          <a data-dom-id="fmm-enter-visit" class="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground hover:bg-muted"><i data-lucide="eye" class="h-4 w-4"></i>预览参观</a>
-          <div data-fmm-role="current-member-avatar" class="h-8 w-8 rounded-full bg-secondary text-center text-xs leading-8 text-primary">满</div>
-        </div>
       </header>
 
       <!-- 内容区 main slot -->
@@ -514,7 +510,7 @@
                   </span>
                 </div>
                 <div class="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-muted-foreground">
-                  <span data-fmm-role="exhibit-year" class="inline-flex items-center gap-1"><i data-lucide="calendar" class="h-3 w-3"></i>年代 · 约 2023</span>
+                  <span data-fmm-role="exhibit-year" class="inline-flex items-center gap-1"><i data-lucide="calendar" class="h-3 w-3"></i>年代 · 20年代</span>
                   <span data-fmm-role="exhibit-teller" class="inline-flex items-center gap-1"><i data-lucide="user-round" class="h-3 w-3"></i>讲述者 · 孩子</span>
                 </div>
               </div>
@@ -608,7 +604,7 @@
 
             <!-- 底部双按钮：保存草稿（surface 描边）+ 下一步（bg-primary） -->
             <div class="mt-8 flex items-center gap-3">
-              <button type="button" class="rounded-lg border border-border bg-card px-5 py-3 text-[15px] font-medium text-foreground hover:bg-muted active:opacity-90">
+              <button type="button" data-dom-id="fmm-save-draft" class="rounded-lg border border-border bg-card px-5 py-3 text-[15px] font-medium text-foreground hover:bg-muted active:opacity-90">
                 保存草稿
               </button>
               <button type="button" data-dom-id="fmm-step-next" class="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground hover:opacity-95 active:opacity-90">
@@ -640,7 +636,6 @@
   }
   ready(function(){
     bindJumps({
-      'fmm-step-next': 'page-theme-cocuration-desktop.html',
       'fmm-nav-home': 'page-welcome-setup-desktop.html',
       'fmm-nav-gallery': 'page-theme-cocuration-desktop.html'
     });
@@ -903,6 +898,25 @@
           if(playIcon){ var ni3=document.createElement('i'); ni3.setAttribute('data-lucide','play'); ni3.className='h-4 w-4'; playIcon.parentNode.replaceChild(ni3,playIcon); playIcon=ni3; if(window.lucide){lucide.createIcons();} }
           if(playLabel){ playLabel.textContent = '回听录音'; }
         };
+      });
+    }
+
+    /* —— 保存草稿 + 下一步前置保存 —— */
+    var saveDraftBtn = document.querySelector('[data-dom-id="fmm-save-draft"]');
+    if(saveDraftBtn){
+      saveDraftBtn.addEventListener('click', function(){
+        FMM.setExhibit(idx, { story: storyInput.value, emotion: savedEmotions.slice() });
+        var orig = saveDraftBtn.textContent;
+        saveDraftBtn.textContent = '已保存 ✓';
+        setTimeout(function(){ saveDraftBtn.textContent = orig; }, 2000);
+      });
+    }
+    var nextStepBtn = document.querySelector('[data-dom-id="fmm-step-next"]');
+    if(nextStepBtn){
+      nextStepBtn.addEventListener('click', function(){
+        FMM.setExhibit(idx, { story: storyInput.value, emotion: savedEmotions.slice() });
+        if(inIframe()){ return; }
+        try{ location.href = 'page-theme-cocuration-desktop.html'; }catch(_){}
       });
     }
 
