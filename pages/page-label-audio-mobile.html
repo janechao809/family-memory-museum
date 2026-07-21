@@ -494,7 +494,7 @@
         </div>
       </section>
 
-      <!-- ④ 底部双按钮：上一展品（surface 描边）+ 完成·发布展览（bg-primary） -->
+      <!-- ④ 底部双按钮：上一展品 + 下一展品/完成发布（动态切换） -->
       <section class="pt-6">
         <p data-fmm-progress class="mb-2.5 text-center text-[12px] text-muted-foreground">第 1 / 5 件</p>
         <div class="flex gap-3">
@@ -502,11 +502,11 @@
             上一展品
           </button>
           <button type="button" data-dom-id="fmm-next-exhibit" class="flex flex-[1.4] items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground active:opacity-90">
-            <span>完成·发布展览</span>
+            <span data-fmm-next-label>下一展品</span>
             <i data-lucide="arrow-right" class="h-4 w-4"></i>
           </button>
         </div>
-        <p class="mt-2.5 text-center text-[12px] leading-snug text-muted-foreground">完成后进入参观视角，预览你的展览。</p>
+        <p class="mt-2.5 text-center text-[12px] leading-snug text-muted-foreground">逐件编辑展签与语音，全部完成后发布展览。</p>
       </section>
 
     </main>
@@ -801,11 +801,51 @@
         });
       }
 
-      /* 上一展品：保存当前表单 → 循环切换到上一件展品 → 刷新当前页面 */
+      /* 动态更新底部按钮文字（上一展品/下一展品/完成发布） */
+      var totalEx = FMM.load().exhibits.length;
+      var curIdxForLabel = getIdx();
+      var nextLabel = document.querySelector('[data-fmm-next-label]');
+      var prevExhibitBtnLabel = document.querySelector('[data-dom-id="fmm-prev-exhibit"]');
+      if(nextLabel){
+        if(curIdxForLabel + 1 >= totalEx){
+          nextLabel.textContent = '完成·发布展览';
+        } else {
+          nextLabel.textContent = '下一展品';
+        }
+      }
+      if(prevExhibitBtnLabel){
+        prevExhibitBtnLabel.style.opacity = curIdxForLabel === 0 ? '0.4' : '';
+        prevExhibitBtnLabel.style.pointerEvents = curIdxForLabel === 0 ? 'none' : '';
+      }
+
+      /* 上一展品：保存当前表单 → 切换到上一件展品 → 刷新当前页面（不循环） */
       var prevExhibitBtn = document.querySelector('[data-dom-id="fmm-prev-exhibit"]');
       if(prevExhibitBtn){
         prevExhibitBtn.addEventListener('click', function(){
-          // 1. 保存当前表单数据到 FMM
+          var curIdx = FMM.currentIdx();
+          if(curIdx === 0) return; /* 已是第一件，不循环 */
+          /* 1. 保存当前表单数据到 FMM */
+          var fields = document.querySelectorAll('[data-fmm-field]');
+          var patch = {};
+          fields.forEach(function(f){
+            var key = f.getAttribute('data-fmm-field');
+            patch[key] = f.value;
+          });
+          if(Object.keys(patch).length > 0){ FMM.setExhibit(curIdx, patch); }
+
+          /* 2. 切换到上一个展品 */
+          FMM.setCurrentIdx(curIdx - 1);
+
+          /* 3. 刷新当前页面（带时间戳防缓存） */
+          location.href = location.pathname + '?t=' + Date.now();
+        });
+      }
+
+      /* 下一展品 / 完成·发布展览：保存表单 → 下一件或发布 */
+      var nextExhibitBtn = document.querySelector('[data-dom-id="fmm-next-exhibit"]');
+      if(nextExhibitBtn){
+        nextExhibitBtn.addEventListener('click', function(){
+          /* 1. 保存当前表单数据到 FMM */
           var curIdx = FMM.currentIdx();
           var fields = document.querySelectorAll('[data-fmm-field]');
           var patch = {};
@@ -815,21 +855,17 @@
           });
           if(Object.keys(patch).length > 0){ FMM.setExhibit(curIdx, patch); }
 
-          // 2. 切换到上一个展品（到 0 时循环到最后一个）
-          var prevIdx = curIdx > 0 ? curIdx - 1 : 4;
-          FMM.setCurrentIdx(prevIdx);
-
-          // 3. 刷新当前页面（带时间戳防缓存）
-          location.href = location.pathname + '?t=' + Date.now();
+          /* 2. 如果还有下一件，切换并刷新；否则发布展览 */
+          if(curIdx + 1 < FMM.load().exhibits.length){
+            FMM.setCurrentIdx(curIdx + 1);
+            location.href = location.pathname + '?t=' + Date.now();
+          } else {
+            /* 最后一件：重置到第一件，进入参观视角 */
+            FMM.setCurrentIdx(0);
+            location.href = 'page-visit-exhibit-mobile.html';
+          }
         });
       }
-
-      /* 跳转兜底 */
-      var jumps = { 'fmm-next-exhibit': 'page-visit-exhibit-mobile.html' };
-      Object.keys(jumps).forEach(function(domId){
-        var el = document.querySelector('[data-dom-id="'+domId+'"]');
-        if(el){ el.addEventListener('click', function(){ location.href = jumps[domId]; }); }
-      });
       /* 底部五栏 nav 跳转 */
       var navJumps = {
         'fmm-nav-home': 'page-welcome-setup-mobile.html',
