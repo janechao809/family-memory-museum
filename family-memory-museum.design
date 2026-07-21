@@ -1,0 +1,619 @@
+{
+  "data": [
+    {
+      "id": "page-page-welcome-setup-mobile",
+      "title": "①欢迎与建馆（移动）",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 0,
+        "y": 0,
+        "group": 1
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/page-welcome-setup-mobile.html",
+        "interactions": [
+          {
+            "domId": "fmm-cta-start",
+            "targetPageId": "page-page-archive-card-mobile"
+          },
+          {
+            "domId": "fmm-nav-home",
+            "targetPageId": "page-page-welcome-setup-mobile",
+            "hideEdge": true,
+            "transitionLabel": "首页"
+          },
+          {
+            "domId": "fmm-nav-create",
+            "targetPageId": "page-page-archive-card-mobile",
+            "hideEdge": true,
+            "transitionLabel": "创建"
+          },
+          {
+            "domId": "fmm-nav-gallery",
+            "targetPageId": "page-page-theme-cocuration-mobile",
+            "hideEdge": true,
+            "transitionLabel": "展馆"
+          },
+          {
+            "domId": "fmm-nav-visit",
+            "targetPageId": "page-page-visit-exhibit-mobile",
+            "hideEdge": true,
+            "transitionLabel": "参观"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-page-welcome-setup-desktop",
+      "title": "①欢迎与建馆（桌面）",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 0,
+        "y": 289,
+        "group": 1
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/page-welcome-setup-desktop.html",
+        "interactions": [
+          {
+            "domId": "fmm-cta-start",
+            "targetPageId": "page-page-archive-card-desktop"
+          },
+          {
+            "domId": "fmm-nav-home",
+            "targetPageId": "page-page-welcome-setup-desktop",
+            "hideEdge": true,
+            "transitionLabel": "首页"
+          },
+          {
+            "domId": "fmm-nav-create",
+            "targetPageId": "page-page-archive-card-desktop",
+            "hideEdge": true,
+            "transitionLabel": "创建"
+          },
+          {
+            "domId": "fmm-nav-gallery",
+            "targetPageId": "page-page-theme-cocuration-desktop",
+            "hideEdge": true,
+            "transitionLabel": "展馆"
+          },
+          {
+            "domId": "fmm-nav-visit",
+            "targetPageId": "page-page-visit-exhibit-desktop",
+            "hideEdge": true,
+            "transitionLabel": "参观"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-page-archive-card-mobile",
+      "title": "②物品档案卡（移动）",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 433,
+        "y": 0,
+        "group": 2
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/page-archive-card-mobile.html",
+        "interactions": [
+          {
+            "domId": "fmm-step-next",
+            "targetPageId": "page-page-theme-cocuration-mobile"
+          },
+          {
+            "domId": "fmm-nav-home",
+            "targetPageId": "page-page-welcome-setup-mobile",
+            "hideEdge": true,
+            "transitionLabel": "首页"
+          },
+          {
+            "domId": "fmm-nav-create",
+            "targetPageId": "page-page-archive-card-mobile",
+            "hideEdge": true,
+            "transitionLabel": "创建"
+          },
+          {
+            "domId": "fmm-nav-gallery",
+            "targetPageId": "page-page-theme-cocuration-mobile",
+            "hideEdge": true,
+            "transitionLabel": "展馆"
+          },
+          {
+            "domId": "fmm-nav-visit",
+            "targetPageId": "page-page-visit-exhibit-mobile",
+            "hideEdge": true,
+            "transitionLabel": "参观"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-page-archive-card-desktop",
+      "title": "②物品档案卡（桌面）",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 433,
+        "y": 289,
+        "group": 2
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/page-archive-card-desktop.html",
+        "interactions": [
+          {
+            "domId": "fmm-step-next",
+            "targetPageId": "page-page-theme-cocuration-desktop"
+          },
+          {
+            "domId": "fmm-nav-home",
+            "targetPageId": "page-page-welcome-setup-desktop",
+            "hideEdge": true,
+            "transitionLabel": "首页"
+          },
+          {
+            "domId": "fmm-nav-create",
+            "targetPageId": "page-page-archive-card-desktop",
+            "hideEdge": true,
+            "transitionLabel": "创建"
+          },
+          {
+            "domId": "fmm-nav-gallery",
+            "targetPageId": "page-page-theme-cocuration-desktop",
+            "hideEdge": true,
+            "transitionLabel": "展馆"
+          },
+          {
+            "domId": "fmm-nav-visit",
+            "targetPageId": "page-page-visit-exhibit-desktop",
+            "hideEdge": true,
+            "transitionLabel": "参观"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-page-theme-cocuration-mobile",
+      "title": "③主题共同策展（移动）",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 866,
+        "y": 0,
+        "group": 3
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/page-theme-cocuration-mobile.html",
+        "interactions": [
+          {
+            "domId": "fmm-confirm-theme",
+            "targetPageId": "page-page-exhibition-editor-mobile"
+          },
+          {
+            "domId": "fmm-nav-home",
+            "targetPageId": "page-page-welcome-setup-mobile",
+            "hideEdge": true,
+            "transitionLabel": "首页"
+          },
+          {
+            "domId": "fmm-nav-create",
+            "targetPageId": "page-page-archive-card-mobile",
+            "hideEdge": true,
+            "transitionLabel": "创建"
+          },
+          {
+            "domId": "fmm-nav-gallery",
+            "targetPageId": "page-page-theme-cocuration-mobile",
+            "hideEdge": true,
+            "transitionLabel": "展馆"
+          },
+          {
+            "domId": "fmm-nav-visit",
+            "targetPageId": "page-page-visit-exhibit-mobile",
+            "hideEdge": true,
+            "transitionLabel": "参观"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-page-theme-cocuration-desktop",
+      "title": "③主题共同策展（桌面）",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 866,
+        "y": 289,
+        "group": 3
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/page-theme-cocuration-desktop.html",
+        "interactions": [
+          {
+            "domId": "fmm-confirm-theme",
+            "targetPageId": "page-page-exhibition-editor-desktop"
+          },
+          {
+            "domId": "fmm-nav-home",
+            "targetPageId": "page-page-welcome-setup-desktop",
+            "hideEdge": true,
+            "transitionLabel": "首页"
+          },
+          {
+            "domId": "fmm-nav-create",
+            "targetPageId": "page-page-archive-card-desktop",
+            "hideEdge": true,
+            "transitionLabel": "创建"
+          },
+          {
+            "domId": "fmm-nav-gallery",
+            "targetPageId": "page-page-theme-cocuration-desktop",
+            "hideEdge": true,
+            "transitionLabel": "展馆"
+          },
+          {
+            "domId": "fmm-nav-visit",
+            "targetPageId": "page-page-visit-exhibit-desktop",
+            "hideEdge": true,
+            "transitionLabel": "参观"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-page-exhibition-editor-mobile",
+      "title": "④展览编辑器（移动）",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 1299,
+        "y": 0,
+        "group": 4
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/page-exhibition-editor-mobile.html",
+        "interactions": [
+          {
+            "domId": "fmm-publish",
+            "targetPageId": "page-page-label-audio-mobile"
+          },
+          {
+            "domId": "fmm-nav-home",
+            "targetPageId": "page-page-welcome-setup-mobile",
+            "hideEdge": true,
+            "transitionLabel": "首页"
+          },
+          {
+            "domId": "fmm-nav-create",
+            "targetPageId": "page-page-archive-card-mobile",
+            "hideEdge": true,
+            "transitionLabel": "创建"
+          },
+          {
+            "domId": "fmm-nav-gallery",
+            "targetPageId": "page-page-theme-cocuration-mobile",
+            "hideEdge": true,
+            "transitionLabel": "展馆"
+          },
+          {
+            "domId": "fmm-nav-visit",
+            "targetPageId": "page-page-visit-exhibit-mobile",
+            "hideEdge": true,
+            "transitionLabel": "参观"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-page-exhibition-editor-desktop",
+      "title": "④展览编辑器（桌面）",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 1299,
+        "y": 289,
+        "group": 4
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/page-exhibition-editor-desktop.html",
+        "interactions": [
+          {
+            "domId": "fmm-publish",
+            "targetPageId": "page-page-label-audio-desktop"
+          },
+          {
+            "domId": "fmm-enter-visit",
+            "targetPageId": "page-page-visit-exhibit-desktop"
+          },
+          {
+            "domId": "fmm-nav-home",
+            "targetPageId": "page-page-welcome-setup-desktop",
+            "hideEdge": true,
+            "transitionLabel": "首页"
+          },
+          {
+            "domId": "fmm-nav-create",
+            "targetPageId": "page-page-archive-card-desktop",
+            "hideEdge": true,
+            "transitionLabel": "创建"
+          },
+          {
+            "domId": "fmm-nav-gallery",
+            "targetPageId": "page-page-theme-cocuration-desktop",
+            "hideEdge": true,
+            "transitionLabel": "展馆"
+          },
+          {
+            "domId": "fmm-nav-visit",
+            "targetPageId": "page-page-visit-exhibit-desktop",
+            "hideEdge": true,
+            "transitionLabel": "参观"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-page-label-audio-mobile",
+      "title": "⑤展签与语音导览（移动）",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 1732,
+        "y": 0,
+        "group": 5
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/page-label-audio-mobile.html",
+        "interactions": [
+          {
+            "domId": "fmm-next-exhibit",
+            "targetPageId": "page-page-visit-exhibit-mobile"
+          },
+          {
+            "domId": "fmm-nav-home",
+            "targetPageId": "page-page-welcome-setup-mobile",
+            "hideEdge": true,
+            "transitionLabel": "首页"
+          },
+          {
+            "domId": "fmm-nav-create",
+            "targetPageId": "page-page-archive-card-mobile",
+            "hideEdge": true,
+            "transitionLabel": "创建"
+          },
+          {
+            "domId": "fmm-nav-gallery",
+            "targetPageId": "page-page-theme-cocuration-mobile",
+            "hideEdge": true,
+            "transitionLabel": "展馆"
+          },
+          {
+            "domId": "fmm-nav-visit",
+            "targetPageId": "page-page-visit-exhibit-mobile",
+            "hideEdge": true,
+            "transitionLabel": "参观"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-page-label-audio-desktop",
+      "title": "⑤展签与语音导览（桌面）",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 1732,
+        "y": 289,
+        "group": 5
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/page-label-audio-desktop.html",
+        "interactions": [
+          {
+            "domId": "fmm-next-exhibit",
+            "targetPageId": "page-page-visit-exhibit-desktop"
+          },
+          {
+            "domId": "fmm-nav-home",
+            "targetPageId": "page-page-welcome-setup-desktop",
+            "hideEdge": true,
+            "transitionLabel": "首页"
+          },
+          {
+            "domId": "fmm-nav-create",
+            "targetPageId": "page-page-archive-card-desktop",
+            "hideEdge": true,
+            "transitionLabel": "创建"
+          },
+          {
+            "domId": "fmm-nav-gallery",
+            "targetPageId": "page-page-theme-cocuration-desktop",
+            "hideEdge": true,
+            "transitionLabel": "展馆"
+          },
+          {
+            "domId": "fmm-nav-visit",
+            "targetPageId": "page-page-visit-exhibit-desktop",
+            "hideEdge": true,
+            "transitionLabel": "参观"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-page-visit-exhibit-mobile",
+      "title": "⑥受邀参观展品（移动）",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 2165,
+        "y": 0,
+        "group": 6
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/page-visit-exhibit-mobile.html",
+        "interactions": [
+          {
+            "domId": "fmm-next-stop",
+            "targetPageId": "page-page-visit-end-mobile"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-page-visit-exhibit-desktop",
+      "title": "⑥受邀参观展品（桌面）",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 2165,
+        "y": 289,
+        "group": 6
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/page-visit-exhibit-desktop.html",
+        "interactions": [
+          {
+            "domId": "fmm-next-stop",
+            "targetPageId": "page-page-visit-end-desktop"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-page-visit-end-mobile",
+      "title": "⑦观众便签与结束（移动）",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 2598,
+        "y": 0,
+        "group": 7
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/page-visit-end-mobile.html",
+        "interactions": [
+          {
+            "domId": "fmm-exit-visit",
+            "targetPageId": "page-page-welcome-setup-mobile",
+            "hideEdge": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-page-visit-end-desktop",
+      "title": "⑦观众便签与结束（桌面）",
+      "type": "page",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 2598,
+        "y": 289,
+        "group": 7
+      },
+      "devMetadata": {
+        "htmlSrc": "pages/page-visit-end-desktop.html",
+        "interactions": [
+          {
+            "domId": "fmm-exit-visit",
+            "targetPageId": "page-page-welcome-setup-desktop",
+            "hideEdge": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "image-001",
+      "title": "物品静物照·封面",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 0,
+        "y": 578
+      },
+      "devMetadata": {
+        "imageSrc": "assets/hero-objects-stilllife.jpg"
+      }
+    },
+    {
+      "id": "image-002",
+      "title": "初一数学课本",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 620,
+        "y": 578
+      },
+      "devMetadata": {
+        "imageSrc": "assets/exhibit-textbook.jpg"
+      }
+    },
+    {
+      "id": "image-003",
+      "title": "搪瓷杯",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 1240,
+        "y": 578
+      },
+      "devMetadata": {
+        "imageSrc": "assets/exhibit-enamel-mug.jpg"
+      }
+    },
+    {
+      "id": "image-004",
+      "title": "老照片相册",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 1860,
+        "y": 578
+      },
+      "devMetadata": {
+        "imageSrc": "assets/exhibit-photo-album.jpg"
+      }
+    },
+    {
+      "id": "image-005",
+      "title": "旧机械表",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1784557309000,
+      "canvasData": {
+        "x": 2480,
+        "y": 578
+      },
+      "devMetadata": {
+        "imageSrc": "assets/exhibit-mechanical-watch.jpg"
+      }
+    }
+  ],
+  "config": {
+    "autoLayout": true,
+    "deviceType": "freeSize",
+    "projectName": "线上家庭记忆博物馆"
+  }
+}

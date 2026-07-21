@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>占位</title>
+</head>
+<body class="min-h-screen bg-background font-sans antialiased">
+  <!--
+    移动观众沉浸式 shell（document-scroll）
+    - 极简顶栏：左"← 退出"(fmm-exit-visit) + 中展览名"一件物品里的陪伴"宋体 + 右路线进度"2 / 4"(fmm-visit-progress)
+    - 满宽内容区 main slot
+    - 无底部 nav（沉浸式阅读）
+  -->
+  <div class="mx-auto w-full max-w-[420px] min-h-screen bg-background">
+    <!-- 极简顶栏：背景延伸至 status-bar 安全区 -->
+    <header class="sticky top-0 z-30 border-b border-border bg-card/80 backdrop-blur" style="padding-top:env(safe-area-inset-top)">
+      <div class="flex items-center justify-between px-5 py-3">
+        <a data-dom-id="fmm-exit-visit" class="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          <i data-lucide="arrow-left" class="h-4 w-4"></i>退出
+        </a>
+        <span class="font-serif text-base text-foreground">一件物品里的陪伴</span>
+        <span data-dom-id="fmm-visit-progress" class="text-sm text-muted-foreground">2 / 4</span>
+      </div>
+    </header>
+
+    <!-- 满宽内容区 main slot，无底部 nav -->
+    <main id="fmm-page-content" class="min-h-screen bg-background" style="padding-bottom:env(safe-area-inset-bottom)">
+      <!-- 叶子页在此填充页面内容 -->
+    </main>
+  </div>
+
+  <script>if(window.lucide){lucide.createIcons();}</script>
+</body>
+</html>

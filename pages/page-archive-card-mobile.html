@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>②物品档案卡</title>
+    <style id="theme-vars">
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* —— 语义表面 —— */
+  --background: #F7F2E9;          /* bg.canvas 暖白纸 */
+  --foreground: #243A36;          /* text.primary */
+  --card: #FFFDF8;                /* bg.surface */
+  --card-foreground: #243A36;
+  --popover: #FFFDF8;
+  --popover-foreground: #243A36;
+
+  /* —— 品牌 / 主操作 —— */
+  --primary: #315B50;             /* brand.forest 主按钮/链接 */
+  --primary-foreground: #FFFDF8;
+  --secondary: #DDE8E2;           /* accent.mist 选中态 */
+  --secondary-foreground: #243A36;
+  --accent: #D8A84D;              /* accent.mustard 编号/路径节点 */
+  --accent-foreground: #243A36;
+  --muted: #EFE7D8;
+  --muted-foreground: #63736D;    /* text.secondary */
+
+  /* —— 描边 / 输入 / 聚焦 —— */
+  --border: #E7DDD0;              /* border.soft */
+  --input: #E7DDD0;
+  --ring: #315B50;
+
+  /* —— 自定义品牌色（多色相，用户文档显式指定） —— */
+  --terracotta: #B86A4A;          /* brand.terracotta 录音/强调 */
+  --terracotta-foreground: #FFFDF8;
+  --private: #5D6F8B;             /* status.private 私密标记 */
+  --private-foreground: #FFFDF8;
+
+  /* —— 图表（低饱和档案感） —— */
+  --chart-1: #315B50;
+  --chart-2: #B86A4A;
+  --chart-3: #D8A84D;
+  --chart-4: #5D6F8B;
+  --chart-5: #63736D;
+
+  /* —— 侧栏 —— */
+  --sidebar: #FFFDF8;
+  --sidebar-foreground: #243A36;
+  --sidebar-primary: #315B50;
+  --sidebar-primary-foreground: #FFFDF8;
+  --sidebar-accent: #DDE8E2;
+  --sidebar-accent-foreground: #243A36;
+  --sidebar-border: #E7DDD0;
+  --sidebar-ring: #315B50;
+
+  /* —— 圆角 —— */
+  --radius: 16px;
+  /* 品牌前缀语义别名（fill-html-head.mjs semantic mapping） */
+  --fmm-radius-sm: 12px;
+  --fmm-radius-md: 12px;
+  --fmm-radius-lg: 16px;
+  --fmm-radius-xl: 20px;
+  --fmm-radius-2xl: 24px;
+
+  /* —— 字体族 —— */
+  --font-serif: "Noto Serif SC", "Songti SC", serif;
+  --font-sans: "PingFang SC", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* —— 语义别名（semantic-token-fallback） —— */
+  --semantic-bg-canvas: var(--background);
+  --semantic-bg-surface: var(--card);
+  --semantic-bg-muted: var(--muted);
+  --semantic-text-primary: var(--foreground);
+  --semantic-text-secondary: var(--muted-foreground);
+  --semantic-text-on-primary: var(--primary-foreground);
+  --semantic-brand-forest: var(--primary);
+  --semantic-brand-terracotta: var(--terracotta);
+  --semantic-accent-mustard: var(--accent);
+  --semantic-accent-mist: var(--secondary);
+  --semantic-border-soft: var(--border);
+  --semantic-status-private: var(--private);
+  --semantic-ring: var(--ring);
+}
+
+.dark {
+  --background: #1E2B27;
+  --foreground: #F2EBDC;
+  --card: #26332F;
+  --card-foreground: #F2EBDC;
+  --popover: #26332F;
+  --popover-foreground: #F2EBDC;
+  --primary: #6FA89B;
+  --primary-foreground: #1E2B27;
+  --secondary: #3A4A44;
+  --secondary-foreground: #F2EBDC;
+  --accent: #E0BC6A;
+  --accent-foreground: #1E2B27;
+  --muted: #313F3A;
+  --muted-foreground: #9CA8A2;
+  --border: #3A4A44;
+  --input: #3A4A44;
+  --ring: #6FA89B;
+  --terracotta: #D08A68;
+  --terracotta-foreground: #1E2B27;
+  --private: #8AA0BD;
+  --private-foreground: #1E2B27;
+  --chart-1: #6FA89B;
+  --chart-2: #D08A68;
+  --chart-3: #E0BC6A;
+  --chart-4: #8AA0BD;
+  --chart-5: #9CA8A2;
+  --sidebar: #26332F;
+  --sidebar-foreground: #F2EBDC;
+  --sidebar-primary: #6FA89B;
+  --sidebar-primary-foreground: #1E2B27;
+  --sidebar-accent: #3A4A44;
+  --sidebar-accent-foreground: #F2EBDC;
+  --sidebar-border: #3A4A44;
+  --sidebar-ring: #6FA89B;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-foreground: var(--terracotta-foreground);
+  --color-private: var(--private);
+  --color-private-foreground: var(--private-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);   /* 12 */
+  --radius-md: calc(var(--radius) - 4px);   /* 12 */
+  --radius-lg: var(--radius);               /* 16 */
+  --radius-xl: calc(var(--radius) + 4px);   /* 20 */
+  --radius-2xl: calc(var(--radius) + 8px);  /* 24 浮层专用 */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --radius-sm: var(--fmm-radius-sm);
+    --radius-md: var(--fmm-radius-md);
+    --radius-lg: var(--fmm-radius-lg);
+    --radius-xl: var(--fmm-radius-xl);
+  }
+  @layer base {
+    body { background: var(--background); color: var(--foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-card-foreground { background-color: var(--card-foreground); }
+      .text-card-foreground { color: var(--card-foreground); }
+      .border-card-foreground { border-color: var(--card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--card-foreground); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-popover-foreground { background-color: var(--popover-foreground); }
+      .text-popover-foreground { color: var(--popover-foreground); }
+      .border-popover-foreground { border-color: var(--popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--popover-foreground); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-secondary { background-color: var(--secondary); }
+      .text-secondary { color: var(--secondary); }
+      .border-secondary { border-color: var(--secondary); }
+      .ring-secondary { --tw-ring-color: var(--secondary); }
+      .bg-secondary-foreground { background-color: var(--secondary-foreground); }
+      .text-secondary-foreground { color: var(--secondary-foreground); }
+      .border-secondary-foreground { border-color: var(--secondary-foreground); }
+      .ring-secondary-foreground { --tw-ring-color: var(--secondary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-accent { background-color: var(--accent); }
+      .text-accent { color: var(--accent); }
+      .border-accent { border-color: var(--accent); }
+      .ring-accent { --tw-ring-color: var(--accent); }
+      .bg-accent-foreground { background-color: var(--accent-foreground); }
+      .text-accent-foreground { color: var(--accent-foreground); }
+      .border-accent-foreground { border-color: var(--accent-foreground); }
+      .ring-accent-foreground { --tw-ring-color: var(--accent-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--input); }
+      .text-input { color: var(--input); }
+      .border-input { border-color: var(--input); }
+      .ring-input { --tw-ring-color: var(--input); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+      .bg-chart-1 { background-color: var(--chart-1); }
+      .text-chart-1 { color: var(--chart-1); }
+      .border-chart-1 { border-color: var(--chart-1); }
+      .ring-chart-1 { --tw-ring-color: var(--chart-1); }
+      .bg-chart-2 { background-color: var(--chart-2); }
+      .text-chart-2 { color: var(--chart-2); }
+      .border-chart-2 { border-color: var(--chart-2); }
+      .ring-chart-2 { --tw-ring-color: var(--chart-2); }
+      .bg-chart-3 { background-color: var(--chart-3); }
+      .text-chart-3 { color: var(--chart-3); }
+      .border-chart-3 { border-color: var(--chart-3); }
+      .ring-chart-3 { --tw-ring-color: var(--chart-3); }
+      .bg-chart-4 { background-color: var(--chart-4); }
+      .text-chart-4 { color: var(--chart-4); }
+      .border-chart-4 { border-color: var(--chart-4); }
+      .ring-chart-4 { --tw-ring-color: var(--chart-4); }
+      .bg-chart-5 { background-color: var(--chart-5); }
+      .text-chart-5 { color: var(--chart-5); }
+      .border-chart-5 { border-color: var(--chart-5); }
+      .ring-chart-5 { --tw-ring-color: var(--chart-5); }
+      .bg-sidebar { background-color: var(--sidebar); }
+      .text-sidebar { color: var(--sidebar); }
+      .border-sidebar { border-color: var(--sidebar); }
+      .ring-sidebar { --tw-ring-color: var(--sidebar); }
+      .bg-sidebar-foreground { background-color: var(--sidebar-foreground); }
+      .text-sidebar-foreground { color: var(--sidebar-foreground); }
+      .border-sidebar-foreground { border-color: var(--sidebar-foreground); }
+      .ring-sidebar-foreground { --tw-ring-color: var(--sidebar-foreground); }
+      .bg-sidebar-primary { background-color: var(--sidebar-primary); }
+      .text-sidebar-primary { color: var(--sidebar-primary); }
+      .border-sidebar-primary { border-color: var(--sidebar-primary); }
+      .ring-sidebar-primary { --tw-ring-color: var(--sidebar-primary); }
+      .bg-sidebar-primary-foreground { background-color: var(--sidebar-primary-foreground); }
+      .text-sidebar-primary-foreground { color: var(--sidebar-primary-foreground); }
+      .border-sidebar-primary-foreground { border-color: var(--sidebar-primary-foreground); }
+      .ring-sidebar-primary-foreground { --tw-ring-color: var(--sidebar-primary-foreground); }
+      .bg-sidebar-accent { background-color: var(--sidebar-accent); }
+      .text-sidebar-accent { color: var(--sidebar-accent); }
+      .border-sidebar-accent { border-color: var(--sidebar-accent); }
+      .ring-sidebar-accent { --tw-ring-color: var(--sidebar-accent); }
+      .bg-sidebar-accent-foreground { background-color: var(--sidebar-accent-foreground); }
+      .text-sidebar-accent-foreground { color: var(--sidebar-accent-foreground); }
+      .border-sidebar-accent-foreground { border-color: var(--sidebar-accent-foreground); }
+      .ring-sidebar-accent-foreground { --tw-ring-color: var(--sidebar-accent-foreground); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen bg-background font-sans antialiased">
+  <div class="mx-auto w-full max-w-[420px] min-h-screen bg-background">
+    <!-- 极简顶栏：照搬 curator-mobile.html -->
+    <header class="sticky top-0 z-30 border-b border-border bg-card/80 backdrop-blur" style="padding-top:env(safe-area-inset-top)">
+      <div class="flex items-center justify-between px-5 py-3">
+        <span class="font-serif text-base text-foreground">家庭记忆博物馆</span>
+        <a href="#" data-dom-id="fmm-nav-mine" class="inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground">
+          <i data-lucide="user" class="h-[18px] w-[18px]"></i>
+        </a>
+      </div>
+    </header>
+
+    <!-- 内容区 main slot：底部留出 fixed nav 高度 + 安全区 -->
+    <main id="fmm-page-content" class="min-h-screen bg-background px-5 pb-[calc(72px+env(safe-area-inset-bottom))]">
+
+      <!-- ① 顶部进度条：第 3 / 5 步，5 个 mustard 圆点第 3 个实心 -->
+      <section class="pt-5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <button type="button" data-dom-id="fmm-step-back" class="inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground">
+              <i data-lucide="arrow-left" class="h-4 w-4"></i>
+            </button>
+            <span class="text-[12px] font-medium text-muted-foreground">第 3 / 5 步</span>
+          </div>
+          <span class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-[11px] text-muted-foreground">
+            <i data-lucide="archive" class="h-3 w-3"></i>建档
+          </span>
+        </div>
+        <!-- 5 个 mustard 圆点：1-2 已完成、3 当前实心带光晕、4-5 待办空心 -->
+        <div class="mt-3 flex items-center gap-2">
+          <span class="h-2 w-2 rounded-full bg-accent"></span>
+          <span class="h-px w-3 bg-accent/40"></span>
+          <span class="h-2 w-2 rounded-full bg-accent"></span>
+          <span class="h-px w-3 bg-accent/40"></span>
+          <span class="relative flex h-3 w-3 items-center justify-center">
+            <span class="absolute h-3 w-3 rounded-full bg-accent/25"></span>
+            <span class="h-2 w-2 rounded-full bg-accent"></span>
+          </span>
+          <span class="h-px w-3 bg-border"></span>
+          <span class="h-2 w-2 rounded-full border border-accent/50 bg-transparent"></span>
+          <span class="h-px w-3 bg-border"></span>
+          <span class="h-2 w-2 rounded-full border border-accent/50 bg-transparent"></span>
+        </div>
+        <h1 class="mt-3 font-serif text-[24px] leading-tight text-foreground">它发生过什么</h1>
+        <p class="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">一次只讲一个小片段就够，不必说完所有事。</p>
+      </section>
+
+      <!-- ② 物品缩略图卡：可点击上传/更换照片 -->
+      <section class="pt-5">
+        <figure data-fmm-role="photo-card" class="relative overflow-hidden rounded-lg border border-border bg-card cursor-pointer">
+          <img data-fmm-role="photo-img" src="../assets/exhibit-textbook.jpg" alt="初一数学课本" class="block aspect-[4/3] w-full object-cover" />
+          <div data-fmm-role="photo-overlay" class="absolute inset-0 flex items-center justify-center bg-foreground/40 opacity-0 transition-opacity">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1.5 text-[13px] font-medium text-foreground"><i data-lucide="camera" class="h-4 w-4"></i>点击上传/更换照片</span>
+          </div>
+          <input type="file" accept="image/*" data-fmm-role="photo-input" class="hidden" />
+          <figcaption class="flex items-center justify-between gap-3 px-4 py-3">
+            <div class="min-w-0">
+              <p class="font-serif text-[16px] leading-tight text-foreground">初一数学课本</p>
+              <p class="mt-0.5 flex items-center gap-1.5 text-[12px] text-muted-foreground">
+                <i data-lucide="calendar" class="h-3 w-3"></i>约 2023
+              </p>
+            </div>
+            <span class="inline-flex shrink-0 items-center gap-1 rounded-full bg-accent/15 px-2.5 py-1 text-[11px] font-medium text-accent">
+              <i data-lucide="hash" class="h-3 w-3"></i>爸爸—03
+            </span>
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- ③ 三层内容编辑：大文本框（聚焦"发生过什么"）+ 三层结构提示 -->
+      <section class="pt-5">
+        <div class="mb-2 flex items-baseline justify-between">
+          <label for="fmm-story-input" class="text-[13px] font-medium text-foreground">写下它发生过的一件事</label>
+          <span class="text-[11px] text-muted-foreground">选填</span>
+        </div>
+        <textarea id="fmm-story-input" class="block min-h-[160px] w-full resize-none rounded-lg border border-border bg-card px-4 py-3 text-[15px] leading-relaxed text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" placeholder="可以讲一个小片段，不必说完所有事">初一开学那天，妈妈用牛皮纸把这本数学课本包好，在内页写了"慢慢来"三个字。那年我数学跟不上，她每晚陪我重做错题，从没说过"你怎么又错"。</textarea>
+        <!-- 三层结构提示：它是什么 / 发生过什么 / 对我意味着什么 -->
+        <div class="mt-2.5 flex flex-wrap items-center gap-1.5">
+          <span class="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-1 text-[11px] text-muted-foreground">
+            <i data-lucide="check" class="h-3 w-3"></i>它是什么
+          </span>
+          <i data-lucide="chevron-right" class="h-3 w-3 text-border"></i>
+          <span class="inline-flex items-center rounded-md border border-primary bg-secondary px-2 py-1 text-[11px] font-medium text-primary">发生过什么</span>
+          <i data-lucide="chevron-right" class="h-3 w-3 text-border"></i>
+          <span class="inline-flex items-center rounded-md border border-border bg-card px-2 py-1 text-[11px] text-muted-foreground">对我意味着什么</span>
+        </div>
+      </section>
+
+      <!-- ④ 按住录音键：terracotta 圆形大按钮，松开生成 30 秒语音 -->
+      <section class="pt-6">
+        <div class="flex flex-col items-center gap-2 rounded-lg border border-border bg-card px-4 py-6">
+          <button type="button" data-fmm-role="record" class="flex h-16 w-16 items-center justify-center rounded-full bg-terracotta text-terracotta-foreground shadow-sm transition active:scale-95">
+            <i data-lucide="mic" class="h-6 w-6"></i>
+          </button>
+          <p class="text-[14px] font-medium text-foreground">按住说话</p>
+          <p class="flex items-center gap-1 text-[12px] text-muted-foreground">
+            <i data-lucide="circle-dot" class="h-3 w-3 text-terracotta"></i>松开后生成 30 秒语音
+          </p>
+          <!-- 回听播放按钮 -->
+          <button type="button" data-fmm-role="playback" class="mt-3 inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-[13px] font-medium text-foreground transition active:scale-95">
+            <i data-lucide="play" class="h-4 w-4"></i><span>回听录音</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ⑤ 情绪标签：横排 chip，选中 bg-secondary text-primary border-primary -->
+      <section class="pt-5">
+        <div class="mb-2.5 flex items-baseline justify-between">
+          <h2 class="text-[13px] font-medium text-foreground">这段记忆里的情绪</h2>
+          <span class="text-[11px] text-muted-foreground">可多选</span>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="inline-flex items-center gap-1 rounded-full border border-primary bg-secondary px-3.5 py-1.5 text-[13px] text-primary">
+            <i data-lucide="check" class="h-3 w-3"></i>陪伴
+          </button>
+          <button type="button" class="inline-flex items-center rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] text-muted-foreground">愧疚</button>
+          <button type="button" class="inline-flex items-center gap-1 rounded-full border border-primary bg-secondary px-3.5 py-1.5 text-[13px] text-primary">
+            <i data-lucide="check" class="h-3 w-3"></i>安心
+          </button>
+          <button type="button" class="inline-flex items-center rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] text-muted-foreground">想念</button>
+          <button type="button" class="inline-flex items-center rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] text-muted-foreground">遗憾</button>
+          <button type="button" class="inline-flex items-center rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] text-muted-foreground">温暖</button>
+        </div>
+      </section>
+
+      <!-- ⑥ 底部双按钮：保存草稿（surface 描边）+ 下一步（bg-primary） -->
+      <section class="pt-6">
+        <div class="flex gap-3">
+          <button type="button" class="flex-1 rounded-lg border border-border bg-card px-5 py-3 text-[15px] font-medium text-foreground active:opacity-90">
+            保存草稿
+          </button>
+          <button type="button" data-dom-id="fmm-step-next" class="flex flex-[1.4] items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground active:opacity-90">
+            <span>下一步</span>
+            <i data-lucide="arrow-right" class="h-4 w-4"></i>
+          </button>
+        </div>
+        <p class="mt-2.5 text-center text-[12px] leading-snug text-muted-foreground">下一步：这件物品对你意味着什么。</p>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- 底部五栏 nav：canonicalHtmlByKey["create"]（create active） -->
+  <nav data-mobile-nav="global" class="fixed bottom-0 inset-x-0 z-40 border-t border-border bg-card/95 backdrop-blur" style="padding-bottom:env(safe-area-inset-bottom)"><div class="mx-auto grid w-full max-w-[420px] grid-cols-5"><a data-nav-item data-nav-key="home" data-dom-id="fmm-nav-home" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="home" class="h-[22px] w-[22px]"></i><span class="leading-none">首页</span></a><a data-nav-item data-nav-key="gallery" data-dom-id="fmm-nav-gallery" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="layout-grid" class="h-[22px] w-[22px]"></i><span class="leading-none">展馆</span></a><a data-nav-item data-nav-key="create" data-dom-id="fmm-nav-create" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-primary"><span class="absolute top-0 h-[3px] w-7 rounded-full bg-primary"></span><i data-lucide="plus" class="h-[22px] w-[22px]"></i><span class="leading-none">创建</span></a><a data-nav-item data-nav-key="visit" data-dom-id="fmm-nav-visit" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="eye" class="h-[22px] w-[22px]"></i><span class="leading-none">参观</span></a><a data-nav-item data-nav-key="mine" data-dom-id="fmm-nav-mine" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="user" class="h-[22px] w-[22px]"></i><span class="leading-none">我的</span></a></div></nav>
+
+  <script>if(window.lucide){lucide.createIcons();}</script>
+  <script src="../assets/fmm-app.js"></script>
+
+  <script>
+  /* fmm-interaction-v2 · 真实功能版 */
+(function(){
+  function ready(fn){ if(document.readyState!=='loading'){fn();}else{document.addEventListener('DOMContentLoaded',fn);} }
+  ready(function(){
+    var idx = FMM.currentIdx();
+    var ex = FMM.getExhibit(idx);
+
+    /* —— 照片上传：点击图卡 → 选图 → FileReader 预览 + 存 base64 —— */
+    var photoCard = document.querySelector('[data-fmm-role="photo-card"]');
+    var photoImg = document.querySelector('[data-fmm-role="photo-img"]');
+    var photoInput = document.querySelector('[data-fmm-role="photo-input"]');
+    var photoOverlay = document.querySelector('[data-fmm-role="photo-overlay"]');
+    if(photoCard && photoInput && photoImg){
+      /* 恢复已存照片 */
+      if(ex.photo){ photoImg.src = ex.photo; }
+      photoCard.addEventListener('mouseenter', function(){ if(photoOverlay){ photoOverlay.style.opacity='1'; }});
+      photoCard.addEventListener('mouseleave', function(){ if(photoOverlay){ photoOverlay.style.opacity='0'; }});
+      photoCard.addEventListener('click', function(){ photoInput.click(); });
+      photoInput.addEventListener('change', function(){
+        var file = photoInput.files && photoInput.files[0];
+        if(!file) return;
+        var reader = new FileReader();
+        reader.onload = function(e){
+          var dataUrl = e.target.result;
+          photoImg.src = dataUrl;
+          /* base64 存 localStorage（限制大小，超 2MB 不存） */
+          if(dataUrl.length < 2*1024*1024){
+            FMM.setExhibit(idx, { photo: dataUrl });
+          } else {
+            FMM.setExhibit(idx, { photo: dataUrl });
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    /* —— 文本框持久化 —— */
+    var storyInput = document.getElementById('fmm-story-input');
+    if(storyInput){
+      if(ex.story){ storyInput.value = ex.story; }
+      storyInput.addEventListener('input', function(){
+        FMM.setExhibit(idx, { story: storyInput.value });
+      });
+    }
+
+    /* —— 情绪标签：多选 + 持久化 —— */
+    var words = ['陪伴','愧疚','安心','想念','遗憾','温暖'];
+    var active = ['border-primary','bg-secondary','text-primary'];
+    var inactive = ['border-border','bg-card','text-muted-foreground'];
+    var savedEmotions = ex.emotion || [];
+    document.querySelectorAll('button').forEach(function(btn){
+      var t = (btn.textContent||'').replace(/\s+/g,'');
+      if(words.indexOf(t) === -1){ return; }
+      if(savedEmotions.indexOf(t) !== -1){
+        inactive.forEach(function(c){ btn.classList.remove(c); });
+        active.forEach(function(c){ btn.classList.add(c); });
+      }
+      btn.addEventListener('click', function(){
+        var isOn = btn.classList.contains('border-primary');
+        if(isOn){
+          active.forEach(function(c){ btn.classList.remove(c); });
+          inactive.forEach(function(c){ btn.classList.add(c); });
+          savedEmotions = savedEmotions.filter(function(w){ return w !== t; });
+        } else {
+          inactive.forEach(function(c){ btn.classList.remove(c); });
+          active.forEach(function(c){ btn.classList.add(c); });
+          if(savedEmotions.indexOf(t) === -1){ savedEmotions.push(t); }
+        }
+        FMM.setExhibit(idx, { emotion: savedEmotions });
+      });
+    });
+
+    /* —— 真实录音：MediaRecorder + click 切换 —— */
+    var rec = document.querySelector('[data-fmm-role="record"]');
+    if(rec){
+      var statusEl = rec.parentElement.querySelector('p.text-\\[14px\\]') || rec.parentElement.querySelectorAll('p')[0];
+      var hintEl = rec.parentElement.querySelectorAll('p')[1];
+      var recording = false;
+      var mediaRecorder = null;
+      var audioChunks = [];
+      rec.addEventListener('click', function(){
+        if(recording){
+          /* 停止录音 */
+          if(mediaRecorder && mediaRecorder.state !== 'inactive'){ mediaRecorder.stop(); }
+          recording = false;
+          rec.style.backgroundColor = '';
+          rec.style.transform = '';
+          rec.style.boxShadow = '';
+          if(statusEl){ statusEl.textContent = '已录制'; }
+          if(hintEl){ hintEl.innerHTML = '<i data-lucide="check" class="h-3 w-3 text-primary"></i>点击重新录制'; if(window.lucide){lucide.createIcons();} }
+          return;
+        }
+        /* 开始录音 */
+        if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+          alert('当前浏览器不支持录音功能，请使用 Chrome/Safari/Edge。');
+          return;
+        }
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
+          recording = true;
+          audioChunks = [];
+          try { mediaRecorder = new MediaRecorder(stream); }
+          catch(e){ alert('录音初始化失败：' + e.message); stream.getTracks().forEach(function(t){t.stop();}); recording=false; return; }
+          mediaRecorder.ondataavailable = function(e){ if(e.data && e.data.size > 0){ audioChunks.push(e.data); } };
+          mediaRecorder.onstop = function(){
+            var blob = new Blob(audioChunks, { type: 'audio/webm' });
+            var reader = new FileReader();
+            reader.onloadend = function(){
+              var audioUrl = reader.result;
+              if(audioUrl.length < 5*1024*1024){ FMM.setExhibit(idx, { audio: audioUrl }); }
+            };
+            reader.readAsDataURL(blob);
+            stream.getTracks().forEach(function(t){ t.stop(); });
+          };
+          mediaRecorder.start();
+          rec.style.backgroundColor = '#dc2626';
+          rec.style.transform = 'scale(1.1)';
+          rec.style.boxShadow = '0 0 0 4px rgba(220,38,38,0.2)';
+          if(statusEl){ statusEl.textContent = '正在录音… 点击停止'; }
+        }).catch(function(err){
+          alert('无法访问麦克风：' + (err.message || err.name) + '\n请在浏览器设置中允许麦克风权限。');
+        });
+      });
+    }
+
+    /* —— 回听播放：播放已录制的音频 —— */
+    var playBtn = document.querySelector('[data-fmm-role="playback"]');
+    if(playBtn){
+      var playIcon = playBtn.querySelector('i, svg');
+      var playLabel = playBtn.querySelector('span');
+      var playAudioEl = null;
+      playBtn.addEventListener('click', function(){
+        var curEx = FMM.getExhibit(idx);
+        if(!curEx.audio){
+          alert('还没有录音，请先录音。');
+          return;
+        }
+        /* 正在播放 → 暂停 */
+        if(playAudioEl && !playAudioEl.paused){
+          playAudioEl.pause();
+          if(playIcon){ var ni=document.createElement('i'); ni.setAttribute('data-lucide','play'); ni.className='h-4 w-4'; playIcon.parentNode.replaceChild(ni,playIcon); playIcon=ni; if(window.lucide){lucide.createIcons();} }
+          if(playLabel){ playLabel.textContent = '回听录音'; }
+          return;
+        }
+        /* 播放 */
+        if(!playAudioEl){ playAudioEl = new Audio(curEx.audio); }
+        else { playAudioEl.src = curEx.audio; }
+        playAudioEl.play().then(function(){
+          if(playIcon){ var ni2=document.createElement('i'); ni2.setAttribute('data-lucide','pause'); ni2.className='h-4 w-4'; playIcon.parentNode.replaceChild(ni2,playIcon); playIcon=ni2; if(window.lucide){lucide.createIcons();} }
+          if(playLabel){ playLabel.textContent = '暂停'; }
+        }).catch(function(){ alert('播放失败，请重试。'); });
+        playAudioEl.onended = function(){
+          if(playIcon){ var ni3=document.createElement('i'); ni3.setAttribute('data-lucide','play'); ni3.className='h-4 w-4'; playIcon.parentNode.replaceChild(ni3,playIcon); playIcon=ni3; if(window.lucide){lucide.createIcons();} }
+          if(playLabel){ playLabel.textContent = '回听录音'; }
+        };
+      });
+    }
+
+    /* —— 跳转 —— */
+    var nextBtn = document.querySelector('[data-dom-id="fmm-step-next"]');
+    if(nextBtn){ nextBtn.addEventListener('click', function(){ location.href = 'page-theme-cocuration-mobile.html'; }); }
+    var navJumps = {
+      'fmm-nav-home': 'page-welcome-setup-mobile.html',
+      'fmm-nav-gallery': 'page-theme-cocuration-mobile.html',
+      'fmm-nav-create': 'page-archive-card-mobile.html',
+      'fmm-nav-visit': 'page-visit-exhibit-mobile.html'
+    };
+    Object.keys(navJumps).forEach(function(domId){
+      document.querySelectorAll('[data-dom-id="'+domId+'"]').forEach(function(el){
+        el.addEventListener('click', function(e){ e.preventDefault(); location.href = navJumps[domId]; });
+      });
+    });
+    document.querySelectorAll('[data-dom-id="fmm-nav-mine"]').forEach(function(el){
+      el.addEventListener('click', function(e){ e.preventDefault(); alert('个人中心 · 待开发'); });
+    });
+    if(window.lucide){ lucide.createIcons(); }
+  });
+})();
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "root": "gen-project-shell",
+  "nodes": {
+    "gen-project-shell": { "type": "shared", "output": "partials/project-shell.html", "status": "planned", "children": ["gen-mobile-chrome", "gen-desktop-chrome"] },
+    "gen-mobile-chrome": { "type": "shared", "output": "partials/mobile-chrome.html", "status": "planned", "parent": "gen-project-shell", "children": ["gen-curator-mobile", "gen-visitor-mobile"] },
+    "gen-desktop-chrome": { "type": "shared", "output": "partials/desktop-chrome.html", "status": "planned", "parent": "gen-project-shell", "children": ["gen-curator-desktop", "gen-visitor-desktop"] },
+    "gen-curator-mobile": { "type": "shared", "output": "partials/curator-mobile.html", "status": "planned", "parent": "gen-mobile-chrome", "children": ["page-welcome-setup-mobile", "page-archive-card-mobile", "page-theme-cocuration-mobile", "page-exhibition-editor-mobile", "page-label-audio-mobile"] },
+    "gen-curator-desktop": { "type": "shared", "output": "partials/curator-desktop.html", "status": "planned", "parent": "gen-desktop-chrome", "children": ["page-welcome-setup-desktop", "page-archive-card-desktop", "page-theme-cocuration-desktop", "page-exhibition-editor-desktop", "page-label-audio-desktop"] },
+    "gen-visitor-mobile": { "type": "shared", "output": "partials/visitor-mobile.html", "status": "planned", "parent": "gen-mobile-chrome", "children": ["page-visit-exhibit-mobile", "page-visit-end-mobile"] },
+    "gen-visitor-desktop": { "type": "shared", "output": "partials/visitor-desktop.html", "status": "planned", "parent": "gen-desktop-chrome", "children": ["page-visit-exhibit-desktop", "page-visit-end-desktop"] },
+    "page-welcome-setup-mobile": { "type": "leaf", "output": "pages/page-welcome-setup-mobile.html", "status": "planned", "parent": "gen-curator-mobile", "shell": "curator", "device": "mobile", "mobileNavActiveKey": "home" },
+    "page-welcome-setup-desktop": { "type": "leaf", "output": "pages/page-welcome-setup-desktop.html", "status": "planned", "parent": "gen-curator-desktop", "shell": "curator", "device": "desktop", "desktopNavActiveKey": "home" },
+    "page-archive-card-mobile": { "type": "leaf", "output": "pages/page-archive-card-mobile.html", "status": "planned", "parent": "gen-curator-mobile", "shell": "curator", "device": "mobile", "mobileNavActiveKey": "create" },
+    "page-archive-card-desktop": { "type": "leaf", "output": "pages/page-archive-card-desktop.html", "status": "planned", "parent": "gen-curator-desktop", "shell": "curator", "device": "desktop", "desktopNavActiveKey": "create" },
+    "page-theme-cocuration-mobile": { "type": "leaf", "output": "pages/page-theme-cocuration-mobile.html", "status": "planned", "parent": "gen-curator-mobile", "shell": "curator", "device": "mobile", "mobileNavActiveKey": "gallery" },
+    "page-theme-cocuration-desktop": { "type": "leaf", "output": "pages/page-theme-cocuration-desktop.html", "status": "planned", "parent": "gen-curator-desktop", "shell": "curator", "device": "desktop", "desktopNavActiveKey": "gallery" },
+    "page-exhibition-editor-mobile": { "type": "leaf", "output": "pages/page-exhibition-editor-mobile.html", "status": "planned", "parent": "gen-curator-mobile", "shell": "curator", "device": "mobile", "mobileNavActiveKey": "create" },
+    "page-exhibition-editor-desktop": { "type": "leaf", "output": "pages/page-exhibition-editor-desktop.html", "status": "planned", "parent": "gen-curator-desktop", "shell": "curator", "device": "desktop", "desktopNavActiveKey": "create" },
+    "page-label-audio-mobile": { "type": "leaf", "output": "pages/page-label-audio-mobile.html", "status": "planned", "parent": "gen-curator-mobile", "shell": "curator", "device": "mobile", "mobileNavActiveKey": "create" },
+    "page-label-audio-desktop": { "type": "leaf", "output": "pages/page-label-audio-desktop.html", "status": "planned", "parent": "gen-curator-desktop", "shell": "curator", "device": "desktop", "desktopNavActiveKey": "create" },
+    "page-visit-exhibit-mobile": { "type": "leaf", "output": "pages/page-visit-exhibit-mobile.html", "status": "planned", "parent": "gen-visitor-mobile", "shell": "visitor", "device": "mobile", "mobileNavApplies": false },
+    "page-visit-exhibit-desktop": { "type": "leaf", "output": "pages/page-visit-exhibit-desktop.html", "status": "planned", "parent": "gen-visitor-desktop", "shell": "visitor", "device": "desktop", "mobileNavApplies": false },
+    "page-visit-end-mobile": { "type": "leaf", "output": "pages/page-visit-end-mobile.html", "status": "planned", "parent": "gen-visitor-mobile", "shell": "visitor", "device": "mobile", "mobileNavApplies": false, "derivedFrom": "page-visit-exhibit-mobile", "writeMode": "DerivedCopyMutableOnly" },
+    "page-visit-end-desktop": { "type": "leaf", "output": "pages/page-visit-end-desktop.html", "status": "planned", "parent": "gen-visitor-desktop", "shell": "visitor", "device": "desktop", "mobileNavApplies": false, "derivedFrom": "page-visit-exhibit-desktop", "writeMode": "DerivedCopyMutableOnly" }
+  }
+}

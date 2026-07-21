@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>①欢迎与建馆</title>
+    <style id="theme-vars">
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* —— 语义表面 —— */
+  --background: #F7F2E9;          /* bg.canvas 暖白纸 */
+  --foreground: #243A36;          /* text.primary */
+  --card: #FFFDF8;                /* bg.surface */
+  --card-foreground: #243A36;
+  --popover: #FFFDF8;
+  --popover-foreground: #243A36;
+
+  /* —— 品牌 / 主操作 —— */
+  --primary: #315B50;             /* brand.forest 主按钮/链接 */
+  --primary-foreground: #FFFDF8;
+  --secondary: #DDE8E2;           /* accent.mist 选中态 */
+  --secondary-foreground: #243A36;
+  --accent: #D8A84D;              /* accent.mustard 编号/路径节点 */
+  --accent-foreground: #243A36;
+  --muted: #EFE7D8;
+  --muted-foreground: #63736D;    /* text.secondary */
+
+  /* —— 描边 / 输入 / 聚焦 —— */
+  --border: #E7DDD0;              /* border.soft */
+  --input: #E7DDD0;
+  --ring: #315B50;
+
+  /* —— 自定义品牌色（多色相，用户文档显式指定） —— */
+  --terracotta: #B86A4A;          /* brand.terracotta 录音/强调 */
+  --terracotta-foreground: #FFFDF8;
+  --private: #5D6F8B;             /* status.private 私密标记 */
+  --private-foreground: #FFFDF8;
+
+  /* —— 图表（低饱和档案感） —— */
+  --chart-1: #315B50;
+  --chart-2: #B86A4A;
+  --chart-3: #D8A84D;
+  --chart-4: #5D6F8B;
+  --chart-5: #63736D;
+
+  /* —— 侧栏 —— */
+  --sidebar: #FFFDF8;
+  --sidebar-foreground: #243A36;
+  --sidebar-primary: #315B50;
+  --sidebar-primary-foreground: #FFFDF8;
+  --sidebar-accent: #DDE8E2;
+  --sidebar-accent-foreground: #243A36;
+  --sidebar-border: #E7DDD0;
+  --sidebar-ring: #315B50;
+
+  /* —— 圆角 —— */
+  --radius: 16px;
+  /* 品牌前缀语义别名（fill-html-head.mjs semantic mapping） */
+  --fmm-radius-sm: 12px;
+  --fmm-radius-md: 12px;
+  --fmm-radius-lg: 16px;
+  --fmm-radius-xl: 20px;
+  --fmm-radius-2xl: 24px;
+
+  /* —— 字体族 —— */
+  --font-serif: "Noto Serif SC", "Songti SC", serif;
+  --font-sans: "PingFang SC", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* —— 语义别名（semantic-token-fallback） —— */
+  --semantic-bg-canvas: var(--background);
+  --semantic-bg-surface: var(--card);
+  --semantic-bg-muted: var(--muted);
+  --semantic-text-primary: var(--foreground);
+  --semantic-text-secondary: var(--muted-foreground);
+  --semantic-text-on-primary: var(--primary-foreground);
+  --semantic-brand-forest: var(--primary);
+  --semantic-brand-terracotta: var(--terracotta);
+  --semantic-accent-mustard: var(--accent);
+  --semantic-accent-mist: var(--secondary);
+  --semantic-border-soft: var(--border);
+  --semantic-status-private: var(--private);
+  --semantic-ring: var(--ring);
+}
+
+.dark {
+  --background: #1E2B27;
+  --foreground: #F2EBDC;
+  --card: #26332F;
+  --card-foreground: #F2EBDC;
+  --popover: #26332F;
+  --popover-foreground: #F2EBDC;
+  --primary: #6FA89B;
+  --primary-foreground: #1E2B27;
+  --secondary: #3A4A44;
+  --secondary-foreground: #F2EBDC;
+  --accent: #E0BC6A;
+  --accent-foreground: #1E2B27;
+  --muted: #313F3A;
+  --muted-foreground: #9CA8A2;
+  --border: #3A4A44;
+  --input: #3A4A44;
+  --ring: #6FA89B;
+  --terracotta: #D08A68;
+  --terracotta-foreground: #1E2B27;
+  --private: #8AA0BD;
+  --private-foreground: #1E2B27;
+  --chart-1: #6FA89B;
+  --chart-2: #D08A68;
+  --chart-3: #E0BC6A;
+  --chart-4: #8AA0BD;
+  --chart-5: #9CA8A2;
+  --sidebar: #26332F;
+  --sidebar-foreground: #F2EBDC;
+  --sidebar-primary: #6FA89B;
+  --sidebar-primary-foreground: #1E2B27;
+  --sidebar-accent: #3A4A44;
+  --sidebar-accent-foreground: #F2EBDC;
+  --sidebar-border: #3A4A44;
+  --sidebar-ring: #6FA89B;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-foreground: var(--terracotta-foreground);
+  --color-private: var(--private);
+  --color-private-foreground: var(--private-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);   /* 12 */
+  --radius-md: calc(var(--radius) - 4px);   /* 12 */
+  --radius-lg: var(--radius);               /* 16 */
+  --radius-xl: calc(var(--radius) + 4px);   /* 20 */
+  --radius-2xl: calc(var(--radius) + 8px);  /* 24 浮层专用 */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --radius-sm: var(--fmm-radius-sm);
+    --radius-md: var(--fmm-radius-md);
+    --radius-lg: var(--fmm-radius-lg);
+    --radius-xl: var(--fmm-radius-xl);
+  }
+  @layer base {
+    body { background: var(--background); color: var(--foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-card-foreground { background-color: var(--card-foreground); }
+      .text-card-foreground { color: var(--card-foreground); }
+      .border-card-foreground { border-color: var(--card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--card-foreground); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-popover-foreground { background-color: var(--popover-foreground); }
+      .text-popover-foreground { color: var(--popover-foreground); }
+      .border-popover-foreground { border-color: var(--popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--popover-foreground); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-secondary { background-color: var(--secondary); }
+      .text-secondary { color: var(--secondary); }
+      .border-secondary { border-color: var(--secondary); }
+      .ring-secondary { --tw-ring-color: var(--secondary); }
+      .bg-secondary-foreground { background-color: var(--secondary-foreground); }
+      .text-secondary-foreground { color: var(--secondary-foreground); }
+      .border-secondary-foreground { border-color: var(--secondary-foreground); }
+      .ring-secondary-foreground { --tw-ring-color: var(--secondary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-accent { background-color: var(--accent); }
+      .text-accent { color: var(--accent); }
+      .border-accent { border-color: var(--accent); }
+      .ring-accent { --tw-ring-color: var(--accent); }
+      .bg-accent-foreground { background-color: var(--accent-foreground); }
+      .text-accent-foreground { color: var(--accent-foreground); }
+      .border-accent-foreground { border-color: var(--accent-foreground); }
+      .ring-accent-foreground { --tw-ring-color: var(--accent-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--input); }
+      .text-input { color: var(--input); }
+      .border-input { border-color: var(--input); }
+      .ring-input { --tw-ring-color: var(--input); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+      .bg-chart-1 { background-color: var(--chart-1); }
+      .text-chart-1 { color: var(--chart-1); }
+      .border-chart-1 { border-color: var(--chart-1); }
+      .ring-chart-1 { --tw-ring-color: var(--chart-1); }
+      .bg-chart-2 { background-color: var(--chart-2); }
+      .text-chart-2 { color: var(--chart-2); }
+      .border-chart-2 { border-color: var(--chart-2); }
+      .ring-chart-2 { --tw-ring-color: var(--chart-2); }
+      .bg-chart-3 { background-color: var(--chart-3); }
+      .text-chart-3 { color: var(--chart-3); }
+      .border-chart-3 { border-color: var(--chart-3); }
+      .ring-chart-3 { --tw-ring-color: var(--chart-3); }
+      .bg-chart-4 { background-color: var(--chart-4); }
+      .text-chart-4 { color: var(--chart-4); }
+      .border-chart-4 { border-color: var(--chart-4); }
+      .ring-chart-4 { --tw-ring-color: var(--chart-4); }
+      .bg-chart-5 { background-color: var(--chart-5); }
+      .text-chart-5 { color: var(--chart-5); }
+      .border-chart-5 { border-color: var(--chart-5); }
+      .ring-chart-5 { --tw-ring-color: var(--chart-5); }
+      .bg-sidebar { background-color: var(--sidebar); }
+      .text-sidebar { color: var(--sidebar); }
+      .border-sidebar { border-color: var(--sidebar); }
+      .ring-sidebar { --tw-ring-color: var(--sidebar); }
+      .bg-sidebar-foreground { background-color: var(--sidebar-foreground); }
+      .text-sidebar-foreground { color: var(--sidebar-foreground); }
+      .border-sidebar-foreground { border-color: var(--sidebar-foreground); }
+      .ring-sidebar-foreground { --tw-ring-color: var(--sidebar-foreground); }
+      .bg-sidebar-primary { background-color: var(--sidebar-primary); }
+      .text-sidebar-primary { color: var(--sidebar-primary); }
+      .border-sidebar-primary { border-color: var(--sidebar-primary); }
+      .ring-sidebar-primary { --tw-ring-color: var(--sidebar-primary); }
+      .bg-sidebar-primary-foreground { background-color: var(--sidebar-primary-foreground); }
+      .text-sidebar-primary-foreground { color: var(--sidebar-primary-foreground); }
+      .border-sidebar-primary-foreground { border-color: var(--sidebar-primary-foreground); }
+      .ring-sidebar-primary-foreground { --tw-ring-color: var(--sidebar-primary-foreground); }
+      .bg-sidebar-accent { background-color: var(--sidebar-accent); }
+      .text-sidebar-accent { color: var(--sidebar-accent); }
+      .border-sidebar-accent { border-color: var(--sidebar-accent); }
+      .ring-sidebar-accent { --tw-ring-color: var(--sidebar-accent); }
+      .bg-sidebar-accent-foreground { background-color: var(--sidebar-accent-foreground); }
+      .text-sidebar-accent-foreground { color: var(--sidebar-accent-foreground); }
+      .border-sidebar-accent-foreground { border-color: var(--sidebar-accent-foreground); }
+      .ring-sidebar-accent-foreground { --tw-ring-color: var(--sidebar-accent-foreground); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen bg-background font-sans antialiased">
+  <div class="mx-auto w-full max-w-[420px] min-h-screen bg-background">
+    <!-- 极简顶栏：照搬 curator-mobile.html -->
+    <header class="sticky top-0 z-30 border-b border-border bg-card/80 backdrop-blur" style="padding-top:env(safe-area-inset-top)">
+      <div class="flex items-center justify-between px-5 py-3">
+        <span class="font-serif text-base text-foreground">家庭记忆博物馆</span>
+        <a href="#" data-dom-id="fmm-nav-mine" class="inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground">
+          <i data-lucide="user" class="h-[18px] w-[18px]"></i>
+        </a>
+      </div>
+    </header>
+
+    <!-- 内容区 main slot：底部留出 fixed nav 高度 + 安全区 -->
+    <main id="fmm-page-content" class="min-h-screen bg-background px-5 pb-[calc(72px+env(safe-area-inset-bottom))]">
+
+      <!-- ① hero 静物照：满宽 3:2，圆角 lg，object-cover，h 约 240px -->
+      <section class="pt-5">
+        <figure class="overflow-hidden rounded-lg border border-border">
+          <img src="../assets/hero-objects-stilllife.jpg" alt="家中旧物静物：课本、搪瓷杯、相册与机械表" class="block h-[240px] w-full object-cover" />
+        </figure>
+        <figcaption class="mt-2 flex items-center gap-1.5 text-[12px] text-muted-foreground">
+          <i data-lucide="archive" class="h-3.5 w-3.5"></i>
+          <span>从一件物品开始，搭一座你们自己的小博物馆</span>
+        </figcaption>
+      </section>
+
+      <!-- ② 宋体大标题 + 副标题 -->
+      <section class="pt-6">
+        <h1 class="font-serif text-[28px] leading-tight text-foreground">把家里的故事，<br/>放进一座小小博物馆</h1>
+        <p class="mt-3 text-[15px] leading-relaxed text-muted-foreground">每位家人选一件有故事的物品，一起搭一座只属于你们的小博物馆。</p>
+      </section>
+
+      <!-- ③ 身份选择：两张卡，选中态 bg-secondary border-primary -->
+      <section class="pt-6">
+        <div class="mb-2.5 flex items-baseline justify-between">
+          <h2 class="text-[13px] font-medium text-foreground">先选一个身份</h2>
+          <span class="text-[12px] text-muted-foreground">可随时切换</span>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <!-- 选中：我是学生·我来策展 -->
+          <button type="button" data-dom-id="fmm-identity-student" class="flex flex-col items-start gap-1.5 rounded-lg border border-primary bg-secondary p-4 text-left">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+              <i data-lucide="graduation-cap" class="h-[18px] w-[18px] text-primary"></i>
+            </span>
+            <span class="font-serif text-[15px] leading-tight text-primary">我是学生</span>
+            <span class="text-[12px] leading-snug text-muted-foreground">我来策展</span>
+            <span class="mt-1 inline-flex items-center gap-1 text-[11px] font-medium text-primary">
+              <i data-lucide="check" class="h-3 w-3"></i>已选
+            </span>
+          </button>
+          <!-- 未选：我是家人·我来贡献物品 -->
+          <button type="button" data-dom-id="fmm-identity-family" class="flex flex-col items-start gap-1.5 rounded-lg border border-border bg-card p-4 text-left">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-muted">
+              <i data-lucide="users" class="h-[18px] w-[18px] text-muted-foreground"></i>
+            </span>
+            <span class="font-serif text-[15px] leading-tight text-foreground">我是家人</span>
+            <span class="text-[12px] leading-snug text-muted-foreground">我来贡献物品</span>
+            <span class="mt-1 inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground">
+              <i data-lucide="plus" class="h-3 w-3"></i>选择
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ④ 建馆表单卡 -->
+      <section class="pt-6">
+        <div class="rounded-lg border border-border bg-card p-5">
+          <div class="flex items-center justify-between">
+            <h2 class="font-serif text-[18px] leading-tight text-foreground">为你们的博物馆开个头</h2>
+            <span class="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">第 1 步</span>
+          </div>
+          <p class="mt-1 text-[13px] leading-snug text-muted-foreground">这些之后都能改，先随便填。</p>
+
+          <!-- 博物馆名称 -->
+          <div class="mt-4">
+            <label for="fmm-museum-name-input" class="mb-1.5 block text-[13px] font-medium text-foreground">博物馆名称</label>
+            <div class="flex items-center gap-2 rounded-lg border border-border bg-background px-3.5 py-3 focus-within:border-primary focus-within:ring-2 focus-within:ring-ring/20">
+              <i data-lucide="bookmark" class="h-4 w-4 shrink-0 text-muted-foreground"></i>
+              <input id="fmm-museum-name-input" data-dom-id="fmm-museum-name" type="text" placeholder="给你们的博物馆起个名字" value="我们家的小博物馆" class="w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground/70 focus:outline-none" />
+            </div>
+          </div>
+
+          <!-- 封面选择：一行 4 个缩略候选，用 hero 图裁切 -->
+          <div class="mt-4">
+            <div class="mb-1.5 flex items-baseline justify-between">
+              <label class="block text-[13px] font-medium text-foreground">封面</label>
+              <span class="text-[11px] text-muted-foreground">从静物照里挑一张</span>
+            </div>
+            <div class="grid grid-cols-4 gap-2">
+              <button type="button" data-dom-id="fmm-cover-option-1" class="overflow-hidden rounded-md border-2 border-primary bg-background">
+                <img src="../assets/hero-objects-stilllife.jpg" alt="封面候选一" class="aspect-square w-full object-cover object-[25%_50%]" />
+              </button>
+              <button type="button" data-dom-id="fmm-cover-option-2" class="overflow-hidden rounded-md border-2 border-border bg-background">
+                <img src="../assets/hero-objects-stilllife.jpg" alt="封面候选二" class="aspect-square w-full object-cover object-[50%_50%]" />
+              </button>
+              <button type="button" data-dom-id="fmm-cover-option-3" class="overflow-hidden rounded-md border-2 border-border bg-background">
+                <img src="../assets/hero-objects-stilllife.jpg" alt="封面候选三" class="aspect-square w-full object-cover object-[75%_50%]" />
+              </button>
+              <button type="button" data-dom-id="fmm-cover-option-4" class="overflow-hidden rounded-md border-2 border-border bg-background">
+                <img src="../assets/hero-objects-stilllife.jpg" alt="封面候选四" class="aspect-square w-full object-cover object-[50%_20%]" />
+              </button>
+            </div>
+          </div>
+
+          <!-- 可见性：公开 / 仅家庭成员可见 两项可选 -->
+          <div class="mt-4">
+            <label class="mb-1.5 block text-[13px] font-medium text-foreground">谁能看见</label>
+            <div class="flex flex-col gap-2">
+              <!-- 公开 -->
+              <button type="button" data-fmm-role="visibility-public" class="flex items-center gap-2 rounded-lg border border-border bg-background px-3.5 py-3 text-left">
+                <i data-lucide="globe" class="h-4 w-4 shrink-0 text-muted-foreground"></i>
+                <span class="text-[14px] text-foreground">公开</span>
+                <span class="ml-auto inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                  <i data-lucide="earth" class="h-3 w-3"></i>公开
+                </span>
+              </button>
+              <!-- 仅家庭成员可见（默认选中） -->
+              <button type="button" data-fmm-role="visibility-private" class="flex items-center gap-2 rounded-lg border border-border bg-background px-3.5 py-3 text-left">
+                <i data-lucide="lock" class="h-4 w-4 shrink-0 text-private"></i>
+                <span class="text-[14px] text-foreground">仅家庭成员可见</span>
+                <span class="ml-auto inline-flex items-center gap-1 rounded-full bg-private/10 px-2 py-0.5 text-[11px] font-medium text-private">
+                  <i data-lucide="shield-check" class="h-3 w-3"></i>私密
+                </span>
+              </button>
+            </div>
+            <p class="mt-1.5 text-[12px] leading-snug text-muted-foreground">默认只有被你邀请的家人能进来，不对外公开，也不会出现在参观广场。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ⑤ 主按钮：记录第一件物品，bg-primary 满宽 -->
+      <section class="pt-5">
+        <button type="button" data-dom-id="fmm-cta-start" class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3.5 text-[15px] font-medium text-primary-foreground active:opacity-90">
+          <span>记录第一件物品</span>
+          <i data-lucide="arrow-right" class="h-4 w-4"></i>
+        </button>
+        <p class="mt-2.5 text-center text-[12px] leading-snug text-muted-foreground">下一步开始为第一件物品建档：拍照、说一段它发生过的事。</p>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- 底部五栏 nav：canonicalHtmlByKey["home"]（home active） -->
+  <nav data-mobile-nav="global" class="fixed bottom-0 inset-x-0 z-40 border-t border-border bg-card/95 backdrop-blur" style="padding-bottom:env(safe-area-inset-bottom)"><div class="mx-auto grid w-full max-w-[420px] grid-cols-5"><a data-nav-item data-nav-key="home" data-dom-id="fmm-nav-home" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-primary"><span class="absolute top-0 h-[3px] w-7 rounded-full bg-primary"></span><i data-lucide="home" class="h-[22px] w-[22px]"></i><span class="leading-none">首页</span></a><a data-nav-item data-nav-key="gallery" data-dom-id="fmm-nav-gallery" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="layout-grid" class="h-[22px] w-[22px]"></i><span class="leading-none">展馆</span></a><a data-nav-item data-nav-key="create" data-dom-id="fmm-nav-create" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="plus" class="h-[22px] w-[22px]"></i><span class="leading-none">创建</span></a><a data-nav-item data-nav-key="visit" data-dom-id="fmm-nav-visit" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="eye" class="h-[22px] w-[22px]"></i><span class="leading-none">参观</span></a><a data-nav-item data-nav-key="mine" data-dom-id="fmm-nav-mine" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="user" class="h-[22px] w-[22px]"></i><span class="leading-none">我的</span></a></div></nav>
+
+  <script>if(window.lucide){lucide.createIcons();}</script>
+  <script src="../assets/fmm-app.js"></script>
+
+  <script>
+  /* fmm-interaction-v2 · 数据持久化 */
+(function(){
+  function ready(fn){ if(document.readyState!=='loading'){fn();}else{document.addEventListener('DOMContentLoaded',fn);} }
+  function inIframe(){ try { return window.self !== window.top; } catch(e){ return false; } }
+  function bindJumps(jumps){
+    Object.keys(jumps).forEach(function(domId){
+      var el = document.querySelector('[data-dom-id="'+domId+'"]');
+      if(el){ el.addEventListener('click', function(){ if(inIframe()){return;} try{ location.href = jumps[domId]; }catch(_){} }); }
+    });
+  }
+
+  /* —— 身份选择（移动端卡片式：border/bg/图标圆/标题色/状态文本联动）—— */
+  function setIdentityMobile(btn, selected){
+    if(!btn) return;
+    var spans = btn.querySelectorAll('span');
+    var iconCircle = spans[0], title = spans[1], status = spans[3];
+    var ic = iconCircle ? iconCircle.querySelector('i, svg') : null;
+    if(selected){
+      btn.classList.remove('border-border','bg-card');
+      btn.classList.add('border-primary','bg-secondary');
+      if(iconCircle){ iconCircle.classList.remove('bg-muted'); iconCircle.classList.add('bg-primary/10'); }
+      if(ic){ ic.classList.remove('text-muted-foreground'); ic.classList.add('text-primary'); }
+      if(title){ title.classList.remove('text-foreground'); title.classList.add('text-primary'); }
+      if(status){
+        status.classList.remove('text-muted-foreground'); status.classList.add('text-primary');
+        status.innerHTML = '<i data-lucide="check" class="h-3 w-3"></i>已选';
+      }
+    } else {
+      btn.classList.remove('border-primary','bg-secondary');
+      btn.classList.add('border-border','bg-card');
+      if(iconCircle){ iconCircle.classList.remove('bg-primary/10'); iconCircle.classList.add('bg-muted'); }
+      if(ic){ ic.classList.remove('text-primary'); ic.classList.add('text-muted-foreground'); }
+      if(title){ title.classList.remove('text-primary'); title.classList.add('text-foreground'); }
+      if(status){
+        status.classList.remove('text-primary'); status.classList.add('text-muted-foreground');
+        status.innerHTML = '<i data-lucide="plus" class="h-3 w-3"></i>选择';
+      }
+    }
+  }
+
+  function setCoverMobile(btn, selected){
+    if(!btn) return;
+    if(selected){ btn.classList.remove('border-border'); btn.classList.add('border-primary'); }
+    else { btn.classList.remove('border-primary'); btn.classList.add('border-border'); }
+  }
+
+  ready(function(){
+    var FMM = window.FMM;
+    var data = FMM ? FMM.load() : null;
+    var museum = data ? data.museum : null;
+
+    /* 身份选择：加载恢复 + 点击持久化 */
+    var identityIds = ['fmm-identity-student','fmm-identity-family'];
+    var identityMap = { 'fmm-identity-student':'student', 'fmm-identity-family':'family' };
+    var identityBtns = identityIds.map(function(id){ return document.querySelector('[data-dom-id="'+id+'"]'); });
+    var curIdentity = museum ? museum.identity : 'student';
+    identityBtns.forEach(function(btn){
+      if(!btn) return;
+      setIdentityMobile(btn, identityMap[btn.getAttribute('data-dom-id')] === curIdentity);
+      btn.addEventListener('click', function(){
+        var d = FMM.load();
+        d.museum.identity = identityMap[btn.getAttribute('data-dom-id')];
+        FMM.save(d);
+        identityBtns.forEach(function(o){ if(o) setIdentityMobile(o, o === btn); });
+        if(window.lucide){ lucide.createIcons(); }
+      });
+    });
+
+    /* 博物馆名称：加载恢复 + input 持久化 */
+    var nameInput = document.querySelector('[data-dom-id="fmm-museum-name"]');
+    if(nameInput){
+      if(museum && museum.name){ nameInput.value = museum.name; }
+      nameInput.addEventListener('input', function(){
+        var d = FMM.load(); d.museum.name = nameInput.value; FMM.save(d);
+      });
+    }
+
+    /* 封面候选：加载恢复 + 点击持久化（0-3） */
+    var coverIds = ['fmm-cover-option-1','fmm-cover-option-2','fmm-cover-option-3','fmm-cover-option-4'];
+    var coverBtns = coverIds.map(function(id){ return document.querySelector('[data-dom-id="'+id+'"]'); });
+    var curCover = museum ? museum.cover : 0;
+    coverBtns.forEach(function(btn, idx){
+      if(!btn) return;
+      setCoverMobile(btn, idx === curCover);
+      btn.addEventListener('click', function(){
+        var d = FMM.load(); d.museum.cover = idx; FMM.save(d);
+        coverBtns.forEach(function(o, j){ setCoverMobile(o, j === idx); });
+      });
+    });
+
+    /* 可见性选择：公开 / 仅家庭成员可见 */
+    var visPublic = document.querySelector('[data-fmm-role="visibility-public"]');
+    var visPrivate = document.querySelector('[data-fmm-role="visibility-private"]');
+    var visBtns = [visPublic, visPrivate];
+    function setVis(sel){
+      visBtns.forEach(function(b){ if(!b) return;
+        b.style.borderColor = '';
+        b.style.borderWidth = '';
+        b.style.boxShadow = '';
+      });
+      if(sel){
+        sel.style.borderColor = 'var(--primary)';
+        sel.style.borderWidth = '2px';
+        sel.style.boxShadow = '0 0 0 3px rgba(49,91,80,0.1)';
+      }
+    }
+    var curPrivacy = museum ? (museum.privacy || 'family') : 'family';
+    setVis(curPrivacy === 'public' ? visPublic : visPrivate);
+    if(visPublic){
+      visPublic.addEventListener('click', function(){
+        var d = FMM.load(); d.museum.privacy = 'public'; FMM.save(d);
+        setVis(visPublic);
+      });
+    }
+    if(visPrivate){
+      visPrivate.addEventListener('click', function(){
+        var d = FMM.load(); d.museum.privacy = 'family'; FMM.save(d);
+        setVis(visPrivate);
+      });
+    }
+
+    bindJumps({ 'fmm-cta-start': 'page-archive-card-mobile.html' });
+    var navJumps = {
+      'fmm-nav-home': 'page-welcome-setup-mobile.html',
+      'fmm-nav-gallery': 'page-theme-cocuration-mobile.html',
+      'fmm-nav-create': 'page-archive-card-mobile.html',
+      'fmm-nav-visit': 'page-visit-exhibit-mobile.html'
+    };
+    Object.keys(navJumps).forEach(function(domId){
+      document.querySelectorAll('[data-dom-id="'+domId+'"]').forEach(function(el){
+        el.addEventListener('click', function(e){ e.preventDefault(); location.href = navJumps[domId]; });
+      });
+    });
+    document.querySelectorAll('[data-dom-id="fmm-nav-mine"]').forEach(function(el){
+      el.addEventListener('click', function(e){ e.preventDefault(); alert('个人中心 · 待开发'); });
+    });
+    if(window.lucide){ lucide.createIcons(); }
+  });
+})();
+  </script>
+</body>
+</html>

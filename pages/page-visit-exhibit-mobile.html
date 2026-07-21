@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⑥受邀参观展品</title>
+    <style id="theme-vars">
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* —— 语义表面 —— */
+  --background: #F7F2E9;          /* bg.canvas 暖白纸 */
+  --foreground: #243A36;          /* text.primary */
+  --card: #FFFDF8;                /* bg.surface */
+  --card-foreground: #243A36;
+  --popover: #FFFDF8;
+  --popover-foreground: #243A36;
+
+  /* —— 品牌 / 主操作 —— */
+  --primary: #315B50;             /* brand.forest 主按钮/链接 */
+  --primary-foreground: #FFFDF8;
+  --secondary: #DDE8E2;           /* accent.mist 选中态 */
+  --secondary-foreground: #243A36;
+  --accent: #D8A84D;              /* accent.mustard 编号/路径节点 */
+  --accent-foreground: #243A36;
+  --muted: #EFE7D8;
+  --muted-foreground: #63736D;    /* text.secondary */
+
+  /* —— 描边 / 输入 / 聚焦 —— */
+  --border: #E7DDD0;              /* border.soft */
+  --input: #E7DDD0;
+  --ring: #315B50;
+
+  /* —— 自定义品牌色（多色相，用户文档显式指定） —— */
+  --terracotta: #B86A4A;          /* brand.terracotta 录音/强调 */
+  --terracotta-foreground: #FFFDF8;
+  --private: #5D6F8B;             /* status.private 私密标记 */
+  --private-foreground: #FFFDF8;
+
+  /* —— 图表（低饱和档案感） —— */
+  --chart-1: #315B50;
+  --chart-2: #B86A4A;
+  --chart-3: #D8A84D;
+  --chart-4: #5D6F8B;
+  --chart-5: #63736D;
+
+  /* —— 侧栏 —— */
+  --sidebar: #FFFDF8;
+  --sidebar-foreground: #243A36;
+  --sidebar-primary: #315B50;
+  --sidebar-primary-foreground: #FFFDF8;
+  --sidebar-accent: #DDE8E2;
+  --sidebar-accent-foreground: #243A36;
+  --sidebar-border: #E7DDD0;
+  --sidebar-ring: #315B50;
+
+  /* —— 圆角 —— */
+  --radius: 16px;
+  /* 品牌前缀语义别名（fill-html-head.mjs semantic mapping） */
+  --fmm-radius-sm: 12px;
+  --fmm-radius-md: 12px;
+  --fmm-radius-lg: 16px;
+  --fmm-radius-xl: 20px;
+  --fmm-radius-2xl: 24px;
+
+  /* —— 字体族 —— */
+  --font-serif: "Noto Serif SC", "Songti SC", serif;
+  --font-sans: "PingFang SC", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* —— 语义别名（semantic-token-fallback） —— */
+  --semantic-bg-canvas: var(--background);
+  --semantic-bg-surface: var(--card);
+  --semantic-bg-muted: var(--muted);
+  --semantic-text-primary: var(--foreground);
+  --semantic-text-secondary: var(--muted-foreground);
+  --semantic-text-on-primary: var(--primary-foreground);
+  --semantic-brand-forest: var(--primary);
+  --semantic-brand-terracotta: var(--terracotta);
+  --semantic-accent-mustard: var(--accent);
+  --semantic-accent-mist: var(--secondary);
+  --semantic-border-soft: var(--border);
+  --semantic-status-private: var(--private);
+  --semantic-ring: var(--ring);
+}
+
+.dark {
+  --background: #1E2B27;
+  --foreground: #F2EBDC;
+  --card: #26332F;
+  --card-foreground: #F2EBDC;
+  --popover: #26332F;
+  --popover-foreground: #F2EBDC;
+  --primary: #6FA89B;
+  --primary-foreground: #1E2B27;
+  --secondary: #3A4A44;
+  --secondary-foreground: #F2EBDC;
+  --accent: #E0BC6A;
+  --accent-foreground: #1E2B27;
+  --muted: #313F3A;
+  --muted-foreground: #9CA8A2;
+  --border: #3A4A44;
+  --input: #3A4A44;
+  --ring: #6FA89B;
+  --terracotta: #D08A68;
+  --terracotta-foreground: #1E2B27;
+  --private: #8AA0BD;
+  --private-foreground: #1E2B27;
+  --chart-1: #6FA89B;
+  --chart-2: #D08A68;
+  --chart-3: #E0BC6A;
+  --chart-4: #8AA0BD;
+  --chart-5: #9CA8A2;
+  --sidebar: #26332F;
+  --sidebar-foreground: #F2EBDC;
+  --sidebar-primary: #6FA89B;
+  --sidebar-primary-foreground: #1E2B27;
+  --sidebar-accent: #3A4A44;
+  --sidebar-accent-foreground: #F2EBDC;
+  --sidebar-border: #3A4A44;
+  --sidebar-ring: #6FA89B;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-foreground: var(--terracotta-foreground);
+  --color-private: var(--private);
+  --color-private-foreground: var(--private-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);   /* 12 */
+  --radius-md: calc(var(--radius) - 4px);   /* 12 */
+  --radius-lg: var(--radius);               /* 16 */
+  --radius-xl: calc(var(--radius) + 4px);   /* 20 */
+  --radius-2xl: calc(var(--radius) + 8px);  /* 24 浮层专用 */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --radius-sm: var(--fmm-radius-sm);
+    --radius-md: var(--fmm-radius-md);
+    --radius-lg: var(--fmm-radius-lg);
+    --radius-xl: var(--fmm-radius-xl);
+  }
+  @layer base {
+    body { background: var(--background); color: var(--foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-card-foreground { background-color: var(--card-foreground); }
+      .text-card-foreground { color: var(--card-foreground); }
+      .border-card-foreground { border-color: var(--card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--card-foreground); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-popover-foreground { background-color: var(--popover-foreground); }
+      .text-popover-foreground { color: var(--popover-foreground); }
+      .border-popover-foreground { border-color: var(--popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--popover-foreground); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-secondary { background-color: var(--secondary); }
+      .text-secondary { color: var(--secondary); }
+      .border-secondary { border-color: var(--secondary); }
+      .ring-secondary { --tw-ring-color: var(--secondary); }
+      .bg-secondary-foreground { background-color: var(--secondary-foreground); }
+      .text-secondary-foreground { color: var(--secondary-foreground); }
+      .border-secondary-foreground { border-color: var(--secondary-foreground); }
+      .ring-secondary-foreground { --tw-ring-color: var(--secondary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-accent { background-color: var(--accent); }
+      .text-accent { color: var(--accent); }
+      .border-accent { border-color: var(--accent); }
+      .ring-accent { --tw-ring-color: var(--accent); }
+      .bg-accent-foreground { background-color: var(--accent-foreground); }
+      .text-accent-foreground { color: var(--accent-foreground); }
+      .border-accent-foreground { border-color: var(--accent-foreground); }
+      .ring-accent-foreground { --tw-ring-color: var(--accent-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--input); }
+      .text-input { color: var(--input); }
+      .border-input { border-color: var(--input); }
+      .ring-input { --tw-ring-color: var(--input); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+      .bg-chart-1 { background-color: var(--chart-1); }
+      .text-chart-1 { color: var(--chart-1); }
+      .border-chart-1 { border-color: var(--chart-1); }
+      .ring-chart-1 { --tw-ring-color: var(--chart-1); }
+      .bg-chart-2 { background-color: var(--chart-2); }
+      .text-chart-2 { color: var(--chart-2); }
+      .border-chart-2 { border-color: var(--chart-2); }
+      .ring-chart-2 { --tw-ring-color: var(--chart-2); }
+      .bg-chart-3 { background-color: var(--chart-3); }
+      .text-chart-3 { color: var(--chart-3); }
+      .border-chart-3 { border-color: var(--chart-3); }
+      .ring-chart-3 { --tw-ring-color: var(--chart-3); }
+      .bg-chart-4 { background-color: var(--chart-4); }
+      .text-chart-4 { color: var(--chart-4); }
+      .border-chart-4 { border-color: var(--chart-4); }
+      .ring-chart-4 { --tw-ring-color: var(--chart-4); }
+      .bg-chart-5 { background-color: var(--chart-5); }
+      .text-chart-5 { color: var(--chart-5); }
+      .border-chart-5 { border-color: var(--chart-5); }
+      .ring-chart-5 { --tw-ring-color: var(--chart-5); }
+      .bg-sidebar { background-color: var(--sidebar); }
+      .text-sidebar { color: var(--sidebar); }
+      .border-sidebar { border-color: var(--sidebar); }
+      .ring-sidebar { --tw-ring-color: var(--sidebar); }
+      .bg-sidebar-foreground { background-color: var(--sidebar-foreground); }
+      .text-sidebar-foreground { color: var(--sidebar-foreground); }
+      .border-sidebar-foreground { border-color: var(--sidebar-foreground); }
+      .ring-sidebar-foreground { --tw-ring-color: var(--sidebar-foreground); }
+      .bg-sidebar-primary { background-color: var(--sidebar-primary); }
+      .text-sidebar-primary { color: var(--sidebar-primary); }
+      .border-sidebar-primary { border-color: var(--sidebar-primary); }
+      .ring-sidebar-primary { --tw-ring-color: var(--sidebar-primary); }
+      .bg-sidebar-primary-foreground { background-color: var(--sidebar-primary-foreground); }
+      .text-sidebar-primary-foreground { color: var(--sidebar-primary-foreground); }
+      .border-sidebar-primary-foreground { border-color: var(--sidebar-primary-foreground); }
+      .ring-sidebar-primary-foreground { --tw-ring-color: var(--sidebar-primary-foreground); }
+      .bg-sidebar-accent { background-color: var(--sidebar-accent); }
+      .text-sidebar-accent { color: var(--sidebar-accent); }
+      .border-sidebar-accent { border-color: var(--sidebar-accent); }
+      .ring-sidebar-accent { --tw-ring-color: var(--sidebar-accent); }
+      .bg-sidebar-accent-foreground { background-color: var(--sidebar-accent-foreground); }
+      .text-sidebar-accent-foreground { color: var(--sidebar-accent-foreground); }
+      .border-sidebar-accent-foreground { border-color: var(--sidebar-accent-foreground); }
+      .ring-sidebar-accent-foreground { --tw-ring-color: var(--sidebar-accent-foreground); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen bg-background font-sans antialiased">
+  <div class="mx-auto w-full max-w-[420px] min-h-screen bg-background">
+    <!--
+      移动观众沉浸式 shell（document-scroll）
+      - 极简顶栏：左"← 退出"(fmm-exit-visit) + 中展览名"一件物品里的陪伴"宋体 + 右路线进度"2 / 4"(fmm-visit-progress)
+      - 满宽内容区 main slot
+      - 无底部 nav（沉浸式阅读）
+    -->
+    <header class="sticky top-0 z-30 border-b border-border bg-card/80 backdrop-blur" style="padding-top:env(safe-area-inset-top)">
+      <div class="flex items-center justify-between px-5 py-3">
+        <a data-dom-id="fmm-exit-visit" class="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          <i data-lucide="arrow-left" class="h-4 w-4"></i>退出
+        </a>
+        <span class="font-serif text-base text-foreground">一件物品里的陪伴</span>
+        <span data-dom-id="fmm-visit-progress" class="text-sm text-muted-foreground">2 / 4</span>
+      </div>
+    </header>
+
+    <!-- 满宽内容区 main slot，无底部 nav；底部留出悬浮语音胶囊空间 -->
+    <main id="fmm-page-content" class="min-h-screen bg-background" style="padding-bottom:calc(144px + env(safe-area-inset-bottom))">
+
+      <!-- ① 满宽主图 4:3 + 左上 mustard 编号徽章 妈妈—01 -->
+      <section aria-label="展品主图">
+        <div class="relative">
+          <img src="../assets/exhibit-enamel-mug.jpg" alt="搪瓷杯" class="block aspect-[4/3] w-full object-cover rounded-b-lg" />
+          <span class="absolute left-4 top-4 inline-flex items-center rounded-md bg-accent px-2 py-1 font-serif text-[12px] font-medium text-accent-foreground">妈妈—01</span>
+        </div>
+      </section>
+
+      <!-- ② 展品标题 + 副标 -->
+      <section class="px-5 pt-4">
+        <h1 class="font-serif text-[24px] leading-tight text-foreground">搪瓷杯</h1>
+        <p class="mt-1 text-[12px] text-muted-foreground">约 1978 年 · 外婆陪嫁 · 讲述者 林雯</p>
+      </section>
+
+      <!-- ③ 故事摘要卡：bg-card border rounded-lg p-4，font-serif 引文感 -->
+      <section class="px-5 pt-4">
+        <div class="rounded-lg border border-border bg-card p-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="quote" class="h-4 w-4 text-muted-foreground"></i>
+            <span class="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">故事摘要</span>
+          </div>
+          <p class="mt-2 font-serif text-[16px] leading-relaxed text-foreground">“一杯热水，三十年。杯口缺了一小块瓷，是表哥小时候磕的。外婆没舍得换，说缺口也是日子的一部分。”</p>
+        </div>
+      </section>
+
+      <!-- ④ 三层记忆：它是什么 / 它发生过什么 / 对我意味着什么 -->
+      <section class="px-5 pt-5">
+        <div class="flex items-center gap-2">
+          <i data-lucide="layers" class="h-4 w-4 text-muted-foreground"></i>
+          <h2 class="font-serif text-[15px] text-muted-foreground">三层记忆</h2>
+        </div>
+
+        <div class="mt-3 space-y-3">
+          <!-- 它是什么 -->
+          <article class="rounded-lg border border-border bg-card p-4">
+            <div class="flex items-center gap-2.5">
+              <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-secondary text-[11px] font-medium text-primary">1</span>
+              <h3 class="font-serif text-[15px] text-foreground">它是什么</h3>
+            </div>
+            <p class="mt-2 text-[14px] leading-relaxed text-foreground">一只白底红花的搪瓷杯，1978 年随外婆的陪嫁来到这个家。杯口有一处米粒大的掉瓷，露出黑色的铁胎。</p>
+          </article>
+
+          <!-- 它发生过什么 -->
+          <article class="rounded-lg border border-border bg-card p-4">
+            <div class="flex items-center gap-2.5">
+              <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-secondary text-[11px] font-medium text-primary">2</span>
+              <h3 class="font-serif text-[15px] text-foreground">它发生过什么</h3>
+            </div>
+            <p class="mt-2 text-[14px] leading-relaxed text-foreground">三十年里，它每天清晨装满热水，冒着白气。那块缺口是表哥三岁时磕的，外婆没舍得换，只把缺口那侧转向自己。</p>
+          </article>
+
+          <!-- 对我意味着什么 -->
+          <article class="rounded-lg border border-border bg-card p-4">
+            <div class="flex items-center gap-2.5">
+              <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-secondary text-[11px] font-medium text-primary">3</span>
+              <h3 class="font-serif text-[15px] text-foreground">对我意味着什么</h3>
+            </div>
+            <p class="mt-2 text-[14px] leading-relaxed text-foreground">它装的不只是水，是三十个被提前等好的清晨。缺口不是破损，是日子在杯上留下的记号。</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ⑤ 观众提问提示卡：mustard 细边，引导参观者思考 -->
+      <section class="px-5 pt-5">
+        <div class="rounded-lg border border-accent/70 bg-accent/5 p-4">
+          <div class="flex items-start gap-2.5">
+            <i data-lucide="help-circle" class="mt-0.5 h-4 w-4 shrink-0" style="color:var(--accent)"></i>
+            <div class="min-w-0">
+              <p class="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">给参观者</p>
+              <p class="mt-1 font-serif text-[16px] leading-relaxed text-foreground">你希望别人看见这件物品的哪一面？</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ⑥ 底部 sticky 浮层：下一站进度条 + 悬浮语音胶囊（floating，距底部安全区） -->
+    <div class="fixed inset-x-0 bottom-0 z-40" style="padding-bottom:env(safe-area-inset-bottom)">
+      <div class="mx-auto w-full max-w-[420px] px-4 pb-3">
+        <!-- 下一站进度条：点击 → 下一展品 / ⑦ -->
+        <a data-dom-id="fmm-next-stop" class="mb-2 flex items-center justify-between rounded-lg border border-border bg-card/95 px-4 py-2.5 backdrop-blur active:opacity-90">
+          <span class="text-[13px] text-muted-foreground">2 / 4 · 下一站：老照片相册</span>
+          <i data-lucide="arrow-right" class="h-4 w-4 text-foreground"></i>
+        </a>
+
+        <!-- 语音胶囊：rounded-2xl shadow-lg bg-card，terracotta 圆形播放键，默认静音 -->
+        <div data-dom-id="fmm-audio-capsule" class="flex items-center gap-3 rounded-2xl border border-border bg-card p-3 shadow-lg">
+          <button type="button" aria-label="播放 30 秒导览" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-terracotta text-terracotta-foreground transition active:scale-95">
+            <i data-lucide="play" class="h-5 w-5"></i>
+          </button>
+          <div class="min-w-0 flex-1">
+            <p class="text-[14px] font-medium text-foreground">点击收听 30 秒导览</p>
+            <p class="mt-0.5 text-[11px] text-muted-foreground">默认静音 · 讲述者 林雯</p>
+          </div>
+          <span class="shrink-0 font-serif text-[13px] text-muted-foreground">0:28</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>if(window.lucide){lucide.createIcons();}</script>
+  <script src="../assets/fmm-app.js"></script>
+  <script>
+  (function(){
+    function ready(fn){
+      if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', fn); }
+      else { fn(); }
+    }
+    function replaceIcon(el, name){
+      if(!el) return;
+      var cls = (el.getAttribute('class') || '').replace(/\blucide\S*/g, '').replace(/\s+/g, ' ').trim();
+      var ni = document.createElement('i');
+      ni.setAttribute('data-lucide', name);
+      if(cls){ ni.setAttribute('class', cls); }
+      el.parentNode.replaceChild(ni, el);
+      if(window.lucide){ lucide.createIcons(); }
+    }
+    ready(function(){
+      var idx = FMM.currentIdx();
+      var ex = FMM.getExhibit(idx);
+
+      /* 从数据渲染展品标题、副标、故事摘要、三层记忆 */
+      var h1 = document.querySelector('main h1');
+      if(h1 && ex.name){ h1.textContent = ex.name; }
+      var subtitle = document.querySelector('main section:nth-of-type(2) p');
+      if(subtitle && ex.year){ subtitle.textContent = ex.year + ' · ' + ex.source + ' · 讲述者 ' + ex.teller; }
+      var badge = document.querySelector('main section span.absolute');
+      if(badge && ex.owner){ badge.textContent = ex.owner + '—' + ex.number; }
+      var storyP = document.querySelector('main section:nth-of-type(3) p.font-serif');
+      if(storyP && ex.story){ storyP.textContent = '"' + ex.story + '"'; }
+      var arts = document.querySelectorAll('main article');
+      if(arts.length >= 3){
+        var ps = arts[0].querySelectorAll('p'); if(ps[0] && ex.what){ ps[0].textContent = ex.what; }
+        ps = arts[1].querySelectorAll('p'); if(ps[0] && ex.story){ ps[0].textContent = ex.story; }
+        ps = arts[2].querySelectorAll('p'); if(ps[0] && ex.meaning){ ps[0].textContent = ex.meaning; }
+      }
+      /* 恢复照片：优先用户上传 photo，否则按 idx 取默认图 */
+      var heroImg = document.querySelector('main img');
+      if(heroImg){
+        var PHOTO_MAP = ['exhibit-enamel-mug.jpg','exhibit-photo-album.jpg','exhibit-mechanical-watch.jpg','exhibit-textbook.jpg'];
+        var NAME_MAP = ['搪瓷杯','相册','机械表','课本'];
+        if(ex.photo){ heroImg.src = ex.photo; }
+        else if(PHOTO_MAP[idx]){ heroImg.src = '../assets/' + PHOTO_MAP[idx]; }
+        heroImg.alt = ex.name || NAME_MAP[idx] || '展品';
+      }
+
+      /* 语音胶囊讲述者同步 */
+      var narratorP = document.querySelector('[data-dom-id="fmm-audio-capsule"] p.text-muted-foreground');
+      if(narratorP && ex.teller){ narratorP.textContent = '默认静音 · 讲述者 ' + ex.teller; }
+
+      /* 语音胶囊：真实播放已录制导览 */
+      var capsule = document.querySelector('[data-dom-id="fmm-audio-capsule"]');
+      if(capsule){
+        var capBtn = capsule.querySelector('button');
+        var capText = capsule.querySelector('p');
+        var capTime = capsule.querySelector('span.font-serif');
+        var capTextWrap = capText ? capText.parentElement : null;
+        var progBar = document.createElement('div');
+        progBar.style.cssText = 'margin-top:6px;height:3px;border-radius:9999px;background:var(--muted);overflow:hidden;';
+        var capFill = document.createElement('div');
+        capFill.style.cssText = 'height:100%;width:0%;background:var(--terracotta);transition:width 0.2s linear;';
+        progBar.appendChild(capFill);
+        if(capTextWrap){ capTextWrap.appendChild(progBar); }
+
+        var audioEl = null, capTimer = null;
+        function fmt(s){ var m=Math.floor(s/60), ss=Math.floor(s%60); return m+':'+(ss<10?'0':'')+ss; }
+
+        if(capBtn){
+          capBtn.addEventListener('click', function(){
+            /* 如果正在播放，暂停 */
+            if(audioEl && !audioEl.paused){
+              audioEl.pause();
+              replaceIcon(capBtn.querySelector('svg, i'), 'play');
+              if(capText){ capText.textContent = '已暂停 · 点击继续'; }
+              if(capTimer){ clearInterval(capTimer); capTimer = null; }
+              return;
+            }
+            /* 没有录音 */
+            if(!ex.audio){
+              if(capText){ capText.textContent = '策展人尚未录制导览'; }
+              setTimeout(function(){ if(capText){ capText.textContent = '点击收听 30 秒导览'; } }, 2000);
+              return;
+            }
+            /* 播放录音 */
+            if(!audioEl){ audioEl = new Audio(ex.audio); }
+            audioEl.play().then(function(){
+              replaceIcon(capBtn.querySelector('svg, i'), 'pause');
+              if(capText){ capText.textContent = '正在播放导览'; }
+              capFill.style.width = '0%';
+              capTimer = setInterval(function(){
+                if(audioEl && audioEl.duration){
+                  var pct = (audioEl.currentTime / audioEl.duration) * 100;
+                  capFill.style.width = pct + '%';
+                  if(capTime){ capTime.textContent = fmt(audioEl.currentTime); }
+                }
+              }, 200);
+            }).catch(function(){
+              if(capText){ capText.textContent = '播放失败，请重试'; }
+            });
+            audioEl.onended = function(){
+              replaceIcon(capBtn.querySelector('svg, i'), 'play');
+              if(capText){ capText.textContent = '点击收听 30 秒导览'; }
+              if(capTime){ capTime.textContent = '0:28'; }
+              capFill.style.width = '0%';
+              if(capTimer){ clearInterval(capTimer); capTimer = null; }
+            };
+          });
+        }
+      }
+
+      /* 下一站：切换展品索引 */
+      var nextStop = document.querySelector('[data-dom-id="fmm-next-stop"]');
+      if(nextStop){
+        nextStop.addEventListener('click', function(){
+          var nextIdx = idx + 1;
+          if(nextIdx >= FMM.load().exhibits.length){
+            location.href = 'page-visit-end-mobile.html';
+          } else {
+            FMM.setCurrentIdx(nextIdx);
+            location.href = 'page-visit-exhibit-mobile.html';
+          }
+        });
+      }
+
+      if(window.lucide){ lucide.createIcons(); }
+    });
+  })();
+  </script>
+</body>
+</html>

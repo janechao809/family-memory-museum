@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⑤展签与语音导览</title>
+    <style id="theme-vars">
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* —— 语义表面 —— */
+  --background: #F7F2E9;          /* bg.canvas 暖白纸 */
+  --foreground: #243A36;          /* text.primary */
+  --card: #FFFDF8;                /* bg.surface */
+  --card-foreground: #243A36;
+  --popover: #FFFDF8;
+  --popover-foreground: #243A36;
+
+  /* —— 品牌 / 主操作 —— */
+  --primary: #315B50;             /* brand.forest 主按钮/链接 */
+  --primary-foreground: #FFFDF8;
+  --secondary: #DDE8E2;           /* accent.mist 选中态 */
+  --secondary-foreground: #243A36;
+  --accent: #D8A84D;              /* accent.mustard 编号/路径节点 */
+  --accent-foreground: #243A36;
+  --muted: #EFE7D8;
+  --muted-foreground: #63736D;    /* text.secondary */
+
+  /* —— 描边 / 输入 / 聚焦 —— */
+  --border: #E7DDD0;              /* border.soft */
+  --input: #E7DDD0;
+  --ring: #315B50;
+
+  /* —— 自定义品牌色（多色相，用户文档显式指定） —— */
+  --terracotta: #B86A4A;          /* brand.terracotta 录音/强调 */
+  --terracotta-foreground: #FFFDF8;
+  --private: #5D6F8B;             /* status.private 私密标记 */
+  --private-foreground: #FFFDF8;
+
+  /* —— 图表（低饱和档案感） —— */
+  --chart-1: #315B50;
+  --chart-2: #B86A4A;
+  --chart-3: #D8A84D;
+  --chart-4: #5D6F8B;
+  --chart-5: #63736D;
+
+  /* —— 侧栏 —— */
+  --sidebar: #FFFDF8;
+  --sidebar-foreground: #243A36;
+  --sidebar-primary: #315B50;
+  --sidebar-primary-foreground: #FFFDF8;
+  --sidebar-accent: #DDE8E2;
+  --sidebar-accent-foreground: #243A36;
+  --sidebar-border: #E7DDD0;
+  --sidebar-ring: #315B50;
+
+  /* —— 圆角 —— */
+  --radius: 16px;
+  /* 品牌前缀语义别名（fill-html-head.mjs semantic mapping） */
+  --fmm-radius-sm: 12px;
+  --fmm-radius-md: 12px;
+  --fmm-radius-lg: 16px;
+  --fmm-radius-xl: 20px;
+  --fmm-radius-2xl: 24px;
+
+  /* —— 字体族 —— */
+  --font-serif: "Noto Serif SC", "Songti SC", serif;
+  --font-sans: "PingFang SC", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* —— 语义别名（semantic-token-fallback） —— */
+  --semantic-bg-canvas: var(--background);
+  --semantic-bg-surface: var(--card);
+  --semantic-bg-muted: var(--muted);
+  --semantic-text-primary: var(--foreground);
+  --semantic-text-secondary: var(--muted-foreground);
+  --semantic-text-on-primary: var(--primary-foreground);
+  --semantic-brand-forest: var(--primary);
+  --semantic-brand-terracotta: var(--terracotta);
+  --semantic-accent-mustard: var(--accent);
+  --semantic-accent-mist: var(--secondary);
+  --semantic-border-soft: var(--border);
+  --semantic-status-private: var(--private);
+  --semantic-ring: var(--ring);
+}
+
+.dark {
+  --background: #1E2B27;
+  --foreground: #F2EBDC;
+  --card: #26332F;
+  --card-foreground: #F2EBDC;
+  --popover: #26332F;
+  --popover-foreground: #F2EBDC;
+  --primary: #6FA89B;
+  --primary-foreground: #1E2B27;
+  --secondary: #3A4A44;
+  --secondary-foreground: #F2EBDC;
+  --accent: #E0BC6A;
+  --accent-foreground: #1E2B27;
+  --muted: #313F3A;
+  --muted-foreground: #9CA8A2;
+  --border: #3A4A44;
+  --input: #3A4A44;
+  --ring: #6FA89B;
+  --terracotta: #D08A68;
+  --terracotta-foreground: #1E2B27;
+  --private: #8AA0BD;
+  --private-foreground: #1E2B27;
+  --chart-1: #6FA89B;
+  --chart-2: #D08A68;
+  --chart-3: #E0BC6A;
+  --chart-4: #8AA0BD;
+  --chart-5: #9CA8A2;
+  --sidebar: #26332F;
+  --sidebar-foreground: #F2EBDC;
+  --sidebar-primary: #6FA89B;
+  --sidebar-primary-foreground: #1E2B27;
+  --sidebar-accent: #3A4A44;
+  --sidebar-accent-foreground: #F2EBDC;
+  --sidebar-border: #3A4A44;
+  --sidebar-ring: #6FA89B;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-foreground: var(--terracotta-foreground);
+  --color-private: var(--private);
+  --color-private-foreground: var(--private-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);   /* 12 */
+  --radius-md: calc(var(--radius) - 4px);   /* 12 */
+  --radius-lg: var(--radius);               /* 16 */
+  --radius-xl: calc(var(--radius) + 4px);   /* 20 */
+  --radius-2xl: calc(var(--radius) + 8px);  /* 24 浮层专用 */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --radius-sm: var(--fmm-radius-sm);
+    --radius-md: var(--fmm-radius-md);
+    --radius-lg: var(--fmm-radius-lg);
+    --radius-xl: var(--fmm-radius-xl);
+  }
+  @layer base {
+    body { background: var(--background); color: var(--foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-card-foreground { background-color: var(--card-foreground); }
+      .text-card-foreground { color: var(--card-foreground); }
+      .border-card-foreground { border-color: var(--card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--card-foreground); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-popover-foreground { background-color: var(--popover-foreground); }
+      .text-popover-foreground { color: var(--popover-foreground); }
+      .border-popover-foreground { border-color: var(--popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--popover-foreground); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-secondary { background-color: var(--secondary); }
+      .text-secondary { color: var(--secondary); }
+      .border-secondary { border-color: var(--secondary); }
+      .ring-secondary { --tw-ring-color: var(--secondary); }
+      .bg-secondary-foreground { background-color: var(--secondary-foreground); }
+      .text-secondary-foreground { color: var(--secondary-foreground); }
+      .border-secondary-foreground { border-color: var(--secondary-foreground); }
+      .ring-secondary-foreground { --tw-ring-color: var(--secondary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-accent { background-color: var(--accent); }
+      .text-accent { color: var(--accent); }
+      .border-accent { border-color: var(--accent); }
+      .ring-accent { --tw-ring-color: var(--accent); }
+      .bg-accent-foreground { background-color: var(--accent-foreground); }
+      .text-accent-foreground { color: var(--accent-foreground); }
+      .border-accent-foreground { border-color: var(--accent-foreground); }
+      .ring-accent-foreground { --tw-ring-color: var(--accent-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--input); }
+      .text-input { color: var(--input); }
+      .border-input { border-color: var(--input); }
+      .ring-input { --tw-ring-color: var(--input); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+      .bg-chart-1 { background-color: var(--chart-1); }
+      .text-chart-1 { color: var(--chart-1); }
+      .border-chart-1 { border-color: var(--chart-1); }
+      .ring-chart-1 { --tw-ring-color: var(--chart-1); }
+      .bg-chart-2 { background-color: var(--chart-2); }
+      .text-chart-2 { color: var(--chart-2); }
+      .border-chart-2 { border-color: var(--chart-2); }
+      .ring-chart-2 { --tw-ring-color: var(--chart-2); }
+      .bg-chart-3 { background-color: var(--chart-3); }
+      .text-chart-3 { color: var(--chart-3); }
+      .border-chart-3 { border-color: var(--chart-3); }
+      .ring-chart-3 { --tw-ring-color: var(--chart-3); }
+      .bg-chart-4 { background-color: var(--chart-4); }
+      .text-chart-4 { color: var(--chart-4); }
+      .border-chart-4 { border-color: var(--chart-4); }
+      .ring-chart-4 { --tw-ring-color: var(--chart-4); }
+      .bg-chart-5 { background-color: var(--chart-5); }
+      .text-chart-5 { color: var(--chart-5); }
+      .border-chart-5 { border-color: var(--chart-5); }
+      .ring-chart-5 { --tw-ring-color: var(--chart-5); }
+      .bg-sidebar { background-color: var(--sidebar); }
+      .text-sidebar { color: var(--sidebar); }
+      .border-sidebar { border-color: var(--sidebar); }
+      .ring-sidebar { --tw-ring-color: var(--sidebar); }
+      .bg-sidebar-foreground { background-color: var(--sidebar-foreground); }
+      .text-sidebar-foreground { color: var(--sidebar-foreground); }
+      .border-sidebar-foreground { border-color: var(--sidebar-foreground); }
+      .ring-sidebar-foreground { --tw-ring-color: var(--sidebar-foreground); }
+      .bg-sidebar-primary { background-color: var(--sidebar-primary); }
+      .text-sidebar-primary { color: var(--sidebar-primary); }
+      .border-sidebar-primary { border-color: var(--sidebar-primary); }
+      .ring-sidebar-primary { --tw-ring-color: var(--sidebar-primary); }
+      .bg-sidebar-primary-foreground { background-color: var(--sidebar-primary-foreground); }
+      .text-sidebar-primary-foreground { color: var(--sidebar-primary-foreground); }
+      .border-sidebar-primary-foreground { border-color: var(--sidebar-primary-foreground); }
+      .ring-sidebar-primary-foreground { --tw-ring-color: var(--sidebar-primary-foreground); }
+      .bg-sidebar-accent { background-color: var(--sidebar-accent); }
+      .text-sidebar-accent { color: var(--sidebar-accent); }
+      .border-sidebar-accent { border-color: var(--sidebar-accent); }
+      .ring-sidebar-accent { --tw-ring-color: var(--sidebar-accent); }
+      .bg-sidebar-accent-foreground { background-color: var(--sidebar-accent-foreground); }
+      .text-sidebar-accent-foreground { color: var(--sidebar-accent-foreground); }
+      .border-sidebar-accent-foreground { border-color: var(--sidebar-accent-foreground); }
+      .ring-sidebar-accent-foreground { --tw-ring-color: var(--sidebar-accent-foreground); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen bg-background font-sans antialiased">
+  <!--
+    桌面策展人 shell（document-scroll）—— 照搬 partials/curator-desktop.html
+    - sticky 左侧栏 240px（w-60）：展览名 + 五项导航，create 高亮（activeItemClasses: text-primary bg-secondary font-medium）
+    - 顶栏：curatorTopbar 规范（策展工作台 + 预览参观 + 头像）
+    - 右侧内容区 main slot：双列 展品预览 / 展签表单+语音导览
+  -->
+  <div class="mx-auto flex w-full max-w-[1440px] min-h-screen bg-background">
+    <!-- 左侧栏：curatorSidebar 规范，create 高亮（home 改回 text-sidebar-foreground/70） -->
+    <aside class="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-border bg-sidebar md:flex">
+      <div class="flex items-center gap-2 px-6 py-5">
+        <span class="h-2.5 w-2.5 rounded-full bg-primary"></span>
+        <span class="font-serif text-lg text-foreground">家·记忆博物馆</span>
+      </div>
+      <nav class="flex flex-1 flex-col gap-1 px-3">
+        <a data-nav-item data-nav-key="home" data-dom-id="fmm-nav-home" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="home" class="h-[18px] w-[18px]"></i>首页</a>
+        <a data-nav-item data-nav-key="gallery" data-dom-id="fmm-nav-gallery" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="layout-grid" class="h-[18px] w-[18px]"></i>展馆</a>
+        <a data-nav-item data-nav-key="create" data-dom-id="fmm-nav-create" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-primary bg-secondary font-medium"><i data-lucide="plus" class="h-[18px] w-[18px]"></i>创建</a>
+        <a data-nav-item data-nav-key="visit" data-dom-id="fmm-nav-visit" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="eye" class="h-[18px] w-[18px]"></i>参观</a>
+        <a data-nav-item data-nav-key="mine" data-dom-id="fmm-nav-mine" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="user" class="h-[18px] w-[18px]"></i>我的</a>
+      </nav>
+      <div class="flex items-center gap-2 px-6 py-4 text-xs text-muted-foreground">
+        <i data-lucide="lock" class="h-3.5 w-3.5"></i>
+        <span>仅家庭成员可见</span>
+      </div>
+    </aside>
+
+    <!-- 右侧：顶栏 + 内容区 -->
+    <div class="flex min-h-screen flex-1 flex-col">
+      <!-- 顶栏：curatorTopbar 规范 -->
+      <header class="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card/80 px-8 py-3 backdrop-blur">
+        <div class="text-sm text-muted-foreground">策展工作台 · 一件物品里的陪伴</div>
+        <div class="flex items-center gap-4">
+          <a data-dom-id="fmm-enter-visit" class="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground hover:bg-muted"><i data-lucide="eye" class="h-4 w-4"></i>预览参观</a>
+          <div class="h-8 w-8 rounded-full bg-secondary text-center text-xs leading-8 text-primary">满</div>
+        </div>
+      </header>
+
+      <!-- 内容区 main slot -->
+      <main id="fmm-page-content" class="flex-1 bg-background p-8">
+
+        <!-- 顶部上下文条：第 5 步 + 标题 + 引导语 + 展品进度 -->
+        <section class="mb-6">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent/15 text-[12px] font-semibold text-accent">5</span>
+              <span class="text-[12px] font-medium text-muted-foreground">第 5 步 · 展签与语音导览</span>
+            </div>
+            <span class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-[11px] text-muted-foreground">
+              <i data-lucide="tag" class="h-3 w-3"></i>当前 2 / 4 · 搪瓷杯
+            </span>
+          </div>
+          <h1 class="mt-3 font-serif text-[26px] leading-8 text-foreground">为这件展品写一张展签、录一段导览</h1>
+          <p class="mt-2 text-[14px] leading-6 text-muted-foreground">左侧是参观者会看到的展签预览，右侧直接编辑。语音默认静音，由参观者手动开启。</p>
+        </section>
+
+        <!-- 双列：左 展品大图+展签预览 50% / 右 展签表单+语音文字稿编辑器 50% -->
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+
+          <!-- ============ 左列：展品大图 + 展签预览卡 ============ -->
+          <div class="flex flex-col gap-5">
+
+            <!-- 展品大图：4:3 满宽 + 左上 mustard 编号徽章 + 物品名 + 副标 -->
+            <div>
+              <div class="relative overflow-hidden rounded-lg">
+                <img id="fmm-exhibit-photo" src="../assets/exhibit-enamel-mug.jpg" alt="搪瓷杯" class="block aspect-[4/3] w-full object-cover" />
+                <!-- 左上编号徽章 妈妈—01（mustard） -->
+                <span data-fmm-preview="number" class="absolute left-3 top-3 inline-flex items-center rounded-md bg-accent px-2 py-1 font-serif text-[12px] font-medium text-accent-foreground">妈妈—01</span>
+              </div>
+              <h2 data-fmm-preview="name" class="mt-3 font-serif text-[22px] leading-7 text-foreground">搪瓷杯</h2>
+              <p data-fmm-preview="subtitle" class="mt-1 text-[13px] text-muted-foreground">约 1978 年 · 外婆陪嫁 · 讲述者 林雯</p>
+            </div>
+
+            <!-- 展签预览卡：模拟打印展签外观（bg-card border rounded-lg p-5，编辑感排版 font-serif） -->
+            <div>
+              <div class="mb-2 flex items-center gap-1.5 text-[12px] text-muted-foreground">
+                <i data-lucide="eye" class="h-3.5 w-3.5"></i>
+                <span>展签预览 · 参观者视角</span>
+              </div>
+              <div class="rounded-lg border border-border bg-card p-5">
+                <!-- 顶部 mustard 细线，强化"展签"档案感 -->
+                <div class="mb-4 h-[3px] w-10 rounded-full bg-accent"></div>
+
+                <!-- 编号 + 物品名 -->
+                <div class="flex items-baseline justify-between gap-4">
+                  <span data-fmm-preview="number" class="font-serif text-[13px] tracking-wide text-muted-foreground">妈妈—01</span>
+                  <span class="text-[11px] uppercase tracking-[0.15em] text-muted-foreground">展品 NO.02</span>
+                </div>
+                <h3 data-fmm-preview="name" class="mt-2 font-serif text-[28px] leading-8 text-foreground">搪瓷杯</h3>
+                <p data-fmm-preview="subtitle" class="mt-1.5 text-[12px] leading-5 text-muted-foreground">约 1978 年 · 外婆陪嫁 · 讲述者 林雯</p>
+
+                <!-- 分隔细线 -->
+                <div class="my-4 h-px w-full bg-border"></div>
+
+                <!-- 展签文案：font-serif 编辑感排版 -->
+                <p data-fmm-preview="label" class="font-serif text-[15px] leading-7 text-foreground">
+                  一杯热水，三十年。杯口缺了一小块瓷，是表哥小时候磕的。外婆没舍得换，说缺口也是日子的一部分。
+                </p>
+
+                <!-- 底部脚注 -->
+                <div class="mt-5 flex items-center justify-between text-[11px] text-muted-foreground">
+                  <span class="inline-flex items-center gap-1">
+                    <i data-lucide="lock" class="h-3 w-3 text-private"></i>
+                    <span class="text-private">仅家庭成员可见</span>
+                  </span>
+                  <span class="font-serif tracking-wide">家·记忆博物馆</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ============ 右列：展签编辑表单 + 语音导览 ============ -->
+          <div class="flex flex-col gap-5">
+
+            <!-- 展签编辑表单卡：bg-card border rounded-lg p-5，逐项可编辑 -->
+            <div data-dom-id="fmm-label-field" class="rounded-lg border border-border bg-card p-5">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="file-text" class="h-4 w-4 text-muted-foreground"></i>
+                  <h2 class="font-serif text-[18px] text-foreground">展签编辑</h2>
+                </div>
+                <span class="text-[11px] text-muted-foreground">改动实时同步到左侧预览</span>
+              </div>
+
+              <div class="mt-4 space-y-3.5">
+                <!-- 编号 + 物品名 -->
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="text-[12px] font-medium text-muted-foreground">编号</label>
+                    <input type="text" data-fmm-field="number" value="妈妈—01" class="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 font-serif text-[14px] text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" />
+                  </div>
+                  <div>
+                    <label class="text-[12px] font-medium text-muted-foreground">物品名</label>
+                    <input type="text" data-fmm-field="name" value="搪瓷杯" class="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-[14px] text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" />
+                  </div>
+                </div>
+
+                <!-- 年代 / 来源 / 讲述者 -->
+                <div class="grid grid-cols-3 gap-3">
+                  <div>
+                    <label class="text-[12px] font-medium text-muted-foreground">年代</label>
+                    <input type="text" data-fmm-field="year" value="约 1978" class="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-[13px] text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" />
+                  </div>
+                  <div>
+                    <label class="text-[12px] font-medium text-muted-foreground">来源</label>
+                    <input type="text" data-fmm-field="source" value="外婆陪嫁" class="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-[13px] text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" />
+                  </div>
+                  <div>
+                    <label class="text-[12px] font-medium text-muted-foreground">讲述者</label>
+                    <input type="text" data-fmm-field="teller" value="林雯" class="mt-1 block w-full rounded-md border border-border bg-background px-3 py-2 text-[13px] text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" />
+                  </div>
+                </div>
+
+                <!-- 展签文案 -->
+                <div>
+                  <label class="text-[12px] font-medium text-muted-foreground">展签文案</label>
+                  <textarea data-fmm-field="label" class="mt-1 block min-h-[96px] w-full resize-none rounded-md border border-border bg-background px-3 py-2.5 text-[14px] leading-relaxed text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- 语音导览卡：bg-card border rounded-lg p-5 -->
+            <div class="rounded-lg border border-border bg-card p-5">
+              <!-- 标题 + 小字 + 静音开关（默认开启 volume-x） -->
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <h2 class="font-serif text-[18px] text-foreground">30 秒语音导览</h2>
+                  <p class="mt-0.5 text-[12px] text-muted-foreground">默认静音，参观者手动开启</p>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <i data-lucide="volume-x" class="h-4 w-4 text-muted-foreground"></i>
+                  <button data-fmm-role="mute" role="switch" aria-checked="true" class="relative h-6 w-11 shrink-0 rounded-full bg-primary">
+                    <span class="absolute right-0.5 top-0.5 h-5 w-5 rounded-full bg-primary-foreground"></span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 文字稿编辑器 -->
+              <div class="mt-4">
+                <label class="text-[12px] font-medium text-muted-foreground">语音文字稿</label>
+                <textarea data-fmm-field="audioScript" class="mt-1 block min-h-[132px] w-full resize-none rounded-md border border-border bg-background px-3 py-2.5 text-[14px] leading-7 text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"></textarea>
+              </div>
+
+              <!-- 录音键 + 试听键 + 进度条 -->
+              <div class="mt-4 flex items-center gap-4">
+                <!-- 录音键：terracotta 圆形 -->
+                <div class="flex flex-col items-center gap-1.5 shrink-0">
+                  <button type="button" data-fmm-role="record" class="flex h-14 w-14 items-center justify-center rounded-full bg-terracotta text-terracotta-foreground shadow-sm transition active:scale-95">
+                    <i data-lucide="mic" class="h-5 w-5"></i>
+                  </button>
+                  <span class="text-[11px] text-muted-foreground">按住录制</span>
+                </div>
+
+                <!-- 试听键 + 进度 -->
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2.5">
+                    <button type="button" data-fmm-role="play" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-card text-foreground active:opacity-90">
+                      <i data-lucide="play" class="h-4 w-4"></i>
+                    </button>
+                    <div class="flex-1 min-w-0">
+                      <div class="h-1.5 rounded-full bg-muted">
+                        <div class="h-1.5 rounded-full bg-terracotta" style="width:93%"></div>
+                      </div>
+                      <div class="mt-1 flex justify-between text-[11px] text-muted-foreground">
+                        <span>0:28</span>
+                        <span>0:30</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="mt-1.5 text-[11px] text-muted-foreground">试听录制效果</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 底部按钮：上一展品（surface 描边）+ 完成·发布展览（bg-primary） -->
+        <section class="mt-8 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p class="text-[12px] leading-snug text-muted-foreground">完成后进入参观视角，预览你的展览。</p>
+          <div class="flex gap-3">
+            <button type="button" class="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-5 py-3 text-[15px] font-medium text-foreground hover:bg-muted active:opacity-90">
+              <i data-lucide="arrow-left" class="h-4 w-4"></i>
+              <span>上一展品</span>
+            </button>
+            <button type="button" data-dom-id="fmm-next-exhibit" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground hover:opacity-95 active:opacity-90">
+              <span>完成·发布展览</span>
+              <i data-lucide="arrow-right" class="h-4 w-4"></i>
+            </button>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script>if(window.lucide){lucide.createIcons();}</script>
+  <script src="../assets/fmm-app.js"></script>
+  <script>
+  (function(){
+    function ready(fn){
+      if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', fn); }
+      else { fn(); }
+    }
+    function replaceIcon(el, name){
+      if(!el) return;
+      var cls = (el.getAttribute('class') || '').replace(/\blucide\S*/g, '').replace(/\s+/g, ' ').trim();
+      var ni = document.createElement('i');
+      ni.setAttribute('data-lucide', name);
+      if(cls){ ni.setAttribute('class', cls); }
+      el.parentNode.replaceChild(ni, el);
+      if(window.lucide){ lucide.createIcons(); }
+    }
+
+    /* —— FMM 数据层快捷封装 —— */
+    function getIdx(){
+      return (window.FMM && typeof FMM.currentIdx === 'function') ? FMM.currentIdx() : 0;
+    }
+    function getExhibit(){
+      return (window.FMM && typeof FMM.getExhibit === 'function') ? FMM.getExhibit(getIdx()) : null;
+    }
+    function setExhibit(patch){
+      if(window.FMM && typeof FMM.setExhibit === 'function'){ FMM.setExhibit(getIdx(), patch); }
+    }
+    function buildSubtitle(ex){
+      if(!ex) return '';
+      var parts = [];
+      if(ex.year) parts.push(ex.year);
+      if(ex.source) parts.push(ex.source);
+      if(ex.teller) parts.push('讲述者 ' + ex.teller);
+      return parts.join(' · ');
+    }
+    function syncPreview(ex){
+      if(!ex) return;
+      var map = { 'number': ex.number, 'name': ex.name, 'label': ex.label, 'subtitle': buildSubtitle(ex) };
+      Object.keys(map).forEach(function(k){
+        var nodes = document.querySelectorAll('[data-fmm-preview="'+k+'"]');
+        for(var i=0;i<nodes.length;i++){ nodes[i].textContent = map[k] || ''; }
+      });
+    }
+
+    ready(function(){
+      var ex = getExhibit();
+
+      /* —— 1. 展签字段持久化：加载时从 FMM 恢复，input 时写回 —— */
+      var fields = document.querySelectorAll('[data-fmm-field]');
+      if(ex){
+        for(var i=0;i<fields.length;i++){
+          var f = fields[i];
+          var key = f.getAttribute('data-fmm-field');
+          if(ex[key] !== undefined && ex[key] !== null){ f.value = ex[key]; }
+        }
+        syncPreview(ex);
+
+        /* 展品图片：优先用户上传 photo，否则按 idx 取默认图 */
+        var photoImg = document.getElementById('fmm-exhibit-photo');
+        if(photoImg){
+          var PHOTO_MAP = ['exhibit-enamel-mug.jpg','exhibit-photo-album.jpg','exhibit-mechanical-watch.jpg','exhibit-textbook.jpg'];
+          var NAME_MAP = ['搪瓷杯','相册','机械表','课本'];
+          var idx = getIdx();
+          if(ex.photo){ photoImg.src = ex.photo; }
+          else if(PHOTO_MAP[idx]){ photoImg.src = '../assets/' + PHOTO_MAP[idx]; }
+          photoImg.alt = ex.name || NAME_MAP[idx] || '展品';
+        }
+
+        /* 语音文字稿：无 audioScript 时用 story 作为默认（不持久化，用户编辑后再存） */
+        var scriptField = document.querySelector('[data-fmm-field="audioScript"]');
+        if(scriptField && !ex.audioScript && ex.story){
+          scriptField.value = ex.story;
+        }
+      }
+      for(var j=0;j<fields.length;j++){
+        (function(el){
+          var key = el.getAttribute('data-fmm-field');
+          el.addEventListener('input', function(){
+            var patch = {};
+            patch[key] = el.value;
+            setExhibit(patch);
+            var cur = getExhibit();
+            if(cur){ cur[key] = el.value; syncPreview(cur); }
+          });
+        })(fields[j]);
+      }
+
+      /* —— 2. 真实录音：MediaRecorder —— */
+      var recBtn = document.querySelector('[data-fmm-role="record"]');
+      var recLabel = recBtn ? recBtn.nextElementSibling : null;
+      var mediaRecorder = null, recChunks = [], recStream = null;
+
+      if(recBtn){
+        /* 已有录音时初始化标签 */
+        if(ex && ex.audio && recLabel){ recLabel.textContent = '已录制'; }
+
+        recBtn.addEventListener('click', function(){
+          /* 正在录音 → 停止 */
+          if(mediaRecorder && mediaRecorder.state === 'recording'){
+            try { mediaRecorder.stop(); } catch(e){}
+            return;
+          }
+          /* 已有录音 → 提示 */
+          var curEx = getExhibit();
+          if(curEx && curEx.audio){
+            alert('已录制');
+            return;
+          }
+          /* 能力检测 */
+          if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === 'undefined'){
+            alert('当前浏览器不支持录音功能');
+            return;
+          }
+          navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
+            recStream = stream;
+            try {
+              mediaRecorder = new MediaRecorder(stream);
+            } catch(e){
+              alert('当前浏览器不支持录音功能');
+              stream.getTracks().forEach(function(t){ t.stop(); });
+              recStream = null;
+              return;
+            }
+            recChunks = [];
+            mediaRecorder.ondataavailable = function(e){
+              if(e.data && e.data.size > 0){ recChunks.push(e.data); }
+            };
+            mediaRecorder.onstop = function(){
+              if(recStream){ recStream.getTracks().forEach(function(t){ t.stop(); }); recStream = null; }
+              var mime = (mediaRecorder && mediaRecorder.mimeType) ? mediaRecorder.mimeType : 'audio/webm';
+              var blob = new Blob(recChunks, { type: mime });
+              var reader = new FileReader();
+              reader.onload = function(){
+                var dataUrl = reader.result;
+                setExhibit({ audio: dataUrl });
+                /* 恢复按钮样式 */
+                recBtn.style.backgroundColor = '';
+                recBtn.style.transform = '';
+                recBtn.style.boxShadow = '';
+                if(recLabel){ recLabel.textContent = '已录制'; }
+                mediaRecorder = null;
+                recChunks = [];
+              };
+              reader.onerror = function(){
+                recBtn.style.backgroundColor = '';
+                recBtn.style.transform = '';
+                recBtn.style.boxShadow = '';
+                if(recLabel){ recLabel.textContent = '按住录制'; }
+                alert('录音读取失败，请重试');
+              };
+              reader.readAsDataURL(blob);
+            };
+            mediaRecorder.start();
+            recBtn.style.backgroundColor = '#dc2626';
+            recBtn.style.transform = 'scale(1.1)';
+            recBtn.style.boxShadow = '0 0 0 4px rgba(220,38,38,0.2)';
+            if(recLabel){ recLabel.textContent = '正在录音… 点击停止'; }
+          }).catch(function(err){
+            mediaRecorder = null;
+            var name = err && err.name ? err.name : '';
+            if(name === 'NotAllowedError' || name === 'SecurityError'){
+              alert('麦克风权限被拒绝，请在浏览器设置中允许后重试');
+            } else if(name === 'NotFoundError' || name === 'DevicesNotFoundError'){
+              alert('未检测到麦克风设备');
+            } else {
+              alert('无法访问麦克风：' + (err && err.message ? err.message : '未知错误'));
+            }
+          });
+        });
+      }
+
+      /* —— 3. 试听播放真实录音 —— */
+      var playBtn = document.querySelector('[data-fmm-role="play"]');
+      if(playBtn){
+        var playWrap = playBtn.parentElement ? playBtn.parentElement.parentElement : null;
+        var playLabel = playWrap ? playWrap.querySelector('p') : null;
+        var progContainer = playBtn.parentElement ? playBtn.parentElement.querySelector('.flex-1') : null;
+        var progFill = progContainer ? progContainer.querySelector('[style*="width"]') : null;
+        var progTimes = progContainer ? progContainer.querySelectorAll('span') : null;
+        var audioEl = null, playing = false, playTimer = null;
+
+        function fmtTime(sec){
+          if(!sec || !isFinite(sec)){ sec = 0; }
+          var m = Math.floor(sec/60);
+          var s = Math.floor(sec%60);
+          return m + ':' + (s < 10 ? '0'+s : s);
+        }
+        function setPlayIcon(name){ replaceIcon(playBtn.querySelector('svg, i'), name); }
+        function resetPlayUI(){
+          playing = false;
+          setPlayIcon('play');
+          if(playLabel){ playLabel.textContent = '试听'; }
+          if(progFill){ progFill.style.width = '0%'; }
+          if(progTimes && progTimes[0]){ progTimes[0].textContent = '0:00'; }
+          if(playTimer){ clearInterval(playTimer); playTimer = null; }
+        }
+        /* 初始进度归零 */
+        if(progFill){ progFill.style.width = '0%'; }
+        if(progTimes && progTimes[0]){ progTimes[0].textContent = '0:00'; }
+        if((!ex || !ex.audio) && progTimes && progTimes[1]){ progTimes[1].textContent = '0:00'; }
+
+        playBtn.addEventListener('click', function(){
+          var curEx = getExhibit();
+          if(!curEx || !curEx.audio){
+            alert('请先录音');
+            return;
+          }
+          if(playing){
+            if(audioEl){ audioEl.pause(); }
+            playing = false;
+            setPlayIcon('play');
+            if(playLabel){ playLabel.textContent = '试听'; }
+            if(playTimer){ clearInterval(playTimer); playTimer = null; }
+            return;
+          }
+          if(!audioEl){
+            audioEl = new Audio(curEx.audio);
+            audioEl.addEventListener('ended', function(){
+              if(progFill){ progFill.style.width = '100%'; }
+              if(audioEl && progTimes && progTimes[0]){ progTimes[0].textContent = fmtTime(audioEl.duration); }
+              playing = false;
+              setPlayIcon('play');
+              if(playLabel){ playLabel.textContent = '试听'; }
+              if(playTimer){ clearInterval(playTimer); playTimer = null; }
+            });
+            audioEl.addEventListener('loadedmetadata', function(){
+              if(audioEl && progTimes && progTimes[1]){ progTimes[1].textContent = fmtTime(audioEl.duration); }
+            });
+          } else {
+            audioEl.src = curEx.audio;
+            audioEl.currentTime = 0;
+          }
+          if(progFill){ progFill.style.width = '0%'; }
+          audioEl.play().then(function(){
+            playing = true;
+            setPlayIcon('pause');
+            if(playLabel){ playLabel.textContent = '暂停'; }
+            if(audioEl && audioEl.duration && progTimes && progTimes[1]){ progTimes[1].textContent = fmtTime(audioEl.duration); }
+            if(playTimer){ clearInterval(playTimer); }
+            playTimer = setInterval(function(){
+              if(!audioEl){ return; }
+              var d = audioEl.duration || 0;
+              var c = audioEl.currentTime || 0;
+              var pct = d > 0 ? (c/d*100) : 0;
+              if(progFill){ progFill.style.width = pct + '%'; }
+              if(progTimes && progTimes[0]){ progTimes[0].textContent = fmtTime(c); }
+            }, 120);
+          }).catch(function(){
+            resetPlayUI();
+            alert('播放失败，请重新录音');
+          });
+        });
+      }
+
+      /* —— 4. 静音开关：保留现有切换逻辑（展品可见性控制，不改持久化） —— */
+      var muteBtn = document.querySelector('[data-fmm-role="mute"]');
+      if(muteBtn){
+        var muted = true;
+        muteBtn.addEventListener('click', function(){
+          muted = !muted;
+          var knob = muteBtn.querySelector('span');
+          var head = muteBtn.closest('.flex.items-start');
+          var p = head ? head.querySelector('p') : null;
+          if(muted){
+            muteBtn.classList.add('bg-primary'); muteBtn.classList.remove('bg-muted');
+            muteBtn.setAttribute('aria-checked','true');
+            if(knob){ knob.classList.add('right-0.5'); knob.classList.remove('left-0.5'); }
+            if(p){ p.textContent = '默认静音'; }
+            replaceIcon(muteBtn.previousElementSibling, 'volume-x');
+          } else {
+            muteBtn.classList.remove('bg-primary'); muteBtn.classList.add('bg-muted');
+            muteBtn.setAttribute('aria-checked','false');
+            if(knob){ knob.classList.remove('right-0.5'); knob.classList.add('left-0.5'); }
+            if(p){ p.textContent = '已开启声音'; }
+            replaceIcon(muteBtn.previousElementSibling, 'volume-2');
+          }
+        });
+      }
+
+      /* 跳转兜底 */
+      var jumps = { 'fmm-next-exhibit': 'page-visit-exhibit-desktop.html' };
+      Object.keys(jumps).forEach(function(domId){
+        var el = document.querySelector('[data-dom-id="'+domId+'"]');
+        if(el){ el.addEventListener('click', function(){ location.href = jumps[domId]; }); }
+      });
+      /* 侧栏 nav 跳转 */
+      var navJumps = {
+        'fmm-nav-home': 'page-welcome-setup-desktop.html',
+        'fmm-nav-gallery': 'page-theme-cocuration-desktop.html',
+        'fmm-nav-create': 'page-archive-card-desktop.html',
+        'fmm-nav-visit': 'page-visit-exhibit-desktop.html'
+      };
+      Object.keys(navJumps).forEach(function(domId){
+        document.querySelectorAll('[data-dom-id="'+domId+'"]').forEach(function(el){
+          el.addEventListener('click', function(e){ e.preventDefault(); location.href = navJumps[domId]; });
+        });
+      });
+      document.querySelectorAll('[data-dom-id="fmm-nav-mine"]').forEach(function(el){
+        el.addEventListener('click', function(e){ e.preventDefault(); alert('个人中心 · 待开发'); });
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

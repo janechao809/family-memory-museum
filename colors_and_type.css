@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* —— 语义表面 —— */
+  --background: #F7F2E9;          /* bg.canvas 暖白纸 */
+  --foreground: #243A36;          /* text.primary */
+  --card: #FFFDF8;                /* bg.surface */
+  --card-foreground: #243A36;
+  --popover: #FFFDF8;
+  --popover-foreground: #243A36;
+
+  /* —— 品牌 / 主操作 —— */
+  --primary: #315B50;             /* brand.forest 主按钮/链接 */
+  --primary-foreground: #FFFDF8;
+  --secondary: #DDE8E2;           /* accent.mist 选中态 */
+  --secondary-foreground: #243A36;
+  --accent: #D8A84D;              /* accent.mustard 编号/路径节点 */
+  --accent-foreground: #243A36;
+  --muted: #EFE7D8;
+  --muted-foreground: #63736D;    /* text.secondary */
+
+  /* —— 描边 / 输入 / 聚焦 —— */
+  --border: #E7DDD0;              /* border.soft */
+  --input: #E7DDD0;
+  --ring: #315B50;
+
+  /* —— 自定义品牌色（多色相，用户文档显式指定） —— */
+  --terracotta: #B86A4A;          /* brand.terracotta 录音/强调 */
+  --terracotta-foreground: #FFFDF8;
+  --private: #5D6F8B;             /* status.private 私密标记 */
+  --private-foreground: #FFFDF8;
+
+  /* —— 图表（低饱和档案感） —— */
+  --chart-1: #315B50;
+  --chart-2: #B86A4A;
+  --chart-3: #D8A84D;
+  --chart-4: #5D6F8B;
+  --chart-5: #63736D;
+
+  /* —— 侧栏 —— */
+  --sidebar: #FFFDF8;
+  --sidebar-foreground: #243A36;
+  --sidebar-primary: #315B50;
+  --sidebar-primary-foreground: #FFFDF8;
+  --sidebar-accent: #DDE8E2;
+  --sidebar-accent-foreground: #243A36;
+  --sidebar-border: #E7DDD0;
+  --sidebar-ring: #315B50;
+
+  /* —— 圆角 —— */
+  --radius: 16px;
+  /* 品牌前缀语义别名（fill-html-head.mjs semantic mapping） */
+  --fmm-radius-sm: 12px;
+  --fmm-radius-md: 12px;
+  --fmm-radius-lg: 16px;
+  --fmm-radius-xl: 20px;
+  --fmm-radius-2xl: 24px;
+
+  /* —— 字体族 —— */
+  --font-serif: "Noto Serif SC", "Songti SC", serif;
+  --font-sans: "PingFang SC", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* —— 语义别名（semantic-token-fallback） —— */
+  --semantic-bg-canvas: var(--background);
+  --semantic-bg-surface: var(--card);
+  --semantic-bg-muted: var(--muted);
+  --semantic-text-primary: var(--foreground);
+  --semantic-text-secondary: var(--muted-foreground);
+  --semantic-text-on-primary: var(--primary-foreground);
+  --semantic-brand-forest: var(--primary);
+  --semantic-brand-terracotta: var(--terracotta);
+  --semantic-accent-mustard: var(--accent);
+  --semantic-accent-mist: var(--secondary);
+  --semantic-border-soft: var(--border);
+  --semantic-status-private: var(--private);
+  --semantic-ring: var(--ring);
+}
+
+.dark {
+  --background: #1E2B27;
+  --foreground: #F2EBDC;
+  --card: #26332F;
+  --card-foreground: #F2EBDC;
+  --popover: #26332F;
+  --popover-foreground: #F2EBDC;
+  --primary: #6FA89B;
+  --primary-foreground: #1E2B27;
+  --secondary: #3A4A44;
+  --secondary-foreground: #F2EBDC;
+  --accent: #E0BC6A;
+  --accent-foreground: #1E2B27;
+  --muted: #313F3A;
+  --muted-foreground: #9CA8A2;
+  --border: #3A4A44;
+  --input: #3A4A44;
+  --ring: #6FA89B;
+  --terracotta: #D08A68;
+  --terracotta-foreground: #1E2B27;
+  --private: #8AA0BD;
+  --private-foreground: #1E2B27;
+  --chart-1: #6FA89B;
+  --chart-2: #D08A68;
+  --chart-3: #E0BC6A;
+  --chart-4: #8AA0BD;
+  --chart-5: #9CA8A2;
+  --sidebar: #26332F;
+  --sidebar-foreground: #F2EBDC;
+  --sidebar-primary: #6FA89B;
+  --sidebar-primary-foreground: #1E2B27;
+  --sidebar-accent: #3A4A44;
+  --sidebar-accent-foreground: #F2EBDC;
+  --sidebar-border: #3A4A44;
+  --sidebar-ring: #6FA89B;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-foreground: var(--terracotta-foreground);
+  --color-private: var(--private);
+  --color-private-foreground: var(--private-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);   /* 12 */
+  --radius-md: calc(var(--radius) - 4px);   /* 12 */
+  --radius-lg: var(--radius);               /* 16 */
+  --radius-xl: calc(var(--radius) + 4px);   /* 20 */
+  --radius-2xl: calc(var(--radius) + 8px);  /* 24 浮层专用 */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-serif);
+  }
+}

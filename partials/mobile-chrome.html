@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>占位</title>
+</head>
+<body class="min-h-screen bg-background font-sans antialiased">
+  <!--
+    移动端 chrome 骨架（document-scroll）
+    - 390 宽容器 max-w-[420px] mx-auto，body 自然滚动
+    - 顶部留 status-bar 安全区 pt-[env(safe-area-inset-top)]
+    - 底部留 nav 安全区（底部 nav 由 curator/visitor shell 注入，本骨架仅留空间）
+    - 不含具体顶部栏 / 底部 nav（由 curator-mobile / visitor-mobile 注入）
+  -->
+  <div class="mx-auto w-full max-w-[420px] min-h-screen bg-background">
+    <!-- 顶部 status-bar 安全区占位 -->
+    <div class="pt-[env(safe-area-inset-top)]">
+      <!-- 顶部栏由 curator/visitor shell 注入 -->
+
+      <!-- 内容区 main slot -->
+      <main id="fmm-page-content" class="min-h-screen bg-background px-5">
+        <!-- 叶子页在此填充页面内容 -->
+      </main>
+    </div>
+
+    <!-- 底部 nav 安全区占位（curator shell 的 fixed 底部 nav 高度约 64px + safe-area-inset-bottom） -->
+    <div class="h-[calc(64px+env(safe-area-inset-bottom))]"></div>
+  </div>
+
+  <script>if(window.lucide){lucide.createIcons();}</script>
+</body>
+</html>

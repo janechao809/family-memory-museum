@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>占位</title>
+</head>
+<body class="min-h-screen bg-background font-sans antialiased">
+  <!--
+    移动策展人 shell（document-scroll）
+    - 极简顶栏：左展览名"家庭记忆博物馆"宋体 + 右"我的"入口图标
+    - 内容区 main slot，背景 bg-background
+    - 底部五栏 nav：用 canonicalHtmlByKey["home"] 注入（home active）
+    - 叶子页按自己 activeKey 替换底部 nav 整块
+  -->
+  <div class="mx-auto w-full max-w-[420px] min-h-screen bg-background">
+    <!-- 极简顶栏：背景延伸至 status-bar 安全区 -->
+    <header class="sticky top-0 z-30 border-b border-border bg-card/80 backdrop-blur" style="padding-top:env(safe-area-inset-top)">
+      <div class="flex items-center justify-between px-5 py-3">
+        <span class="font-serif text-base text-foreground">家庭记忆博物馆</span>
+        <a href="#" data-dom-id="fmm-nav-mine" class="inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground">
+          <i data-lucide="user" class="h-[18px] w-[18px]"></i>
+        </a>
+      </div>
+    </header>
+
+    <!-- 内容区 main slot：底部留出 fixed nav 高度 + 安全区 -->
+    <main id="fmm-page-content" class="min-h-screen bg-background px-5 pb-[calc(72px+env(safe-area-inset-bottom))]">
+      <!-- 叶子页在此填充页面内容 -->
+    </main>
+  </div>
+
+  <!-- 底部五栏 nav：canonicalHtmlByKey["home"]（home active）；叶子页按自己 activeKey 替换整块 -->
+  <nav data-mobile-nav="global" class="fixed bottom-0 inset-x-0 z-40 border-t border-border bg-card/95 backdrop-blur" style="padding-bottom:env(safe-area-inset-bottom)"><div class="mx-auto grid w-full max-w-[420px] grid-cols-5"><a data-nav-item data-nav-key="home" data-dom-id="fmm-nav-home" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-primary"><span class="absolute top-0 h-[3px] w-7 rounded-full bg-primary"></span><i data-lucide="home" class="h-[22px] w-[22px]"></i><span class="leading-none">首页</span></a><a data-nav-item data-nav-key="gallery" data-dom-id="fmm-nav-gallery" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="layout-grid" class="h-[22px] w-[22px]"></i><span class="leading-none">展馆</span></a><a data-nav-item data-nav-key="create" data-dom-id="fmm-nav-create" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="plus" class="h-[22px] w-[22px]"></i><span class="leading-none">创建</span></a><a data-nav-item data-nav-key="visit" data-dom-id="fmm-nav-visit" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="eye" class="h-[22px] w-[22px]"></i><span class="leading-none">参观</span></a><a data-nav-item data-nav-key="mine" data-dom-id="fmm-nav-mine" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="user" class="h-[22px] w-[22px]"></i><span class="leading-none">我的</span></a></div></nav>
+
+  <script>if(window.lucide){lucide.createIcons();}</script>
+</body>
+</html>

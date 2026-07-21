@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>线上家庭记忆博物馆</title>
+  <style>
+    :root{
+      --bg:#F7F2E9; --surface:#FFFDF8; --fg:#243A36; --muted:#63736D;
+      --primary:#315B50; --primary-fg:#FFFDF8; --accent:#D8A84D;
+      --terracotta:#B86A4A; --border:#E7DDD0;
+      --serif:"Noto Serif SC","Songti SC",serif;
+      --sans:"PingFang SC","Noto Sans SC",system-ui,-apple-system,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:var(--sans); background:var(--bg); color:var(--fg);
+      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+      display:flex; align-items:center; justify-content:center;
+      min-height:100vh; padding:24px;
+    }
+    .wrap{max-width:560px;width:100%;text-align:center}
+    .mark{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 14px;border:1px solid var(--border);border-radius:999px;
+      background:var(--surface);color:var(--muted);font-size:13px;letter-spacing:.08em;
+      margin-bottom:28px;
+    }
+    .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+    h1{
+      font-family:var(--serif);font-weight:600;font-size:clamp(28px,6vw,40px);
+      line-height:1.25;color:var(--fg);margin-bottom:14px;
+    }
+    .sub{color:var(--muted);font-size:16px;line-height:1.7;margin-bottom:36px}
+    .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:30px}
+    @media (max-width:420px){.cards{grid-template-columns:1fr}}
+    .card{
+      display:block;text-decoration:none;color:inherit;
+      background:var(--surface);border:1px solid var(--border);border-radius:16px;
+      padding:24px 18px;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+    }
+    .card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(36,58,54,.08);border-color:var(--primary)}
+    .ico{
+      width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+      margin:0 auto 14px;font-size:22px;
+    }
+    .ico-m{background:rgba(49,91,80,.10);color:var(--primary)}
+    .ico-d{background:rgba(184,106,74,.10);color:var(--terracotta)}
+    .card h2{font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:6px}
+    .card p{font-size:13px;color:var(--muted);line-height:1.6}
+    .auto{
+      font-size:13px;color:var(--muted);line-height:1.6;
+      padding-top:22px;border-top:1px dashed var(--border);
+    }
+    .auto b{color:var(--primary);font-weight:600}
+    .spinner{
+      display:inline-block;width:12px;height:12px;border:2px solid var(--border);
+      border-top-color:var(--primary);border-radius:50%;
+      animation:spin 0.8s linear infinite;vertical-align:-2px;margin-right:6px;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .foot{margin-top:22px;font-size:12px;color:var(--muted);opacity:.7}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <span class="mark"><span class="dot"></span>家庭共同策展 · 纯前端运行</span>
+    <h1>线上家庭记忆博物馆</h1>
+    <p class="sub">把家里那些被时间记住的物品，<br/>做成一座可以走进去的博物馆。</p>
+
+    <div class="cards">
+      <a class="card" id="entry-mobile" href="pages/page-welcome-setup-mobile.html">
+        <div class="ico ico-m">手机</div>
+        <h2>手机版</h2>
+        <p>随时随地记录与策展，适合家庭各成员共同参与。</p>
+      </a>
+      <a class="card" id="entry-desktop" href="pages/page-welcome-setup-desktop.html">
+        <div class="ico ico-d">桌面</div>
+        <h2>桌面版</h2>
+        <p>更大的策展工作台，适合整理展品与撰写展签。</p>
+      </a>
+    </div>
+
+    <p class="auto" id="auto-line"><span class="spinner"></span>正在识别设备，<b id="auto-target">即将进入</b>……</p>
+    <p class="foot">数据保存在你的浏览器本地，不会上传到任何服务器。</p>
+  </main>
+
+  <script>
+    (function(){
+      var w = window.innerWidth || document.documentElement.clientWidth || 0;
+      var isMobile = w < 768 || /Mobi|Android|iPhone|iPod/i.test(navigator.userAgent);
+      var target = isMobile ? 'pages/page-welcome-setup-mobile.html' : 'pages/page-welcome-setup-desktop.html';
+      var label = isMobile ? '手机版' : '桌面版';
+      document.getElementById('auto-target').textContent = label;
+      /* 高亮当前推荐入口 */
+      var rec = document.getElementById(isMobile ? 'entry-mobile' : 'entry-desktop');
+      if(rec){ rec.style.borderColor = 'var(--primary)'; rec.style.boxShadow = '0 8px 24px rgba(36,58,54,.10)'; }
+      /* 自动跳转，给用户 1.2s 看到着陆页 */
+      setTimeout(function(){ window.location.replace(target); }, 1200);
+    })();
+  </script>
+</body>
+</html>

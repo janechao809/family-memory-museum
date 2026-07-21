@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>占位</title>
+</head>
+<body class="min-h-screen bg-background font-sans antialiased">
+  <!--
+    桌面观众 shell（document-scroll）
+    - 极简顶栏：visitorTopbar 规范（左 terracotta 点 + 展览名宋体 / 右路线进度 + 退出）
+    - 内容区 main slot
+    - 无左侧栏（观众沉浸式）
+  -->
+  <div class="mx-auto w-full max-w-[1440px] min-h-screen bg-background">
+    <!-- 极简顶栏：visitorTopbar 规范 -->
+    <header class="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card/80 px-6 py-3 backdrop-blur">
+      <div class="flex items-center gap-3">
+        <span class="h-2 w-2 rounded-full bg-terracotta"></span>
+        <span class="font-serif text-base text-foreground">一件物品里的陪伴</span>
+      </div>
+      <div class="flex items-center gap-4 text-sm text-muted-foreground">
+        <span data-dom-id="fmm-visit-progress">2 / 4</span>
+        <a data-dom-id="fmm-exit-visit" class="inline-flex items-center gap-1 hover:text-foreground">
+          <i data-lucide="log-out" class="h-4 w-4"></i>退出
+        </a>
+      </div>
+    </header>
+
+    <!-- 内容区 main slot，无左侧栏 -->
+    <main id="fmm-page-content" class="min-h-screen bg-background p-8">
+      <!-- 叶子页在此填充页面内容 -->
+    </main>
+  </div>
+
+  <script>if(window.lucide){lucide.createIcons();}</script>
+</body>
+</html>

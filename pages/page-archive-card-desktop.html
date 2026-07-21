@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>②物品档案卡</title>
+    <style id="theme-vars">
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* —— 语义表面 —— */
+  --background: #F7F2E9;          /* bg.canvas 暖白纸 */
+  --foreground: #243A36;          /* text.primary */
+  --card: #FFFDF8;                /* bg.surface */
+  --card-foreground: #243A36;
+  --popover: #FFFDF8;
+  --popover-foreground: #243A36;
+
+  /* —— 品牌 / 主操作 —— */
+  --primary: #315B50;             /* brand.forest 主按钮/链接 */
+  --primary-foreground: #FFFDF8;
+  --secondary: #DDE8E2;           /* accent.mist 选中态 */
+  --secondary-foreground: #243A36;
+  --accent: #D8A84D;              /* accent.mustard 编号/路径节点 */
+  --accent-foreground: #243A36;
+  --muted: #EFE7D8;
+  --muted-foreground: #63736D;    /* text.secondary */
+
+  /* —— 描边 / 输入 / 聚焦 —— */
+  --border: #E7DDD0;              /* border.soft */
+  --input: #E7DDD0;
+  --ring: #315B50;
+
+  /* —— 自定义品牌色（多色相，用户文档显式指定） —— */
+  --terracotta: #B86A4A;          /* brand.terracotta 录音/强调 */
+  --terracotta-foreground: #FFFDF8;
+  --private: #5D6F8B;             /* status.private 私密标记 */
+  --private-foreground: #FFFDF8;
+
+  /* —— 图表（低饱和档案感） —— */
+  --chart-1: #315B50;
+  --chart-2: #B86A4A;
+  --chart-3: #D8A84D;
+  --chart-4: #5D6F8B;
+  --chart-5: #63736D;
+
+  /* —— 侧栏 —— */
+  --sidebar: #FFFDF8;
+  --sidebar-foreground: #243A36;
+  --sidebar-primary: #315B50;
+  --sidebar-primary-foreground: #FFFDF8;
+  --sidebar-accent: #DDE8E2;
+  --sidebar-accent-foreground: #243A36;
+  --sidebar-border: #E7DDD0;
+  --sidebar-ring: #315B50;
+
+  /* —— 圆角 —— */
+  --radius: 16px;
+  /* 品牌前缀语义别名（fill-html-head.mjs semantic mapping） */
+  --fmm-radius-sm: 12px;
+  --fmm-radius-md: 12px;
+  --fmm-radius-lg: 16px;
+  --fmm-radius-xl: 20px;
+  --fmm-radius-2xl: 24px;
+
+  /* —— 字体族 —— */
+  --font-serif: "Noto Serif SC", "Songti SC", serif;
+  --font-sans: "PingFang SC", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* —— 语义别名（semantic-token-fallback） —— */
+  --semantic-bg-canvas: var(--background);
+  --semantic-bg-surface: var(--card);
+  --semantic-bg-muted: var(--muted);
+  --semantic-text-primary: var(--foreground);
+  --semantic-text-secondary: var(--muted-foreground);
+  --semantic-text-on-primary: var(--primary-foreground);
+  --semantic-brand-forest: var(--primary);
+  --semantic-brand-terracotta: var(--terracotta);
+  --semantic-accent-mustard: var(--accent);
+  --semantic-accent-mist: var(--secondary);
+  --semantic-border-soft: var(--border);
+  --semantic-status-private: var(--private);
+  --semantic-ring: var(--ring);
+}
+
+.dark {
+  --background: #1E2B27;
+  --foreground: #F2EBDC;
+  --card: #26332F;
+  --card-foreground: #F2EBDC;
+  --popover: #26332F;
+  --popover-foreground: #F2EBDC;
+  --primary: #6FA89B;
+  --primary-foreground: #1E2B27;
+  --secondary: #3A4A44;
+  --secondary-foreground: #F2EBDC;
+  --accent: #E0BC6A;
+  --accent-foreground: #1E2B27;
+  --muted: #313F3A;
+  --muted-foreground: #9CA8A2;
+  --border: #3A4A44;
+  --input: #3A4A44;
+  --ring: #6FA89B;
+  --terracotta: #D08A68;
+  --terracotta-foreground: #1E2B27;
+  --private: #8AA0BD;
+  --private-foreground: #1E2B27;
+  --chart-1: #6FA89B;
+  --chart-2: #D08A68;
+  --chart-3: #E0BC6A;
+  --chart-4: #8AA0BD;
+  --chart-5: #9CA8A2;
+  --sidebar: #26332F;
+  --sidebar-foreground: #F2EBDC;
+  --sidebar-primary: #6FA89B;
+  --sidebar-primary-foreground: #1E2B27;
+  --sidebar-accent: #3A4A44;
+  --sidebar-accent-foreground: #F2EBDC;
+  --sidebar-border: #3A4A44;
+  --sidebar-ring: #6FA89B;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-foreground: var(--terracotta-foreground);
+  --color-private: var(--private);
+  --color-private-foreground: var(--private-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);   /* 12 */
+  --radius-md: calc(var(--radius) - 4px);   /* 12 */
+  --radius-lg: var(--radius);               /* 16 */
+  --radius-xl: calc(var(--radius) + 4px);   /* 20 */
+  --radius-2xl: calc(var(--radius) + 8px);  /* 24 浮层专用 */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --radius-sm: var(--fmm-radius-sm);
+    --radius-md: var(--fmm-radius-md);
+    --radius-lg: var(--fmm-radius-lg);
+    --radius-xl: var(--fmm-radius-xl);
+  }
+  @layer base {
+    body { background: var(--background); color: var(--foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-card-foreground { background-color: var(--card-foreground); }
+      .text-card-foreground { color: var(--card-foreground); }
+      .border-card-foreground { border-color: var(--card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--card-foreground); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-popover-foreground { background-color: var(--popover-foreground); }
+      .text-popover-foreground { color: var(--popover-foreground); }
+      .border-popover-foreground { border-color: var(--popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--popover-foreground); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-secondary { background-color: var(--secondary); }
+      .text-secondary { color: var(--secondary); }
+      .border-secondary { border-color: var(--secondary); }
+      .ring-secondary { --tw-ring-color: var(--secondary); }
+      .bg-secondary-foreground { background-color: var(--secondary-foreground); }
+      .text-secondary-foreground { color: var(--secondary-foreground); }
+      .border-secondary-foreground { border-color: var(--secondary-foreground); }
+      .ring-secondary-foreground { --tw-ring-color: var(--secondary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-accent { background-color: var(--accent); }
+      .text-accent { color: var(--accent); }
+      .border-accent { border-color: var(--accent); }
+      .ring-accent { --tw-ring-color: var(--accent); }
+      .bg-accent-foreground { background-color: var(--accent-foreground); }
+      .text-accent-foreground { color: var(--accent-foreground); }
+      .border-accent-foreground { border-color: var(--accent-foreground); }
+      .ring-accent-foreground { --tw-ring-color: var(--accent-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--input); }
+      .text-input { color: var(--input); }
+      .border-input { border-color: var(--input); }
+      .ring-input { --tw-ring-color: var(--input); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+      .bg-chart-1 { background-color: var(--chart-1); }
+      .text-chart-1 { color: var(--chart-1); }
+      .border-chart-1 { border-color: var(--chart-1); }
+      .ring-chart-1 { --tw-ring-color: var(--chart-1); }
+      .bg-chart-2 { background-color: var(--chart-2); }
+      .text-chart-2 { color: var(--chart-2); }
+      .border-chart-2 { border-color: var(--chart-2); }
+      .ring-chart-2 { --tw-ring-color: var(--chart-2); }
+      .bg-chart-3 { background-color: var(--chart-3); }
+      .text-chart-3 { color: var(--chart-3); }
+      .border-chart-3 { border-color: var(--chart-3); }
+      .ring-chart-3 { --tw-ring-color: var(--chart-3); }
+      .bg-chart-4 { background-color: var(--chart-4); }
+      .text-chart-4 { color: var(--chart-4); }
+      .border-chart-4 { border-color: var(--chart-4); }
+      .ring-chart-4 { --tw-ring-color: var(--chart-4); }
+      .bg-chart-5 { background-color: var(--chart-5); }
+      .text-chart-5 { color: var(--chart-5); }
+      .border-chart-5 { border-color: var(--chart-5); }
+      .ring-chart-5 { --tw-ring-color: var(--chart-5); }
+      .bg-sidebar { background-color: var(--sidebar); }
+      .text-sidebar { color: var(--sidebar); }
+      .border-sidebar { border-color: var(--sidebar); }
+      .ring-sidebar { --tw-ring-color: var(--sidebar); }
+      .bg-sidebar-foreground { background-color: var(--sidebar-foreground); }
+      .text-sidebar-foreground { color: var(--sidebar-foreground); }
+      .border-sidebar-foreground { border-color: var(--sidebar-foreground); }
+      .ring-sidebar-foreground { --tw-ring-color: var(--sidebar-foreground); }
+      .bg-sidebar-primary { background-color: var(--sidebar-primary); }
+      .text-sidebar-primary { color: var(--sidebar-primary); }
+      .border-sidebar-primary { border-color: var(--sidebar-primary); }
+      .ring-sidebar-primary { --tw-ring-color: var(--sidebar-primary); }
+      .bg-sidebar-primary-foreground { background-color: var(--sidebar-primary-foreground); }
+      .text-sidebar-primary-foreground { color: var(--sidebar-primary-foreground); }
+      .border-sidebar-primary-foreground { border-color: var(--sidebar-primary-foreground); }
+      .ring-sidebar-primary-foreground { --tw-ring-color: var(--sidebar-primary-foreground); }
+      .bg-sidebar-accent { background-color: var(--sidebar-accent); }
+      .text-sidebar-accent { color: var(--sidebar-accent); }
+      .border-sidebar-accent { border-color: var(--sidebar-accent); }
+      .ring-sidebar-accent { --tw-ring-color: var(--sidebar-accent); }
+      .bg-sidebar-accent-foreground { background-color: var(--sidebar-accent-foreground); }
+      .text-sidebar-accent-foreground { color: var(--sidebar-accent-foreground); }
+      .border-sidebar-accent-foreground { border-color: var(--sidebar-accent-foreground); }
+      .ring-sidebar-accent-foreground { --tw-ring-color: var(--sidebar-accent-foreground); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen bg-background font-sans antialiased">
+  <!--
+    桌面策展人 shell（document-scroll）· 物品档案卡
+    - 照搬 partials/curator-desktop.html 外壳；侧栏高亮从 home 改到 create
+    - main 双列：左纵向步骤轨 280px(sticky top-24) / 右宽表单区 flex-1，gap-8
+    - viewportMode=document-scroll，侧栏 sticky
+  -->
+  <div class="mx-auto flex w-full max-w-[1440px] min-h-screen bg-background">
+    <!-- 左侧栏：curatorSidebar 规范，create 高亮（activeItemClasses: text-primary bg-secondary font-medium） -->
+    <aside class="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-border bg-sidebar md:flex">
+      <div class="flex items-center gap-2 px-6 py-5">
+        <span class="h-2.5 w-2.5 rounded-full bg-primary"></span>
+        <span class="font-serif text-lg text-foreground">家·记忆博物馆</span>
+      </div>
+      <nav class="flex flex-1 flex-col gap-1 px-3">
+        <a data-nav-item data-nav-key="home" data-dom-id="fmm-nav-home" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="home" class="h-[18px] w-[18px]"></i>首页</a>
+        <a data-nav-item data-nav-key="gallery" data-dom-id="fmm-nav-gallery" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="layout-grid" class="h-[18px] w-[18px]"></i>展馆</a>
+        <a data-nav-item data-nav-key="create" data-dom-id="fmm-nav-create" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-primary bg-secondary font-medium"><i data-lucide="plus" class="h-[18px] w-[18px]"></i>创建</a>
+        <a data-nav-item data-nav-key="visit" data-dom-id="fmm-nav-visit" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="eye" class="h-[18px] w-[18px]"></i>参观</a>
+        <a data-nav-item data-nav-key="mine" data-dom-id="fmm-nav-mine" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="user" class="h-[18px] w-[18px]"></i>我的</a>
+      </nav>
+      <div class="flex items-center gap-2 px-6 py-4 text-xs text-muted-foreground">
+        <i data-lucide="lock" class="h-3.5 w-3.5"></i>
+        <span>仅家庭成员可见</span>
+      </div>
+    </aside>
+
+    <!-- 右侧：顶栏 + 内容区 -->
+    <div class="flex min-h-screen flex-1 flex-col">
+      <!-- 顶栏：curatorTopbar 规范 -->
+      <header class="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card/80 px-8 py-3 backdrop-blur">
+        <div class="text-sm text-muted-foreground">策展工作台 · 一件物品里的陪伴</div>
+        <div class="flex items-center gap-4">
+          <a data-dom-id="fmm-enter-visit" class="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground hover:bg-muted"><i data-lucide="eye" class="h-4 w-4"></i>预览参观</a>
+          <div class="h-8 w-8 rounded-full bg-secondary text-center text-xs leading-8 text-primary">满</div>
+        </div>
+      </header>
+
+      <!-- 内容区 main slot -->
+      <main id="fmm-page-content" class="flex-1 bg-background p-8">
+
+        <!-- 顶部返回条：第 2 / 5 步 + 返回 + 建档标记 -->
+        <div class="mb-6 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <button type="button" data-dom-id="fmm-step-back" class="inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground">
+              <i data-lucide="arrow-left" class="h-4 w-4"></i>
+            </button>
+            <span class="text-[13px] text-muted-foreground">物品档案卡 · 第 2 / 5 步</span>
+          </div>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-[12px] text-muted-foreground">
+            <i data-lucide="archive" class="h-3 w-3"></i>建档中
+          </span>
+        </div>
+
+        <!-- 双列：左纵向步骤轨 280px / 右宽表单区 flex-1，gap-8 -->
+        <div class="flex items-start gap-8">
+
+          <!-- 左列：纵向步骤轨（sticky top-24） -->
+          <aside class="w-[280px] shrink-0">
+            <div class="sticky top-24 rounded-lg border border-border bg-card p-5">
+              <div class="mb-4 flex items-center justify-between">
+                <p class="text-[12px] font-medium uppercase tracking-wide text-muted-foreground">五步档案卡</p>
+                <span class="text-[11px] text-muted-foreground">2 / 5</span>
+              </div>
+              <ol class="space-y-1">
+                <!-- 步骤 1 已完成：forest 圆带 check -->
+                <li class="rounded-lg p-2.5">
+                  <div class="flex items-start gap-3">
+                    <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                      <i data-lucide="check" class="h-3.5 w-3.5"></i>
+                    </span>
+                    <div class="min-w-0">
+                      <p class="text-[14px] text-foreground">① 它是什么</p>
+                      <p class="mt-0.5 text-[12px] leading-snug text-muted-foreground">物品名、年代、讲述者</p>
+                    </div>
+                  </div>
+                </li>
+                <!-- 步骤 2 当前：mustard 实心圆 + font-medium，bg-secondary 高亮行 -->
+                <li class="rounded-lg bg-secondary p-2.5">
+                  <div class="flex items-start gap-3">
+                    <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-[13px] font-medium text-accent-foreground">2</span>
+                    <div class="min-w-0">
+                      <p class="text-[14px] font-medium text-primary">② 它发生过什么</p>
+                      <p class="mt-0.5 text-[12px] leading-snug text-muted-foreground">一段小片段，按住可录音</p>
+                    </div>
+                  </div>
+                </li>
+                <!-- 步骤 3 未到：border 圆 text-muted -->
+                <li class="rounded-lg p-2.5">
+                  <div class="flex items-start gap-3">
+                    <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[13px] text-muted-foreground">3</span>
+                    <div class="min-w-0">
+                      <p class="text-[14px] text-muted-foreground">③ 它对我意味着什么</p>
+                      <p class="mt-0.5 text-[12px] leading-snug text-muted-foreground">一句话私人注解</p>
+                    </div>
+                  </div>
+                </li>
+                <!-- 步骤 4 未到 -->
+                <li class="rounded-lg p-2.5">
+                  <div class="flex items-start gap-3">
+                    <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[13px] text-muted-foreground">4</span>
+                    <div class="min-w-0">
+                      <p class="text-[14px] text-muted-foreground">④ 情绪与可见性</p>
+                      <p class="mt-0.5 text-[12px] leading-snug text-muted-foreground">情绪标签 + 谁能看见</p>
+                    </div>
+                  </div>
+                </li>
+                <!-- 步骤 5 未到 -->
+                <li class="rounded-lg p-2.5">
+                  <div class="flex items-start gap-3">
+                    <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[13px] text-muted-foreground">5</span>
+                    <div class="min-w-0">
+                      <p class="text-[14px] text-muted-foreground">⑤ 预览</p>
+                      <p class="mt-0.5 text-[12px] leading-snug text-muted-foreground">展签模板所见即所得</p>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+              <div class="mt-4 border-t border-border pt-4">
+                <p class="text-[12px] leading-snug text-muted-foreground">一次只答一问，不必说完所有事。可以随时保存草稿。</p>
+              </div>
+            </div>
+          </aside>
+
+          <!-- 右列：宽表单区 flex-1 -->
+          <section class="min-w-0 flex-1">
+
+            <!-- 顶部物品卡：左缩略 120×90 + 右物品名/年代/讲述者 -->
+            <div class="flex items-center gap-4 rounded-lg border border-border bg-card p-4">
+              <figure data-fmm-role="photo-card" class="relative block h-[90px] w-[120px] shrink-0 cursor-pointer overflow-hidden rounded-lg">
+                <img src="../assets/exhibit-textbook.jpg" alt="初一数学课本" data-fmm-role="photo-img" class="block h-full w-full object-cover" />
+                <div data-fmm-role="photo-overlay" class="absolute inset-0 flex items-center justify-center bg-foreground/40 opacity-0 transition-opacity">
+                  <span class="inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1.5 text-[13px] font-medium text-foreground">
+                    <i data-lucide="camera" class="h-4 w-4"></i>点击上传/更换照片
+                  </span>
+                </div>
+                <input type="file" accept="image/*" data-fmm-role="photo-input" class="hidden" />
+              </figure>
+              <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-2">
+                  <p class="font-serif text-[18px] leading-tight text-foreground">初一数学课本</p>
+                  <span class="inline-flex items-center gap-1 rounded-full bg-accent/15 px-2 py-0.5 text-[11px] font-medium text-accent">
+                    <i data-lucide="hash" class="h-3 w-3"></i>爸爸—03
+                  </span>
+                </div>
+                <div class="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-muted-foreground">
+                  <span class="inline-flex items-center gap-1"><i data-lucide="calendar" class="h-3 w-3"></i>年代 · 约 2023</span>
+                  <span class="inline-flex items-center gap-1"><i data-lucide="user-round" class="h-3 w-3"></i>讲述者 · 小满·16 岁</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 步标题 + 三层结构提示条 -->
+            <div class="mt-6 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <h1 class="font-serif text-[22px] leading-tight text-foreground">它发生过什么</h1>
+                <p class="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">一次只讲一个小片段就够，不必说完所有事。</p>
+              </div>
+              <!-- 三层结构提示 chip 横排：它是什么✓ / 它发生过什么·当前 / 它对我意味着什么 -->
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-1 text-[11px] text-muted-foreground">
+                  <i data-lucide="check" class="h-3 w-3"></i>它是什么
+                </span>
+                <i data-lucide="chevron-right" class="h-3 w-3 text-border"></i>
+                <span class="inline-flex items-center rounded-md border border-primary bg-secondary px-2 py-1 text-[11px] font-medium text-primary">它发生过什么</span>
+                <i data-lucide="chevron-right" class="h-3 w-3 text-border"></i>
+                <span class="inline-flex items-center rounded-md border border-border bg-card px-2 py-1 text-[11px] text-muted-foreground">它对我意味着什么</span>
+              </div>
+            </div>
+
+            <!-- 大文本框 min-h-[220px] -->
+            <div class="mt-4">
+              <div class="mb-2 flex items-baseline justify-between">
+                <label for="fmm-story-input" class="text-[13px] font-medium text-foreground">写下它发生过的一件事</label>
+                <span class="text-[11px] text-muted-foreground">选填 · 可只写一句</span>
+              </div>
+              <textarea id="fmm-story-input" class="block min-h-[220px] w-full resize-y rounded-lg border border-border bg-card px-4 py-3 text-[15px] leading-relaxed text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" placeholder="可以讲一个小片段，不必说完所有事">初一数学没考好，我把卷子塞进课本里哭。外婆没讲道理，只在扉页用铅笔写了三个字：慢慢来。从那以后每次翻开，都像被轻轻拍了一下背。</textarea>
+            </div>
+
+            <!-- 按住录音键 terracotta 圆形 + 波形 -->
+            <div class="mt-4 flex items-center gap-5 rounded-lg border border-border bg-card px-5 py-4">
+              <button type="button" data-fmm-role="record" class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-terracotta text-terracotta-foreground shadow-sm transition active:scale-95" aria-label="按住录音">
+                <i data-lucide="mic" class="h-5 w-5"></i>
+              </button>
+              <div class="min-w-0 flex-1">
+                <p class="text-[14px] font-medium text-foreground">按住说话，松开生成 30 秒语音</p>
+                <p class="mt-0.5 text-[12px] text-muted-foreground">尚未录音 · 也可只用文字记录</p>
+                <!-- 波形：静态低饱和条形 -->
+                <div class="mt-2 flex items-end gap-[3px]" aria-hidden="true">
+                  <span class="h-2 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-3 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-5 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-4 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-6 w-[3px] rounded-full bg-terracotta/40"></span>
+                  <span class="h-4 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-7 w-[3px] rounded-full bg-terracotta/40"></span>
+                  <span class="h-5 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-3 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-6 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-4 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-5 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-3 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-2 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-4 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-6 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-3 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-5 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-2 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-4 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-3 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-5 w-[3px] rounded-full bg-border"></span>
+                  <span class="h-2 w-[3px] rounded-full bg-border"></span>
+                </div>
+              </div>
+              <span class="hidden shrink-0 items-center gap-1 text-[12px] text-muted-foreground lg:inline-flex">
+                <i data-lucide="circle-dot" class="h-3 w-3 text-terracotta"></i>默认静音
+              </span>
+              <button type="button" data-fmm-role="playback" class="shrink-0 inline-flex items-center gap-2 rounded-full border border-border bg-background px-3.5 py-2 text-[13px] font-medium text-foreground transition active:scale-95">
+                <i data-lucide="play" class="h-4 w-4"></i><span>回听录音</span>
+              </button>
+            </div>
+
+            <!-- 情绪标签 chip 横排 -->
+            <div class="mt-6">
+              <div class="mb-2.5 flex items-baseline justify-between">
+                <h2 class="text-[13px] font-medium text-foreground">这段记忆里的情绪</h2>
+                <span class="text-[11px] text-muted-foreground">可多选</span>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" data-emotion="陪伴" class="inline-flex items-center rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] text-muted-foreground hover:border-muted-foreground">陪伴</button>
+                <button type="button" data-emotion="愧疚" class="inline-flex items-center rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] text-muted-foreground hover:border-muted-foreground">愧疚</button>
+                <button type="button" data-emotion="安心" class="inline-flex items-center rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] text-muted-foreground hover:border-muted-foreground">安心</button>
+                <button type="button" data-emotion="想念" class="inline-flex items-center rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] text-muted-foreground hover:border-muted-foreground">想念</button>
+                <button type="button" data-emotion="遗憾" class="inline-flex items-center rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] text-muted-foreground hover:border-muted-foreground">遗憾</button>
+                <button type="button" data-emotion="温暖" class="inline-flex items-center rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] text-muted-foreground hover:border-muted-foreground">温暖</button>
+              </div>
+            </div>
+
+            <!-- 可见性：仅家庭成员可见 lock 标记 -->
+            <div class="mt-6 flex items-center justify-between rounded-lg border border-border bg-card px-4 py-3">
+              <div class="flex items-center gap-3">
+                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-private/10 text-private">
+                  <i data-lucide="lock" class="h-4 w-4"></i>
+                </span>
+                <div>
+                  <p class="text-[14px] font-medium text-foreground">仅家庭成员可见</p>
+                  <p class="mt-0.5 text-[12px] text-muted-foreground">只有加入这座馆的家人能读到这段记忆。</p>
+                </div>
+              </div>
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-private/10 px-2.5 py-1 text-[11px] font-medium text-private">
+                <i data-lucide="shield-check" class="h-3 w-3"></i>私密
+              </span>
+            </div>
+
+            <!-- 底部双按钮：保存草稿（surface 描边）+ 下一步（bg-primary） -->
+            <div class="mt-8 flex items-center gap-3">
+              <button type="button" class="rounded-lg border border-border bg-card px-5 py-3 text-[15px] font-medium text-foreground hover:bg-muted active:opacity-90">
+                保存草稿
+              </button>
+              <button type="button" data-dom-id="fmm-step-next" class="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground hover:opacity-95 active:opacity-90">
+                <span>下一步</span>
+                <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </button>
+              <p class="ml-1 text-[12px] leading-snug text-muted-foreground">下一步：它对你意味着什么。</p>
+            </div>
+
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>if(window.lucide){lucide.createIcons();}</script>
+  <script src="../assets/fmm-app.js"></script>
+
+  <script>
+  /* fmm-interaction-v2 · 真实照片上传 / 真实录音 / 文本与情绪持久化 */
+(function(){
+  function ready(fn){ if(document.readyState!=='loading'){fn();}else{document.addEventListener('DOMContentLoaded',fn);} }
+  function inIframe(){ try { return window.self !== window.top; } catch(e){ return false; } }
+  function bindJumps(jumps){
+    Object.keys(jumps).forEach(function(domId){
+      var el = document.querySelector('[data-dom-id="'+domId+'"]');
+      if(el){ el.addEventListener('click', function(){ if(inIframe()){return;} try{ location.href = jumps[domId]; }catch(_){} }); }
+    });
+  }
+  ready(function(){
+    bindJumps({
+      'fmm-step-next': 'page-theme-cocuration-desktop.html',
+      'fmm-nav-home': 'page-welcome-setup-desktop.html',
+      'fmm-nav-gallery': 'page-theme-cocuration-desktop.html'
+    });
+
+    // 侧栏 nav 跳转（home/gallery 已由上方 bindJumps 绑定，此处补 create/visit/mine）
+    var navJumps = {
+      'fmm-nav-create': 'page-archive-card-desktop.html',
+      'fmm-nav-visit': 'page-visit-exhibit-desktop.html'
+    };
+    Object.keys(navJumps).forEach(function(domId){
+      document.querySelectorAll('[data-dom-id="'+domId+'"]').forEach(function(el){
+        el.addEventListener('click', function(e){ e.preventDefault(); location.href = navJumps[domId]; });
+      });
+    });
+    document.querySelectorAll('[data-dom-id="fmm-nav-mine"]').forEach(function(el){
+      el.addEventListener('click', function(e){ e.preventDefault(); alert('个人中心 · 待开发'); });
+    });
+
+    var FMM = window.FMM;
+    if(!FMM || typeof FMM.currentIdx !== 'function'){ if(window.lucide){ lucide.createIcons(); } return; }
+    var idx = FMM.currentIdx();
+    var ex = FMM.getExhibit(idx);
+
+    /* —— ① 照片上传 —— */
+    var photoCard = document.querySelector('[data-fmm-role="photo-card"]');
+    var photoImg = document.querySelector('[data-fmm-role="photo-img"]');
+    var photoOverlay = document.querySelector('[data-fmm-role="photo-overlay"]');
+    var photoInput = document.querySelector('[data-fmm-role="photo-input"]');
+    if(photoCard && photoImg && photoInput){
+      if(ex && ex.photo){ photoImg.setAttribute('src', ex.photo); }
+      photoCard.addEventListener('mouseenter', function(){
+        if(photoOverlay){ photoOverlay.classList.remove('opacity-0'); photoOverlay.classList.add('opacity-100'); }
+      });
+      photoCard.addEventListener('mouseleave', function(){
+        if(photoOverlay){ photoOverlay.classList.add('opacity-0'); photoOverlay.classList.remove('opacity-100'); }
+      });
+      photoCard.addEventListener('click', function(){ photoInput.click(); });
+      photoInput.addEventListener('change', function(){
+        var file = photoInput.files && photoInput.files[0];
+        if(!file){ return; }
+        var reader = new FileReader();
+        reader.onload = function(){
+          var dataUrl = reader.result;
+          photoImg.setAttribute('src', dataUrl);
+          FMM.setExhibit(idx, { photo: dataUrl });
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    /* —— ② 故事文本持久化 —— */
+    var storyInput = document.getElementById('fmm-story-input');
+    if(storyInput){
+      if(ex && ex.story){ storyInput.value = ex.story; }
+      storyInput.addEventListener('input', function(){
+        FMM.setExhibit(idx, { story: storyInput.value });
+      });
+    }
+
+    /* —— ③ 情绪标签持久化 —— */
+    var activeClasses = ['border-primary','bg-secondary','text-primary'];
+    var inactiveClasses = ['border-border','bg-card','text-muted-foreground','hover:border-muted-foreground'];
+    var emotionButtons = document.querySelectorAll('[data-emotion]');
+    var savedEmotions = (ex && Array.isArray(ex.emotion)) ? ex.emotion.slice() : [];
+
+    function isEmotionSelected(word){ return savedEmotions.indexOf(word) !== -1; }
+    function renderEmotionButton(btn){
+      var word = btn.getAttribute('data-emotion');
+      var selected = isEmotionSelected(word);
+      activeClasses.forEach(function(c){ btn.classList.remove(c); });
+      inactiveClasses.forEach(function(c){ btn.classList.remove(c); });
+      btn.classList.remove('gap-1');
+      if(selected){
+        activeClasses.forEach(function(c){ btn.classList.add(c); });
+        btn.classList.add('gap-1');
+        btn.innerHTML = '<i data-lucide="check" class="h-3 w-3"></i>' + word;
+      } else {
+        inactiveClasses.forEach(function(c){ btn.classList.add(c); });
+        btn.innerHTML = word;
+      }
+    }
+    emotionButtons.forEach(function(btn){
+      renderEmotionButton(btn);
+      btn.addEventListener('click', function(){
+        var word = btn.getAttribute('data-emotion');
+        var pos = savedEmotions.indexOf(word);
+        if(pos === -1){ savedEmotions.push(word); } else { savedEmotions.splice(pos, 1); }
+        emotionButtons.forEach(renderEmotionButton);
+        if(window.lucide){ lucide.createIcons(); }
+        FMM.setExhibit(idx, { emotion: savedEmotions.slice() });
+      });
+    });
+
+    /* —— ④ 真实录音 MediaRecorder —— */
+    var rec = document.querySelector('[data-fmm-role="record"]');
+    if(rec){
+      var statusEl = rec.parentElement.querySelector('p');
+      var recording = false;
+      var mediaRecorder = null;
+      var chunks = [];
+      var stream = null;
+
+      function startStyle(){
+        rec.style.backgroundColor = '#dc2626';
+        rec.style.transform = 'scale(1.1)';
+        rec.style.boxShadow = '0 0 0 4px rgba(220,38,38,0.2)';
+      }
+      function stopStyle(){
+        rec.style.backgroundColor = '';
+        rec.style.transform = '';
+        rec.style.boxShadow = '';
+      }
+      function setStatus(text){ if(statusEl){ statusEl.textContent = text; } }
+
+      if(ex && ex.audio){ setStatus('已录制'); }
+
+      rec.addEventListener('click', function(){
+        if(recording){
+          if(mediaRecorder && mediaRecorder.state !== 'inactive'){ mediaRecorder.stop(); }
+          return;
+        }
+        if(!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) || typeof window.MediaRecorder === 'undefined'){
+          alert('当前浏览器不支持录音功能');
+          return;
+        }
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(function(s){
+          stream = s;
+          chunks = [];
+          try {
+            mediaRecorder = new MediaRecorder(stream);
+          } catch(err){
+            alert('当前浏览器不支持录音功能');
+            s.getTracks().forEach(function(t){ t.stop(); });
+            return;
+          }
+          mediaRecorder.addEventListener('dataavailable', function(e){
+            if(e.data && e.data.size > 0){ chunks.push(e.data); }
+          });
+          mediaRecorder.addEventListener('stop', function(){
+            var blob = new Blob(chunks, { type: 'audio/webm' });
+            var reader = new FileReader();
+            reader.onload = function(){
+              FMM.setExhibit(idx, { audio: reader.result });
+            };
+            reader.readAsDataURL(blob);
+            if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream = null; }
+            recording = false;
+            stopStyle();
+            setStatus('已录制');
+          });
+          mediaRecorder.addEventListener('error', function(){
+            recording = false;
+            stopStyle();
+            if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream = null; }
+            setStatus('录音出错');
+          });
+          mediaRecorder.start();
+          recording = true;
+          startStyle();
+          setStatus('正在录音… 点击停止');
+        }).catch(function(err){
+          var name = err && err.name ? err.name : '';
+          if(name === 'NotAllowedError' || name === 'PermissionDeniedError' || name === 'SecurityError'){
+            alert('未获得麦克风权限，请在浏览器设置中允许使用麦克风后重试');
+          } else {
+            alert('无法访问麦克风：' + (err && err.message ? err.message : '未知错误'));
+          }
+        });
+      });
+    }
+
+    /* —— 回听播放：播放已录制的音频 —— */
+    var playBtn = document.querySelector('[data-fmm-role="playback"]');
+    if(playBtn){
+      var playIcon = playBtn.querySelector('i, svg');
+      var playLabel = playBtn.querySelector('span');
+      var playAudioEl = null;
+      playBtn.addEventListener('click', function(){
+        var curEx = FMM.getExhibit(idx);
+        if(!curEx.audio){
+          alert('还没有录音，请先录音。');
+          return;
+        }
+        if(playAudioEl && !playAudioEl.paused){
+          playAudioEl.pause();
+          if(playIcon){ var ni=document.createElement('i'); ni.setAttribute('data-lucide','play'); ni.className='h-4 w-4'; playIcon.parentNode.replaceChild(ni,playIcon); playIcon=ni; if(window.lucide){lucide.createIcons();} }
+          if(playLabel){ playLabel.textContent = '回听录音'; }
+          return;
+        }
+        if(!playAudioEl){ playAudioEl = new Audio(curEx.audio); }
+        else { playAudioEl.src = curEx.audio; }
+        playAudioEl.play().then(function(){
+          if(playIcon){ var ni2=document.createElement('i'); ni2.setAttribute('data-lucide','pause'); ni2.className='h-4 w-4'; playIcon.parentNode.replaceChild(ni2,playIcon); playIcon=ni2; if(window.lucide){lucide.createIcons();} }
+          if(playLabel){ playLabel.textContent = '暂停'; }
+        }).catch(function(){ alert('播放失败，请重试。'); });
+        playAudioEl.onended = function(){
+          if(playIcon){ var ni3=document.createElement('i'); ni3.setAttribute('data-lucide','play'); ni3.className='h-4 w-4'; playIcon.parentNode.replaceChild(ni3,playIcon); playIcon=ni3; if(window.lucide){lucide.createIcons();} }
+          if(playLabel){ playLabel.textContent = '回听录音'; }
+        };
+      });
+    }
+
+    if(window.lucide){ lucide.createIcons(); }
+  });
+})();
+  </script>
+</body>
+</html>

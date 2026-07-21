@@ -1,0 +1,253 @@
+{
+  "project": {
+    "projectName": "线上家庭记忆博物馆",
+    "designProjectPath": "c:/Users/YINGYING/Desktop/亲子讲座PPT0801/线上家庭记忆博物馆/family-memory-museum",
+    "brandPrefix": "fmm",
+    "deviceType": "freeSize",
+    "viewportMode": "document-scroll",
+    "intentProfile": {
+      "caseFamily": "free_exploration",
+      "operatingMode": "free-explore",
+      "replicationMode": null,
+      "routingReason": "无 Library、无还原图；多设备(移动390+桌面1440)+长PRD，走 create-project-complex，派发 FreePagePacket。"
+    },
+    "styleDefinitionBrief": "高中生亲子美术活动‘线上家庭记忆博物馆’。多色相编辑档案感：森林绿主操作、陶土录音强调、芥末黄编号节点、雾绿选中、私密蓝标记、暖白纸背景。宋体标题(Noto Serif SC)+黑体正文(PingFang SC)。真实物品照为主视觉，低饱和、留白充足、克制、不幼儿化。",
+    "styleContinuityAnchors": {
+      "palette": {"canvas":"#F7F2E9","surface":"#FFFDF8","textPrimary":"#243A36","textSecondary":"#63736D","forest":"#315B50","terracotta":"#B86A4A","mustard":"#D8A84D","mist":"#DDE8E2","borderSoft":"#E7DDD0","private":"#5D6F8B"},
+      "typography": {"heading":"Noto Serif SC (宋体感, 展览名/叙事标题)","body":"PingFang SC / Noto Sans SC","typeScale":"display 32/40, h1 24/32, h2 20/28, body 15/24, caption 12/16"},
+      "imagery": "真实物品照片，4:3为主、封面3:2，低饱和、柔光、纸/木背景、编辑档案感、无人物正脸、无文字叠加",
+      "radiusScale": {"sm":12,"md":12,"lg":16,"xl":20,"2xl":24,"note":"2xl=24 仅底部抽屉/模态浮层；静态表面 radiusMax 16"},
+      "surfaceDepthModel": "静态表面 border-led(1px border-soft, 无重阴影)；浮层(底抽屉/模态/语音胶囊)可用 shadow-lg + 24 圆角",
+      "ctaStyle": "主按钮 forest 实心 rounded-lg px-5 py-3 text-surface font-medium；录音键 terracotta 圆形；选中态 mist 背景 + forest 文字；次按钮 surface 描边",
+      "alignmentRhythm": "移动 4 列栅格 12 间距，安全区顶59底34左右20；桌面 12 列，侧栏 240px + 内容区 max-w 1440",
+      "tone": "克制、平等、可反思；‘你的理解是什么？’‘这段记忆愿意被谁看见？’；不点赞排行、无陌生人社交"
+    },
+    "sharedProjectShellContract": {
+      "navigationShell": "策展人侧(①–⑤)=桌面常驻左侧栏五项+顶栏 / 移动底部五栏；观众侧(⑥⑦)=桌面极简顶栏无左栏 / 移动沉浸式无底部nav",
+      "mobileNavigation": {
+        "applies": true,
+        "items": [
+          {"key":"home","label":"首页","icon":"home"},
+          {"key":"gallery","label":"展馆","icon":"layout-grid"},
+          {"key":"create","label":"创建","icon":"plus"},
+          {"key":"visit","label":"参观","icon":"eye"},
+          {"key":"mine","label":"我的","icon":"user"}
+        ],
+        "navClass": "fixed bottom-0 inset-x-0 z-40 border-t border-border bg-card/95 backdrop-blur",
+        "innerClass": "mx-auto grid w-full max-w-[420px] grid-cols-5",
+        "itemClass": "relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium",
+        "iconClass": "h-[22px] w-[22px]",
+        "labelClass": "leading-none",
+        "activeClass": "text-primary",
+        "inactiveClass": "text-muted-foreground",
+        "activeIndicator": "<span class=\"absolute top-0 h-[3px] w-7 rounded-full bg-primary\"></span>",
+        "structure": {
+          "canonicalHtmlByKey": {
+            "home": "<nav data-mobile-nav=\"global\" class=\"fixed bottom-0 inset-x-0 z-40 border-t border-border bg-card/95 backdrop-blur\" style=\"padding-bottom:env(safe-area-inset-bottom)\"><div class=\"mx-auto grid w-full max-w-[420px] grid-cols-5\"><a data-nav-item data-nav-key=\"home\" data-dom-id=\"fmm-nav-home\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-primary\"><span class=\"absolute top-0 h-[3px] w-7 rounded-full bg-primary\"></span><i data-lucide=\"home\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">首页</span></a><a data-nav-item data-nav-key=\"gallery\" data-dom-id=\"fmm-nav-gallery\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"layout-grid\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">展馆</span></a><a data-nav-item data-nav-key=\"create\" data-dom-id=\"fmm-nav-create\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"plus\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">创建</span></a><a data-nav-item data-nav-key=\"visit\" data-dom-id=\"fmm-nav-visit\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"eye\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">参观</span></a><a data-nav-item data-nav-key=\"mine\" data-dom-id=\"fmm-nav-mine\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"user\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">我的</span></a></div></nav>",
+            "gallery": "<nav data-mobile-nav=\"global\" class=\"fixed bottom-0 inset-x-0 z-40 border-t border-border bg-card/95 backdrop-blur\" style=\"padding-bottom:env(safe-area-inset-bottom)\"><div class=\"mx-auto grid w-full max-w-[420px] grid-cols-5\"><a data-nav-item data-nav-key=\"home\" data-dom-id=\"fmm-nav-home\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"home\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">首页</span></a><a data-nav-item data-nav-key=\"gallery\" data-dom-id=\"fmm-nav-gallery\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-primary\"><span class=\"absolute top-0 h-[3px] w-7 rounded-full bg-primary\"></span><i data-lucide=\"layout-grid\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">展馆</span></a><a data-nav-item data-nav-key=\"create\" data-dom-id=\"fmm-nav-create\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"plus\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">创建</span></a><a data-nav-item data-nav-key=\"visit\" data-dom-id=\"fmm-nav-visit\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"eye\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">参观</span></a><a data-nav-item data-nav-key=\"mine\" data-dom-id=\"fmm-nav-mine\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"user\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">我的</span></a></div></nav>",
+            "create": "<nav data-mobile-nav=\"global\" class=\"fixed bottom-0 inset-x-0 z-40 border-t border-border bg-card/95 backdrop-blur\" style=\"padding-bottom:env(safe-area-inset-bottom)\"><div class=\"mx-auto grid w-full max-w-[420px] grid-cols-5\"><a data-nav-item data-nav-key=\"home\" data-dom-id=\"fmm-nav-home\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"home\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">首页</span></a><a data-nav-item data-nav-key=\"gallery\" data-dom-id=\"fmm-nav-gallery\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"layout-grid\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">展馆</span></a><a data-nav-item data-nav-key=\"create\" data-dom-id=\"fmm-nav-create\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-primary\"><span class=\"absolute top-0 h-[3px] w-7 rounded-full bg-primary\"></span><i data-lucide=\"plus\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">创建</span></a><a data-nav-item data-nav-key=\"visit\" data-dom-id=\"fmm-nav-visit\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"eye\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">参观</span></a><a data-nav-item data-nav-key=\"mine\" data-dom-id=\"fmm-nav-mine\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"user\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">我的</span></a></div></nav>",
+            "visit": "<nav data-mobile-nav=\"global\" class=\"fixed bottom-0 inset-x-0 z-40 border-t border-border bg-card/95 backdrop-blur\" style=\"padding-bottom:env(safe-area-inset-bottom)\"><div class=\"mx-auto grid w-full max-w-[420px] grid-cols-5\"><a data-nav-item data-nav-key=\"home\" data-dom-id=\"fmm-nav-home\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"home\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">首页</span></a><a data-nav-item data-nav-key=\"gallery\" data-dom-id=\"fmm-nav-gallery\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"layout-grid\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">展馆</span></a><a data-nav-item data-nav-key=\"create\" data-dom-id=\"fmm-nav-create\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"plus\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">创建</span></a><a data-nav-item data-nav-key=\"visit\" data-dom-id=\"fmm-nav-visit\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-primary\"><span class=\"absolute top-0 h-[3px] w-7 rounded-full bg-primary\"></span><i data-lucide=\"eye\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">参观</span></a><a data-nav-item data-nav-key=\"mine\" data-dom-id=\"fmm-nav-mine\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"user\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">我的</span></a></div></nav>",
+            "mine": "<nav data-mobile-nav=\"global\" class=\"fixed bottom-0 inset-x-0 z-40 border-t border-border bg-card/95 backdrop-blur\" style=\"padding-bottom:env(safe-area-inset-bottom)\"><div class=\"mx-auto grid w-full max-w-[420px] grid-cols-5\"><a data-nav-item data-nav-key=\"home\" data-dom-id=\"fmm-nav-home\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"home\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">首页</span></a><a data-nav-item data-nav-key=\"gallery\" data-dom-id=\"fmm-nav-gallery\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"layout-grid\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">展馆</span></a><a data-nav-item data-nav-key=\"create\" data-dom-id=\"fmm-nav-create\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"plus\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">创建</span></a><a data-nav-item data-nav-key=\"visit\" data-dom-id=\"fmm-nav-visit\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground\"><i data-lucide=\"eye\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">参观</span></a><a data-nav-item data-nav-key=\"mine\" data-dom-id=\"fmm-nav-mine\" class=\"relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-primary\"><span class=\"absolute top-0 h-[3px] w-7 rounded-full bg-primary\"></span><i data-lucide=\"user\" class=\"h-[22px] w-[22px]\"></i><span class=\"leading-none\">我的</span></a></div></nav>"
+          }
+        }
+      },
+      "desktopNavigation": {
+        "curatorSidebar": {
+          "containerClass": "sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-border bg-sidebar md:flex",
+          "itemClass": "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm",
+          "activeItemClasses": "text-primary bg-secondary font-medium",
+          "inactiveItemClasses": "text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground",
+          "iconClass": "h-[18px] w-[18px]",
+          "canonicalHtml": "<aside class=\"sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-border bg-sidebar md:flex\"><div class=\"flex items-center gap-2 px-6 py-5\"><span class=\"h-2.5 w-2.5 rounded-full bg-primary\"></span><span class=\"font-serif text-lg text-foreground\">家·记忆博物馆</span></div><nav class=\"flex flex-1 flex-col gap-1 px-3\"><a data-nav-item data-nav-key=\"home\" data-dom-id=\"fmm-nav-home\" class=\"flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60\"><i data-lucide=\"home\" class=\"h-[18px] w-[18px]\"></i>首页</a><a data-nav-item data-nav-key=\"gallery\" data-dom-id=\"fmm-nav-gallery\" class=\"flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60\"><i data-lucide=\"layout-grid\" class=\"h-[18px] w-[18px]\"></i>展馆</a><a data-nav-item data-nav-key=\"create\" data-dom-id=\"fmm-nav-create\" class=\"flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60\"><i data-lucide=\"plus\" class=\"h-[18px] w-[18px]\"></i>创建</a><a data-nav-item data-nav-key=\"visit\" data-dom-id=\"fmm-nav-visit\" class=\"flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60\"><i data-lucide=\"eye\" class=\"h-[18px] w-[18px]\"></i>参观</a><a data-nav-item data-nav-key=\"mine\" data-dom-id=\"fmm-nav-mine\" class=\"flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60\"><i data-lucide=\"user\" class=\"h-[18px] w-[18px]\"></i>我的</a></nav><div class=\"flex items-center gap-2 px-6 py-4 text-xs text-muted-foreground\"><i data-lucide=\"lock\" class=\"h-3.5 w-3.5\"></i><span>仅家庭成员可见</span></div></aside>"
+        },
+        "curatorTopbar": {
+          "canonicalHtml": "<header class=\"sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card/80 px-8 py-3 backdrop-blur\"><div class=\"text-sm text-muted-foreground\">策展工作台 · 一件物品里的陪伴</div><div class=\"flex items-center gap-4\"><a data-dom-id=\"fmm-enter-visit\" class=\"inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground hover:bg-muted\"><i data-lucide=\"eye\" class=\"h-4 w-4\"></i>预览参观</a><div class=\"h-8 w-8 rounded-full bg-secondary text-center text-xs leading-8 text-primary\">满</div></div></header>"
+        },
+        "visitorTopbar": {
+          "canonicalHtml": "<header class=\"sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card/80 px-6 py-3 backdrop-blur\"><div class=\"flex items-center gap-3\"><span class=\"h-2 w-2 rounded-full bg-terracotta\"></span><span class=\"font-serif text-base text-foreground\">一件物品里的陪伴</span></div><div class=\"flex items-center gap-4 text-sm text-muted-foreground\"><span data-dom-id=\"fmm-visit-progress\">2 / 4</span><a data-dom-id=\"fmm-exit-visit\" class=\"inline-flex items-center gap-1 hover:text-foreground\"><i data-lucide=\"log-out\" class=\"h-4 w-4\"></i>退出</a></div></header>"
+        }
+      },
+      "radiusScale": {"sm":12,"md":12,"lg":16,"xl":20,"2xl":24},
+      "surfaceDepthModel": "静态表面 border-led；浮层 shadow-lg + 2xl 圆角",
+      "ctaStyle": "forest 实心主按钮 rounded-lg px-5 py-3；terracotta 圆形录音键；mist 选中；surface 描边次按钮",
+      "typeScale": "display 32/40 serif; h1 24/32 serif; h2 20/28 serif; body 15/24 sans; caption 12/16 sans",
+      "alignmentRhythm": "移动 4 列 12 间距 安全区顶59底34左右20；桌面 12 列 侧栏240 + 内容max-w 1440"
+    },
+    "designSource": {"styleConstraints": {"radiusMax":16,"staticShadowAlphaMax":0.05}},
+    "designDials": {"densityTarget":"balanced","avoidOneThing":"避免幼儿化插画、游戏化打卡、点赞排行、陌生人社交"}
+  },
+  "pages": [
+    {
+      "nodeId": "page-welcome-setup-mobile", "htmlSrc": "pages/page-welcome-setup-mobile.html", "deviceVariant": "mobile", "viewportMode": "document-scroll", "shell": "curator", "screen": 1,
+      "mobileNavigationApplies": true, "mobileNavigationActiveKey": "home", "mobileNavigationOmitReason": null,
+      "sections": ["hero-stilllife","identity-choice","museum-setup-form","primary-cta"],
+      "domIdsRequired": ["fmm-nav-home","fmm-cta-start","fmm-museum-name","fmm-visibility-private"],
+      "contentBrief": "满宽 hero 物品静物照(../assets/hero-objects-stilllife.jpg) + 宋体大标题‘把家里的故事，放进一座小小博物馆’ + 副序言；身份选择(我是学生/我是家长)；建馆表单：博物馆名称输入(fmm-museum-name，示例‘我们家的小博物馆’) + 封面选择 + 默认可见范围‘仅家庭成员可见’(fmm-visibility-private，私密蓝标记)；主按钮‘记录第一件物品’(fmm-cta-start→②)。",
+      "creativeRecipe": {"businessTone":"克制温暖、档案感序言","layoutArchetype":"hero沉浸+表单卡","visualSignature":"宋体标题压在低饱和静物照上","densityTarget":"balanced","avoidOneThing":"不用卡通插画"}
+    },
+    {
+      "nodeId": "page-welcome-setup-desktop", "htmlSrc": "pages/page-welcome-setup-desktop.html", "deviceVariant": "desktop", "viewportMode": "document-scroll", "shell": "curator", "screen": 1,
+      "mobileNavigationApplies": false, "mobileNavigationOmitReason": "desktop-sidebar-layout", "desktopNavActiveKey": "home",
+      "sections": ["sidebar","topbar","hero-prose","museum-setup-form","primary-cta"],
+      "domIdsRequired": ["fmm-nav-home","fmm-cta-start","fmm-museum-name","fmm-visibility-private"],
+      "contentBrief": "左 curatorSidebar(home active) + curatorTopbar；双列：左 hero静物照+宋体标题+序言 / 右 建馆表单卡(名称+封面+默认仅家庭成员可见)。主按钮‘记录第一件物品’(fmm-cta-start→②desktop)。",
+      "creativeRecipe": {"businessTone":"克制温暖、工作台入口","layoutArchetype":"sidebar+双列","visualSignature":"左静物照叙事 / 右表单卡","densityTarget":"balanced","avoidOneThing":"不留大块空白"}
+    },
+    {
+      "nodeId": "page-archive-card-mobile", "htmlSrc": "pages/page-archive-card-mobile.html", "deviceVariant": "mobile", "viewportMode": "document-scroll", "shell": "curator", "screen": 2,
+      "mobileNavigationApplies": true, "mobileNavigationActiveKey": "create", "mobileNavigationOmitReason": null,
+      "sections": ["step-indicator","item-thumb","three-layer-form","hold-to-record","emotion-tags","visibility","bottom-actions"],
+      "domIdsRequired": ["fmm-nav-create","fmm-step-next","fmm-step-back","fmm-hold-record"],
+      "contentBrief": "档案卡5步(以第3步‘它发生过什么’为呈现样例)：顶部‘第 3/5 步’进度 + 物品缩略图(搪瓷杯) + 大文本框(占位‘可以讲一个小片段，不必说完所有事’，预填林雯故事约300字) + 按住录音键(fmm-hold-record，terracotta圆形) + 情绪标签(陪伴/日常/遗憾…) + 可见范围；底部‘保存草稿 / 下一步’(fmm-step-next→③mobile)。",
+      "creativeRecipe": {"businessTone":"一次只答一问的反思节奏","layoutArchetype":"单列向导","visualSignature":"terracotta按住录音键","densityTarget":"balanced","avoidOneThing":"不堆长表单"}
+    },
+    {
+      "nodeId": "page-archive-card-desktop", "htmlSrc": "pages/page-archive-card-desktop.html", "deviceVariant": "desktop", "viewportMode": "document-scroll", "shell": "curator", "screen": 2,
+      "mobileNavigationApplies": false, "mobileNavigationOmitReason": "desktop-sidebar-layout", "desktopNavActiveKey": "create",
+      "sections": ["sidebar","topbar","step-rail","form-area"],
+      "domIdsRequired": ["fmm-nav-create","fmm-step-next","fmm-step-back","fmm-hold-record"],
+      "contentBrief": "左 sidebar(create active)+topbar；左纵向5步步骤轨(①拍照②是什么③发生过什么④意味着什么⑤可见范围，第3步active) + 右宽表单区(左物品大图+右文本框/按住录音/情绪标签/可见范围)；‘下一步’(fmm-step-next→③desktop)。",
+      "creativeRecipe": {"businessTone":"向导式反思","layoutArchetype":"步骤轨+表单区","visualSignature":"左轨右表单对照","densityTarget":"balanced","avoidOneThing":"不单列长表单"}
+    },
+    {
+      "nodeId": "page-theme-cocuration-mobile", "htmlSrc": "pages/page-theme-cocuration-mobile.html", "deviceVariant": "mobile", "viewportMode": "document-scroll", "shell": "curator", "screen": 3,
+      "mobileNavigationApplies": true, "mobileNavigationActiveKey": "gallery", "mobileNavigationOmitReason": null,
+      "sections": ["exhibit-strip","theme-cards","discussion-card","propose-theme","confirm-bar"],
+      "domIdsRequired": ["fmm-nav-gallery","fmm-confirm-theme","fmm-propose-theme"],
+      "contentBrief": "上方4件展品缩略图横滑(课本/搪瓷杯/相册/机械表) → 3–4 张AI策展主题卡(‘一件物品里的陪伴’‘我们家如何度过变化’‘被记住的脸’)每张右下‘我愿意用它策展’(非点赞) → 讨论卡三栏‘我支持的理由/我担心被漏掉的视角/谁需要确认’；底部‘提出我的主题’(fmm-propose-theme)；确认条‘确认主题’(fmm-confirm-theme→④mobile)。",
+      "creativeRecipe": {"businessTone":"讨论而非点赞","layoutArchetype":"横滑+卡片栈","visualSignature":"讨论卡三栏","densityTarget":"balanced","avoidOneThing":"不用点赞/心形"}
+    },
+    {
+      "nodeId": "page-theme-cocuration-desktop", "htmlSrc": "pages/page-theme-cocuration-desktop.html", "deviceVariant": "desktop", "viewportMode": "document-scroll", "shell": "curator", "screen": 3,
+      "mobileNavigationApplies": false, "mobileNavigationOmitReason": "desktop-sidebar-layout", "desktopNavActiveKey": "gallery",
+      "sections": ["sidebar","topbar","exhibit-strip","theme-grid","discussion-cards","confirm-side"],
+      "domIdsRequired": ["fmm-nav-gallery","fmm-confirm-theme","fmm-propose-theme"],
+      "contentBrief": "左 sidebar(gallery active)+topbar；中主题卡2×2(含讨论卡三栏) + 右主题确认侧栏(选中‘一件物品里的陪伴’+家庭确认状态)；‘确认主题并开始策展’(fmm-confirm-theme→④desktop)。",
+      "creativeRecipe": {"businessTone":"共同策展工作台","layoutArchetype":"三栏(侧栏+网格+确认栏)","visualSignature":"2×2主题卡+讨论卡","densityTarget":"dense","avoidOneThing":"不用点赞计数"}
+    },
+    {
+      "nodeId": "page-exhibition-editor-mobile", "htmlSrc": "pages/page-exhibition-editor-mobile.html", "deviceVariant": "mobile", "viewportMode": "document-scroll", "shell": "curator", "screen": 4,
+      "mobileNavigationApplies": true, "mobileNavigationActiveKey": "create", "mobileNavigationOmitReason": null,
+      "sections": ["route-canvas","node-cards","structure-switch","bottom-drawer","publish-cta"],
+      "domIdsRequired": ["fmm-nav-create","fmm-publish","fmm-privacy-check","fmm-structure-switch"],
+      "contentBrief": "纵向路线画布：入口 → 4节点(1978搪瓷杯→1980s相册→1990s机械表→2021课本，时间线) → 尾厅；每节点卡含编号(mustard)+物品名+策展说明‘为什么放在这里’；底部抽屉四工具(排序/展签/语音/结构切换 fmm-structure-switch: 时间线/房间地图/提问线/对照线)；长按拖拽排序提示；‘发布’(fmm-publish) 触发隐私检查 modal(fmm-privacy-check，hidden interaction回本屏)。",
+      "creativeRecipe": {"businessTone":"策展工作台","layoutArchetype":"纵向画布+底抽屉","visualSignature":"mustard编号节点+连接线","densityTarget":"dense","avoidOneThing":"不堆设置项"}
+    },
+    {
+      "nodeId": "page-exhibition-editor-desktop", "htmlSrc": "pages/page-exhibition-editor-desktop.html", "deviceVariant": "desktop", "viewportMode": "document-scroll", "shell": "curator", "screen": 4,
+      "mobileNavigationApplies": false, "mobileNavigationOmitReason": "desktop-sidebar-layout", "desktopNavActiveKey": "create",
+      "sections": ["sidebar","topbar","route-canvas","tool-panel","publish-cta"],
+      "domIdsRequired": ["fmm-nav-create","fmm-publish","fmm-privacy-check","fmm-structure-switch"],
+      "contentBrief": "左 sidebar(create active)+topbar；左宽画布65%(横向时间线4节点+连接线) + 右常驻工具面板35%(四tab: 排序/展签/语音/结构)；‘发布’(fmm-publish)→隐私检查 modal(fmm-privacy-check) ‘请确认：展览表达了每个人愿意被看见的部分’。",
+      "creativeRecipe": {"businessTone":"边看路线边改","layoutArchetype":"画布+常驻工具面板","visualSignature":"横向时间线+右tab面板","densityTarget":"dense","avoidOneThing":"不用底抽屉(桌面)"}
+    },
+    {
+      "nodeId": "page-label-audio-mobile", "htmlSrc": "pages/page-label-audio-mobile.html", "deviceVariant": "mobile", "viewportMode": "document-scroll", "shell": "curator", "screen": 5,
+      "mobileNavigationApplies": true, "mobileNavigationActiveKey": "create", "mobileNavigationOmitReason": null,
+      "sections": ["exhibit-hero","label-editor","audio-script","record-listen","next-exhibit"],
+      "domIdsRequired": ["fmm-nav-create","fmm-next-exhibit","fmm-audio-play","fmm-label-field"],
+      "contentBrief": "展品大图(搪瓷杯)+mustard编号FMM-02 → 展签编辑卡(逐项可编辑 fmm-label-field: 编号/物品名/年代·来源/讲述者/故事摘要) → 30秒语音：文字稿编辑器(预填28秒脚本)+录音+试听(fmm-audio-play，默认静音说明‘默认静音，参观者手动开启’)；‘下一件展签’(fmm-next-exhibit) / 完成后→⑥mobile。",
+      "creativeRecipe": {"businessTone":"编辑档案","layoutArchetype":"大图+编辑卡","visualSignature":"展签模板+语音文字稿","densityTarget":"balanced","avoidOneThing":"不自动播放音频"}
+    },
+    {
+      "nodeId": "page-label-audio-desktop", "htmlSrc": "pages/page-label-audio-desktop.html", "deviceVariant": "desktop", "viewportMode": "document-scroll", "shell": "curator", "screen": 5,
+      "mobileNavigationApplies": false, "mobileNavigationOmitReason": "desktop-sidebar-layout", "desktopNavActiveKey": "create",
+      "sections": ["sidebar","topbar","exhibit-preview","label-form","audio-editor"],
+      "domIdsRequired": ["fmm-nav-create","fmm-next-exhibit","fmm-audio-play","fmm-label-field"],
+      "contentBrief": "左 sidebar(create active)+topbar；双列：左 展品大图+展签预览(所见即所得) / 右 展签表单+语音文字稿编辑器+录音试听；‘发布导览’(fmm-next-exhibit→⑥desktop)。",
+      "creativeRecipe": {"businessTone":"所见即所得","layoutArchetype":"预览+表单双列","visualSignature":"左预览右编辑","densityTarget":"balanced","avoidOneThing":"不自动播放"}
+    },
+    {
+      "nodeId": "page-visit-exhibit-mobile", "htmlSrc": "pages/page-visit-exhibit-mobile.html", "deviceVariant": "mobile", "viewportMode": "document-scroll", "shell": "visitor", "screen": 6,
+      "mobileNavigationApplies": false, "mobileNavigationOmitReason": "visitor-immersive",
+      "sections": ["minimal-topbar","hero-image","story-summary","sticky-audio-capsule","next-progress"],
+      "domIdsRequired": ["fmm-visit-progress","fmm-audio-capsule","fmm-next-stop","fmm-exit-visit"],
+      "contentBrief": "极简顶栏(展览名+2/4+退出) 无底部nav；满宽主图(搪瓷杯)+mustard编号FMM-02 → 故事摘要(林雯三层内容) → 底部 sticky 悬浮语音胶囊‘点击收听30秒导览’(fmm-audio-capsule，默认静音) → 下一站进度‘2/4·下一站：相册’(fmm-next-stop→下一展品⑥/末站→⑦)。",
+      "creativeRecipe": {"businessTone":"沉浸阅读","layoutArchetype":"满宽图+悬浮胶囊","visualSignature":"底部语音胶囊 sticky","densityTarget":"balanced","avoidOneThing":"不自动播放"}
+    },
+    {
+      "nodeId": "page-visit-exhibit-desktop", "htmlSrc": "pages/page-visit-exhibit-desktop.html", "deviceVariant": "desktop", "viewportMode": "document-scroll", "shell": "visitor", "screen": 6,
+      "mobileNavigationApplies": false, "mobileNavigationOmitReason": "visitor-desktop-minimal-topbar",
+      "sections": ["visitor-topbar","sticky-image","scroll-story","audio-capsule","next-progress"],
+      "domIdsRequired": ["fmm-visit-progress","fmm-audio-capsule","fmm-next-stop","fmm-exit-visit"],
+      "contentBrief": "极简顶栏(无左栏)；左 sticky 大图58% + 右滚动列42%(故事三层+语音胶囊+下一站)；‘点击收听30秒导览’；‘2/4·下一站：相册’(fmm-next-stop)。",
+      "creativeRecipe": {"businessTone":"图停字走","layoutArchetype":"sticky图+滚动列","visualSignature":"左固定大图右滚动","densityTarget":"balanced","avoidOneThing":"不单列居中"}
+    },
+    {
+      "nodeId": "page-visit-end-mobile", "htmlSrc": "pages/page-visit-end-mobile.html", "deviceVariant": "mobile", "viewportMode": "document-scroll", "shell": "visitor", "screen": 7, "derivedFrom": "page-visit-exhibit-mobile", "writeMode": "DerivedCopyMutableOnly",
+      "mobileNavigationApplies": false, "mobileNavigationOmitReason": "visitor-immersive",
+      "sections": ["minimal-topbar","note-input","notes-list","end-question","curator-reflection"],
+      "domIdsRequired": ["fmm-note-saw","fmm-note-wonder","fmm-end-answer","fmm-reflection-entry","fmm-exit-visit"],
+      "contentBrief": "复制⑥mobile外壳(极简顶栏)，可变区改为：便签输入‘我看见了___’(fmm-note-saw) / ‘我想知道___’(fmm-note-wonder) → 已留便签竖列(样例便签) → 结束提问‘这件物品为什么值得被留下？’一句话输入(fmm-end-answer，预填‘因为它不是一件东西，是一段还在继续的时间。’) → 策展人反思入口(fmm-reflection-entry) ‘我的策展让观众看见了什么、遗漏了什么’。",
+      "creativeRecipe": {"businessTone":"收束反思","layoutArchetype":"便签+提问","visualSignature":"两栏便签输入","densityTarget":"balanced","avoidOneThing":"不点赞便签"}
+    },
+    {
+      "nodeId": "page-visit-end-desktop", "htmlSrc": "pages/page-visit-end-desktop.html", "deviceVariant": "desktop", "viewportMode": "document-scroll", "shell": "visitor", "screen": 7, "derivedFrom": "page-visit-exhibit-desktop", "writeMode": "DerivedCopyMutableOnly",
+      "mobileNavigationApplies": false, "mobileNavigationOmitReason": "visitor-desktop-minimal-topbar",
+      "sections": ["visitor-topbar","end-question","note-input","notes-masonry","curator-reflection"],
+      "domIdsRequired": ["fmm-note-saw","fmm-note-wonder","fmm-end-answer","fmm-reflection-entry","fmm-exit-visit"],
+      "contentBrief": "复制⑥desktop外壳(极简顶栏)，双列：左 结束提问+便签输入 / 右 便签瀑布+策展人反思卡；结束问‘这件物品为什么值得被留下？’；反思‘我的策展让观众看见了什么、遗漏了什么’。",
+      "creativeRecipe": {"businessTone":"收束反思","layoutArchetype":"双列收束","visualSignature":"便签瀑布","densityTarget":"balanced","avoidOneThing":"不点赞便签"}
+    }
+  ],
+  "imagePlan": [
+    {"nodeId":"image-001","fileName":"hero-objects-stilllife.jpg","aspect":"3:2","imageSize":"1200x800","usedByPages":["page-welcome-setup-mobile","page-welcome-setup-desktop","page-theme-cocuration-mobile","page-theme-cocuration-desktop","page-visit-end-mobile","page-visit-end-desktop"],"prompt":"Editorial still-life photograph for a family memory museum hero banner: cherished household objects arranged on a warm wooden surface beside a window with soft morning light — a worn math textbook, a white enamel mug with red flowers and a small chipped rim, a black silk-covered photo album, and a faded mechanical watch. Low saturation, muted forest-green and terracotta tones, paper and wood textures, generous negative space, archival museum aesthetic, no human faces, no text overlay."},
+    {"nodeId":"image-002","fileName":"exhibit-textbook.jpg","aspect":"4:3","imageSize":"landscape_4_3","usedByPages":["page-archive-card-mobile","page-archive-card-desktop","page-visit-exhibit-mobile","page-visit-exhibit-desktop"],"prompt":"Close-up archival exhibit photograph of a well-worn junior-high math textbook with curled cover corners resting on a wooden desk; the inside front cover shows faint pencil handwriting in Chinese reading ‘慢慢来’. Soft side light, low saturation, warm paper texture, museum exhibit catalog aesthetic, no human faces, no other text."},
+    {"nodeId":"image-003","fileName":"exhibit-enamel-mug.jpg","aspect":"4:3","imageSize":"landscape_4_3","usedByPages":["page-archive-card-mobile","page-archive-card-desktop","page-visit-exhibit-mobile","page-visit-exhibit-desktop"],"prompt":"Close-up archival exhibit photograph of a white enamel mug with a red floral pattern and a small chipped spot on the rim, sitting on a wooden table with soft warm light and faint rising steam. Low saturation, terracotta and cream tones, museum exhibit catalog aesthetic, no human faces, no text."},
+    {"nodeId":"image-004","fileName":"exhibit-photo-album.jpg","aspect":"4:3","imageSize":"landscape_4_3","usedByPages":["page-archive-card-mobile","page-archive-card-desktop","page-visit-exhibit-mobile","page-visit-exhibit-desktop"],"prompt":"Close-up archival exhibit photograph of an old black silk-covered photo album with a worn silk spine, slightly ajar showing only the edge of a sepia page, resting on a wooden surface with soft directional light. Low saturation, muted brown and black tones, museum exhibit catalog aesthetic, no visible faces, no text."},
+    {"nodeId":"image-005","fileName":"exhibit-mechanical-watch.jpg","aspect":"4:3","imageSize":"landscape_4_3","usedByPages":["page-archive-card-mobile","page-archive-card-desktop","page-visit-exhibit-mobile","page-visit-exhibit-desktop"],"prompt":"Close-up archival exhibit photograph of a faded, scratched mechanical wristwatch with a worn leather strap resting on a wooden surface, needing winding, soft warm directional light. Low saturation, muted steel and brown tones, museum exhibit catalog aesthetic, no human faces, no text."}
+  ],
+  "visibleWiringMap": [
+    {"sourcePageId":"page-welcome-setup-mobile","domId":"fmm-cta-start","targetPageId":"page-archive-card-mobile","hideEdge":false},
+    {"sourcePageId":"page-welcome-setup-desktop","domId":"fmm-cta-start","targetPageId":"page-archive-card-desktop","hideEdge":false},
+    {"sourcePageId":"page-archive-card-mobile","domId":"fmm-step-next","targetPageId":"page-theme-cocuration-mobile","hideEdge":false},
+    {"sourcePageId":"page-archive-card-desktop","domId":"fmm-step-next","targetPageId":"page-theme-cocuration-desktop","hideEdge":false},
+    {"sourcePageId":"page-theme-cocuration-mobile","domId":"fmm-confirm-theme","targetPageId":"page-exhibition-editor-mobile","hideEdge":false},
+    {"sourcePageId":"page-theme-cocuration-desktop","domId":"fmm-confirm-theme","targetPageId":"page-exhibition-editor-desktop","hideEdge":false},
+    {"sourcePageId":"page-exhibition-editor-mobile","domId":"fmm-publish","targetPageId":"page-label-audio-mobile","hideEdge":false},
+    {"sourcePageId":"page-exhibition-editor-desktop","domId":"fmm-publish","targetPageId":"page-label-audio-desktop","hideEdge":false},
+    {"sourcePageId":"page-label-audio-mobile","domId":"fmm-next-exhibit","targetPageId":"page-visit-exhibit-mobile","hideEdge":false},
+    {"sourcePageId":"page-label-audio-desktop","domId":"fmm-next-exhibit","targetPageId":"page-visit-exhibit-desktop","hideEdge":false},
+    {"sourcePageId":"page-visit-exhibit-mobile","domId":"fmm-next-stop","targetPageId":"page-visit-end-mobile","hideEdge":false},
+    {"sourcePageId":"page-visit-exhibit-desktop","domId":"fmm-next-stop","targetPageId":"page-visit-end-desktop","hideEdge":false},
+    {"sourcePageId":"page-welcome-setup-mobile","domId":"fmm-nav-create","targetPageId":"page-archive-card-mobile","hideEdge":true},
+    {"sourcePageId":"page-welcome-setup-mobile","domId":"fmm-nav-gallery","targetPageId":"page-theme-cocuration-mobile","hideEdge":true},
+    {"sourcePageId":"page-welcome-setup-mobile","domId":"fmm-nav-visit","targetPageId":"page-visit-exhibit-mobile","hideEdge":true},
+    {"sourcePageId":"page-archive-card-desktop","domId":"fmm-nav-home","targetPageId":"page-welcome-setup-desktop","hideEdge":true},
+    {"sourcePageId":"page-archive-card-desktop","domId":"fmm-nav-gallery","targetPageId":"page-theme-cocuration-desktop","hideEdge":true},
+    {"sourcePageId":"page-exhibition-editor-desktop","domId":"fmm-enter-visit","targetPageId":"page-visit-exhibit-desktop","hideEdge":false},
+    {"sourcePageId":"page-visit-end-mobile","domId":"fmm-exit-visit","targetPageId":"page-welcome-setup-mobile","hideEdge":true},
+    {"sourcePageId":"page-visit-end-desktop","domId":"fmm-exit-visit","targetPageId":"page-welcome-setup-desktop","hideEdge":true}
+  ],
+  "hiddenInteractionPlan": [
+    {"sourcePageId":"page-exhibition-editor-mobile","domId":"fmm-privacy-check","kind":"modal-state","note":"发布前隐私检查 modal 派生态：遮罩+卡片‘请确认：展览表达了每个人愿意被看见的部分’+家庭确认清单+‘返回编辑/确认发布’，回本屏 base，不单列屏。"},
+    {"sourcePageId":"page-exhibition-editor-desktop","domId":"fmm-privacy-check","kind":"modal-state","note":"同上桌面版 modal。"}
+  ],
+  "generationTree": {
+    "root": "gen-project-shell",
+    "nodes": {
+      "gen-project-shell": {"type":"shared","output":"partials/project-shell.html","status":"planned","children":["gen-mobile-chrome","gen-desktop-chrome"]},
+      "gen-mobile-chrome": {"type":"shared","output":"partials/mobile-chrome.html","status":"planned","parent":"gen-project-shell","children":["gen-curator-mobile","gen-visitor-mobile"]},
+      "gen-desktop-chrome": {"type":"shared","output":"partials/desktop-chrome.html","status":"planned","parent":"gen-project-shell","children":["gen-curator-desktop","gen-visitor-desktop"]},
+      "gen-curator-mobile": {"type":"shared","output":"partials/curator-mobile.html","status":"planned","parent":"gen-mobile-chrome","children":["page-welcome-setup-mobile","page-archive-card-mobile","page-theme-cocuration-mobile","page-exhibition-editor-mobile","page-label-audio-mobile"]},
+      "gen-curator-desktop": {"type":"shared","output":"partials/curator-desktop.html","status":"planned","parent":"gen-desktop-chrome","children":["page-welcome-setup-desktop","page-archive-card-desktop","page-theme-cocuration-desktop","page-exhibition-editor-desktop","page-label-audio-desktop"]},
+      "gen-visitor-mobile": {"type":"shared","output":"partials/visitor-mobile.html","status":"planned","parent":"gen-mobile-chrome","children":["page-visit-exhibit-mobile","page-visit-end-mobile"]},
+      "gen-visitor-desktop": {"type":"shared","output":"partials/visitor-desktop.html","status":"planned","parent":"gen-desktop-chrome","children":["page-visit-exhibit-desktop","page-visit-end-desktop"]},
+      "page-welcome-setup-mobile": {"type":"leaf","output":"pages/page-welcome-setup-mobile.html","status":"planned","parent":"gen-curator-mobile"},
+      "page-welcome-setup-desktop": {"type":"leaf","output":"pages/page-welcome-setup-desktop.html","status":"planned","parent":"gen-curator-desktop"},
+      "page-archive-card-mobile": {"type":"leaf","output":"pages/page-archive-card-mobile.html","status":"planned","parent":"gen-curator-mobile"},
+      "page-archive-card-desktop": {"type":"leaf","output":"pages/page-archive-card-desktop.html","status":"planned","parent":"gen-curator-desktop"},
+      "page-theme-cocuration-mobile": {"type":"leaf","output":"pages/page-theme-cocuration-mobile.html","status":"planned","parent":"gen-curator-mobile"},
+      "page-theme-cocuration-desktop": {"type":"leaf","output":"pages/page-theme-cocuration-desktop.html","status":"planned","parent":"gen-curator-desktop"},
+      "page-exhibition-editor-mobile": {"type":"leaf","output":"pages/page-exhibition-editor-mobile.html","status":"planned","parent":"gen-curator-mobile"},
+      "page-exhibition-editor-desktop": {"type":"leaf","output":"pages/page-exhibition-editor-desktop.html","status":"planned","parent":"gen-curator-desktop"},
+      "page-label-audio-mobile": {"type":"leaf","output":"pages/page-label-audio-mobile.html","status":"planned","parent":"gen-curator-mobile"},
+      "page-label-audio-desktop": {"type":"leaf","output":"pages/page-label-audio-desktop.html","status":"planned","parent":"gen-curator-desktop"},
+      "page-visit-exhibit-mobile": {"type":"leaf","output":"pages/page-visit-exhibit-mobile.html","status":"planned","parent":"gen-visitor-mobile"},
+      "page-visit-exhibit-desktop": {"type":"leaf","output":"pages/page-visit-exhibit-desktop.html","status":"planned","parent":"gen-visitor-desktop"},
+      "page-visit-end-mobile": {"type":"leaf","output":"pages/page-visit-end-mobile.html","status":"planned","parent":"gen-visitor-mobile","derivedFrom":"page-visit-exhibit-mobile"},
+      "page-visit-end-desktop": {"type":"leaf","output":"pages/page-visit-end-desktop.html","status":"planned","parent":"gen-visitor-desktop","derivedFrom":"page-visit-exhibit-desktop"}
+    }
+  },
+  "dispatchPreflightManifest": []
+}

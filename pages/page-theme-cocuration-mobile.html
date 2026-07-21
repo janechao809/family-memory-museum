@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>③主题共同策展</title>
+    <style id="theme-vars">
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* —— 语义表面 —— */
+  --background: #F7F2E9;          /* bg.canvas 暖白纸 */
+  --foreground: #243A36;          /* text.primary */
+  --card: #FFFDF8;                /* bg.surface */
+  --card-foreground: #243A36;
+  --popover: #FFFDF8;
+  --popover-foreground: #243A36;
+
+  /* —— 品牌 / 主操作 —— */
+  --primary: #315B50;             /* brand.forest 主按钮/链接 */
+  --primary-foreground: #FFFDF8;
+  --secondary: #DDE8E2;           /* accent.mist 选中态 */
+  --secondary-foreground: #243A36;
+  --accent: #D8A84D;              /* accent.mustard 编号/路径节点 */
+  --accent-foreground: #243A36;
+  --muted: #EFE7D8;
+  --muted-foreground: #63736D;    /* text.secondary */
+
+  /* —— 描边 / 输入 / 聚焦 —— */
+  --border: #E7DDD0;              /* border.soft */
+  --input: #E7DDD0;
+  --ring: #315B50;
+
+  /* —— 自定义品牌色（多色相，用户文档显式指定） —— */
+  --terracotta: #B86A4A;          /* brand.terracotta 录音/强调 */
+  --terracotta-foreground: #FFFDF8;
+  --private: #5D6F8B;             /* status.private 私密标记 */
+  --private-foreground: #FFFDF8;
+
+  /* —— 图表（低饱和档案感） —— */
+  --chart-1: #315B50;
+  --chart-2: #B86A4A;
+  --chart-3: #D8A84D;
+  --chart-4: #5D6F8B;
+  --chart-5: #63736D;
+
+  /* —— 侧栏 —— */
+  --sidebar: #FFFDF8;
+  --sidebar-foreground: #243A36;
+  --sidebar-primary: #315B50;
+  --sidebar-primary-foreground: #FFFDF8;
+  --sidebar-accent: #DDE8E2;
+  --sidebar-accent-foreground: #243A36;
+  --sidebar-border: #E7DDD0;
+  --sidebar-ring: #315B50;
+
+  /* —— 圆角 —— */
+  --radius: 16px;
+  /* 品牌前缀语义别名（fill-html-head.mjs semantic mapping） */
+  --fmm-radius-sm: 12px;
+  --fmm-radius-md: 12px;
+  --fmm-radius-lg: 16px;
+  --fmm-radius-xl: 20px;
+  --fmm-radius-2xl: 24px;
+
+  /* —— 字体族 —— */
+  --font-serif: "Noto Serif SC", "Songti SC", serif;
+  --font-sans: "PingFang SC", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* —— 语义别名（semantic-token-fallback） —— */
+  --semantic-bg-canvas: var(--background);
+  --semantic-bg-surface: var(--card);
+  --semantic-bg-muted: var(--muted);
+  --semantic-text-primary: var(--foreground);
+  --semantic-text-secondary: var(--muted-foreground);
+  --semantic-text-on-primary: var(--primary-foreground);
+  --semantic-brand-forest: var(--primary);
+  --semantic-brand-terracotta: var(--terracotta);
+  --semantic-accent-mustard: var(--accent);
+  --semantic-accent-mist: var(--secondary);
+  --semantic-border-soft: var(--border);
+  --semantic-status-private: var(--private);
+  --semantic-ring: var(--ring);
+}
+
+.dark {
+  --background: #1E2B27;
+  --foreground: #F2EBDC;
+  --card: #26332F;
+  --card-foreground: #F2EBDC;
+  --popover: #26332F;
+  --popover-foreground: #F2EBDC;
+  --primary: #6FA89B;
+  --primary-foreground: #1E2B27;
+  --secondary: #3A4A44;
+  --secondary-foreground: #F2EBDC;
+  --accent: #E0BC6A;
+  --accent-foreground: #1E2B27;
+  --muted: #313F3A;
+  --muted-foreground: #9CA8A2;
+  --border: #3A4A44;
+  --input: #3A4A44;
+  --ring: #6FA89B;
+  --terracotta: #D08A68;
+  --terracotta-foreground: #1E2B27;
+  --private: #8AA0BD;
+  --private-foreground: #1E2B27;
+  --chart-1: #6FA89B;
+  --chart-2: #D08A68;
+  --chart-3: #E0BC6A;
+  --chart-4: #8AA0BD;
+  --chart-5: #9CA8A2;
+  --sidebar: #26332F;
+  --sidebar-foreground: #F2EBDC;
+  --sidebar-primary: #6FA89B;
+  --sidebar-primary-foreground: #1E2B27;
+  --sidebar-accent: #3A4A44;
+  --sidebar-accent-foreground: #F2EBDC;
+  --sidebar-border: #3A4A44;
+  --sidebar-ring: #6FA89B;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-foreground: var(--terracotta-foreground);
+  --color-private: var(--private);
+  --color-private-foreground: var(--private-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);   /* 12 */
+  --radius-md: calc(var(--radius) - 4px);   /* 12 */
+  --radius-lg: var(--radius);               /* 16 */
+  --radius-xl: calc(var(--radius) + 4px);   /* 20 */
+  --radius-2xl: calc(var(--radius) + 8px);  /* 24 浮层专用 */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --radius-sm: var(--fmm-radius-sm);
+    --radius-md: var(--fmm-radius-md);
+    --radius-lg: var(--fmm-radius-lg);
+    --radius-xl: var(--fmm-radius-xl);
+  }
+  @layer base {
+    body { background: var(--background); color: var(--foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-card-foreground { background-color: var(--card-foreground); }
+      .text-card-foreground { color: var(--card-foreground); }
+      .border-card-foreground { border-color: var(--card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--card-foreground); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-popover-foreground { background-color: var(--popover-foreground); }
+      .text-popover-foreground { color: var(--popover-foreground); }
+      .border-popover-foreground { border-color: var(--popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--popover-foreground); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-secondary { background-color: var(--secondary); }
+      .text-secondary { color: var(--secondary); }
+      .border-secondary { border-color: var(--secondary); }
+      .ring-secondary { --tw-ring-color: var(--secondary); }
+      .bg-secondary-foreground { background-color: var(--secondary-foreground); }
+      .text-secondary-foreground { color: var(--secondary-foreground); }
+      .border-secondary-foreground { border-color: var(--secondary-foreground); }
+      .ring-secondary-foreground { --tw-ring-color: var(--secondary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-accent { background-color: var(--accent); }
+      .text-accent { color: var(--accent); }
+      .border-accent { border-color: var(--accent); }
+      .ring-accent { --tw-ring-color: var(--accent); }
+      .bg-accent-foreground { background-color: var(--accent-foreground); }
+      .text-accent-foreground { color: var(--accent-foreground); }
+      .border-accent-foreground { border-color: var(--accent-foreground); }
+      .ring-accent-foreground { --tw-ring-color: var(--accent-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--input); }
+      .text-input { color: var(--input); }
+      .border-input { border-color: var(--input); }
+      .ring-input { --tw-ring-color: var(--input); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+      .bg-chart-1 { background-color: var(--chart-1); }
+      .text-chart-1 { color: var(--chart-1); }
+      .border-chart-1 { border-color: var(--chart-1); }
+      .ring-chart-1 { --tw-ring-color: var(--chart-1); }
+      .bg-chart-2 { background-color: var(--chart-2); }
+      .text-chart-2 { color: var(--chart-2); }
+      .border-chart-2 { border-color: var(--chart-2); }
+      .ring-chart-2 { --tw-ring-color: var(--chart-2); }
+      .bg-chart-3 { background-color: var(--chart-3); }
+      .text-chart-3 { color: var(--chart-3); }
+      .border-chart-3 { border-color: var(--chart-3); }
+      .ring-chart-3 { --tw-ring-color: var(--chart-3); }
+      .bg-chart-4 { background-color: var(--chart-4); }
+      .text-chart-4 { color: var(--chart-4); }
+      .border-chart-4 { border-color: var(--chart-4); }
+      .ring-chart-4 { --tw-ring-color: var(--chart-4); }
+      .bg-chart-5 { background-color: var(--chart-5); }
+      .text-chart-5 { color: var(--chart-5); }
+      .border-chart-5 { border-color: var(--chart-5); }
+      .ring-chart-5 { --tw-ring-color: var(--chart-5); }
+      .bg-sidebar { background-color: var(--sidebar); }
+      .text-sidebar { color: var(--sidebar); }
+      .border-sidebar { border-color: var(--sidebar); }
+      .ring-sidebar { --tw-ring-color: var(--sidebar); }
+      .bg-sidebar-foreground { background-color: var(--sidebar-foreground); }
+      .text-sidebar-foreground { color: var(--sidebar-foreground); }
+      .border-sidebar-foreground { border-color: var(--sidebar-foreground); }
+      .ring-sidebar-foreground { --tw-ring-color: var(--sidebar-foreground); }
+      .bg-sidebar-primary { background-color: var(--sidebar-primary); }
+      .text-sidebar-primary { color: var(--sidebar-primary); }
+      .border-sidebar-primary { border-color: var(--sidebar-primary); }
+      .ring-sidebar-primary { --tw-ring-color: var(--sidebar-primary); }
+      .bg-sidebar-primary-foreground { background-color: var(--sidebar-primary-foreground); }
+      .text-sidebar-primary-foreground { color: var(--sidebar-primary-foreground); }
+      .border-sidebar-primary-foreground { border-color: var(--sidebar-primary-foreground); }
+      .ring-sidebar-primary-foreground { --tw-ring-color: var(--sidebar-primary-foreground); }
+      .bg-sidebar-accent { background-color: var(--sidebar-accent); }
+      .text-sidebar-accent { color: var(--sidebar-accent); }
+      .border-sidebar-accent { border-color: var(--sidebar-accent); }
+      .ring-sidebar-accent { --tw-ring-color: var(--sidebar-accent); }
+      .bg-sidebar-accent-foreground { background-color: var(--sidebar-accent-foreground); }
+      .text-sidebar-accent-foreground { color: var(--sidebar-accent-foreground); }
+      .border-sidebar-accent-foreground { border-color: var(--sidebar-accent-foreground); }
+      .ring-sidebar-accent-foreground { --tw-ring-color: var(--sidebar-accent-foreground); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen bg-background font-sans antialiased">
+  <div class="mx-auto w-full max-w-[420px] min-h-screen bg-background">
+    <!-- 极简顶栏：照搬 curator-mobile.html -->
+    <header class="sticky top-0 z-30 border-b border-border bg-card/80 backdrop-blur" style="padding-top:env(safe-area-inset-top)">
+      <div class="flex items-center justify-between px-5 py-3">
+        <span class="font-serif text-base text-foreground">家庭记忆博物馆</span>
+        <a href="#" data-dom-id="fmm-nav-mine" class="inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground">
+          <i data-lucide="user" class="h-[18px] w-[18px]"></i>
+        </a>
+      </div>
+    </header>
+
+    <!-- 内容区 main slot：底部留出 fixed nav 高度 + 安全区 -->
+    <main id="fmm-page-content" class="min-h-screen bg-background px-5 pb-[calc(72px+env(safe-area-inset-bottom))]">
+
+      <!-- ① 顶部说明：第 3 步 + 标题 + 引导语 -->
+      <section class="pt-5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent/15 text-[12px] font-semibold text-accent">3</span>
+            <span class="text-[12px] font-medium text-muted-foreground">第 3 步 · 共同策展</span>
+          </div>
+          <span class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-[11px] text-muted-foreground">
+            <i data-lucide="users" class="h-3 w-3"></i>家庭讨论
+          </span>
+        </div>
+        <h1 class="mt-3 font-serif text-[22px] leading-7 text-foreground">一起决定，用哪个主题策展</h1>
+        <p class="mt-2 text-[13px] leading-5 text-muted-foreground">AI 读了你们的物品故事，提出几个策展主题。家庭一起讨论，决定用哪个。</p>
+      </section>
+
+      <!-- ② 展品缩略图横滑：4 件物品 + 对应成员名 -->
+      <section class="mt-5">
+        <div class="mb-2 flex items-baseline justify-between">
+          <h2 class="text-[13px] font-medium text-foreground">已记录的展品</h2>
+          <span class="text-[11px] text-muted-foreground">4 件 · 横滑查看</span>
+        </div>
+        <div class="-mx-5 flex gap-3 overflow-x-auto px-5 pb-1 no-scrollbar snap-x snap-mandatory">
+          <figure class="snap-start shrink-0 w-[108px]">
+            <div class="overflow-hidden rounded-lg border border-border bg-card">
+              <img src="../assets/exhibit-textbook.jpg" alt="课本" class="h-[81px] w-[108px] object-cover" />
+            </div>
+            <figcaption class="mt-1.5 text-center text-[11px] leading-tight text-muted-foreground">小满<span class="block text-foreground">课本</span></figcaption>
+          </figure>
+          <figure class="snap-start shrink-0 w-[108px]">
+            <div class="overflow-hidden rounded-lg border border-border bg-card">
+              <img src="../assets/exhibit-enamel-mug.jpg" alt="搪瓷杯" class="h-[81px] w-[108px] object-cover" />
+            </div>
+            <figcaption class="mt-1.5 text-center text-[11px] leading-tight text-muted-foreground">妈妈<span class="block text-foreground">搪瓷杯</span></figcaption>
+          </figure>
+          <figure class="snap-start shrink-0 w-[108px]">
+            <div class="overflow-hidden rounded-lg border border-border bg-card">
+              <img src="../assets/exhibit-photo-album.jpg" alt="相册" class="h-[81px] w-[108px] object-cover" />
+            </div>
+            <figcaption class="mt-1.5 text-center text-[11px] leading-tight text-muted-foreground">外婆<span class="block text-foreground">相册</span></figcaption>
+          </figure>
+          <figure class="snap-start shrink-0 w-[108px]">
+            <div class="overflow-hidden rounded-lg border border-border bg-card">
+              <img src="../assets/exhibit-mechanical-watch.jpg" alt="机械表" class="h-[81px] w-[108px] object-cover" />
+            </div>
+            <figcaption class="mt-1.5 text-center text-[11px] leading-tight text-muted-foreground">爸爸<span class="block text-foreground">机械表</span></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ③ AI 主题卡列表：4 张候选，第 1 张已选中（bg-secondary border-primary） -->
+      <section class="mt-6">
+        <div class="mb-1 flex items-baseline justify-between">
+          <h2 class="font-serif text-[16px] text-foreground">AI 提出的策展主题</h2>
+          <span class="text-[11px] text-muted-foreground">4 个候选</span>
+        </div>
+        <p class="mb-3 text-[11px] leading-snug text-muted-foreground">选择主题＝愿意用它策展，不是点赞。一家人可以各选各的，再一起商量。</p>
+
+        <div class="space-y-3">
+          <!-- 主题 1：已选中 -->
+          <article class="rounded-lg border border-primary bg-secondary p-4">
+            <div class="mb-2 flex items-start gap-2.5">
+              <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">1</span>
+              <div class="min-w-0 flex-1">
+                <h3 class="font-serif text-[16px] leading-6 text-foreground">一件物品里的陪伴</h3>
+                <p class="mt-1 text-[12px] leading-5 text-muted-foreground">四件物品都藏着长久的陪伴——课本边的字、杯沿的缺口、相册的丝脊、表盘的划痕，都是有人在身边的证据。</p>
+              </div>
+            </div>
+            <div class="mt-3 flex items-center justify-between">
+              <span class="text-[11px] text-muted-foreground">涉及 4 件展品</span>
+              <button type="button" class="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-[12px] font-medium text-primary-foreground active:opacity-90">
+                <i data-lucide="check" class="h-3.5 w-3.5"></i>愿意用它策展
+              </button>
+            </div>
+          </article>
+
+          <!-- 主题 2 -->
+          <article class="rounded-lg border border-border bg-card p-4">
+            <div class="mb-2 flex items-start gap-2.5">
+              <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/15 text-[11px] font-semibold text-accent">2</span>
+              <div class="min-w-0 flex-1">
+                <h3 class="font-serif text-[16px] leading-6 text-foreground">我们家如何度过变化</h3>
+                <p class="mt-1 text-[12px] leading-5 text-muted-foreground">从 1978 到 2023，时间在物品上留下刻度。家是怎样穿过这些年的变化，又被什么接住。</p>
+              </div>
+            </div>
+            <div class="mt-3 flex items-center justify-between">
+              <span class="text-[11px] text-muted-foreground">线索：时间 · 变化</span>
+              <button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-[12px] font-medium text-foreground active:opacity-90">
+                <i data-lucide="plus" class="h-3.5 w-3.5"></i>我愿意用它策展
+              </button>
+            </div>
+          </article>
+
+          <!-- 主题 3 -->
+          <article class="rounded-lg border border-border bg-card p-4">
+            <div class="mb-2 flex items-start gap-2.5">
+              <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/15 text-[11px] font-semibold text-accent">3</span>
+              <div class="min-w-0 flex-1">
+                <h3 class="font-serif text-[16px] leading-6 text-foreground">被留下的时间</h3>
+                <p class="mt-1 text-[12px] leading-5 text-muted-foreground">哪些瞬间被物记住？相册停在某一年，手表停在某个时刻——留下来的不是物，是被物留住的时间。</p>
+              </div>
+            </div>
+            <div class="mt-3 flex items-center justify-between">
+              <span class="text-[11px] text-muted-foreground">线索：瞬间 · 停顿</span>
+              <button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-[12px] font-medium text-foreground active:opacity-90">
+                <i data-lucide="plus" class="h-3.5 w-3.5"></i>我愿意用它策展
+              </button>
+            </div>
+          </article>
+
+          <!-- 主题 4 -->
+          <article class="rounded-lg border border-border bg-card p-4">
+            <div class="mb-2 flex items-start gap-2.5">
+              <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/15 text-[11px] font-semibold text-accent">4</span>
+              <div class="min-w-0 flex-1">
+                <h3 class="font-serif text-[16px] leading-6 text-foreground">代际之间的手</h3>
+                <p class="mt-1 text-[12px] leading-5 text-muted-foreground">外婆的字、妈妈的杯、爸爸的表、孩子的书——四双手在四件物品上相遇，代际之间传递的究竟是什么。</p>
+              </div>
+            </div>
+            <div class="mt-3 flex items-center justify-between">
+              <span class="text-[11px] text-muted-foreground">涉及 4 件展品</span>
+              <button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-[12px] font-medium text-foreground active:opacity-90">
+                <i data-lucide="plus" class="h-3.5 w-3.5"></i>我愿意用它策展
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ④ 讨论卡：mustard 细边，三栏输入（支持的理由 / 担心漏掉的视角 / 谁需要确认） -->
+      <section class="mt-6">
+        <div class="rounded-lg border border-accent bg-card p-4">
+          <div class="mb-1 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i data-lucide="messages-square" class="h-4 w-4 text-accent"></i>
+              <h3 class="font-serif text-[15px] text-foreground">家庭讨论</h3>
+            </div>
+            <span class="inline-flex items-center gap-1 text-[11px]" style="color: var(--private)">
+              <i data-lucide="lock" class="h-3 w-3"></i>仅家庭成员可见
+            </span>
+          </div>
+          <p class="mb-3 text-[12px] leading-4 text-muted-foreground">每个人都可以写下自己的看法，不必达成一致。</p>
+
+          <div class="space-y-3">
+            <div>
+              <label class="mb-1.5 block font-serif text-[13px] text-foreground">我支持的理由</label>
+              <textarea rows="2" placeholder="这个主题哪里打动了你" class="w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-[13px] leading-5 text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"></textarea>
+            </div>
+            <div>
+              <label class="mb-1.5 block font-serif text-[13px] text-foreground">我担心被漏掉的视角</label>
+              <textarea rows="2" placeholder="有没有谁的故事没被看见" class="w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-[13px] leading-5 text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"></textarea>
+            </div>
+            <div>
+              <label class="mb-1.5 block font-serif text-[13px] text-foreground">谁需要确认</label>
+              <textarea rows="2" placeholder="想先听听谁的想法" class="w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-[13px] leading-5 text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ⑤ 提出我的主题：文本框 + 提交讨论按钮（bg-primary） -->
+      <section class="mt-6">
+        <h3 class="font-serif text-[15px] text-foreground">想提出自己的主题</h3>
+        <p class="mt-1 mb-3 text-[12px] leading-4 text-muted-foreground">如果上面没有合适的，写一个你们家的主题，加入讨论。</p>
+        <div class="rounded-lg border border-border bg-card p-3">
+          <textarea rows="2" placeholder="例如：那些被反复修好的东西" class="w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-[13px] leading-5 text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"></textarea>
+          <div class="mt-2 flex justify-end">
+            <button type="button" data-dom-id="fmm-propose-theme" class="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-[13px] font-medium text-primary-foreground active:opacity-90">
+              <i data-lucide="send" class="h-3.5 w-3.5"></i>提交讨论
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ⑥ 确认条：已选主题 + 家庭确认状态 + 确认主题按钮（bg-primary） -->
+      <section class="mt-6">
+        <div class="rounded-lg border border-border bg-card p-4">
+          <div class="mb-3 flex items-start gap-2.5">
+            <span class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
+              <i data-lucide="check" class="h-3 w-3"></i>
+            </span>
+            <div class="min-w-0 flex-1">
+              <p class="text-[12px] text-muted-foreground">已选主题</p>
+              <p data-dom-id="fmm-selected-theme-name" class="font-serif text-[15px] leading-6 text-foreground">一件物品里的陪伴</p>
+            </div>
+            <span class="shrink-0 rounded-full bg-secondary px-2 py-0.5 text-[11px] text-primary">2 / 4 已确认</span>
+          </div>
+          <button type="button" data-dom-id="fmm-confirm-theme" class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground active:opacity-90">
+            <span>确认主题，开始策展</span>
+            <i data-lucide="arrow-right" class="h-4 w-4"></i>
+          </button>
+          <p class="mt-2.5 text-center text-[12px] leading-snug text-muted-foreground">确认后进入展览编辑，仍可随时回来调整。</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- 底部五栏 nav：canonicalHtmlByKey["gallery"]（gallery active） -->
+  <nav data-mobile-nav="global" class="fixed bottom-0 inset-x-0 z-40 border-t border-border bg-card/95 backdrop-blur" style="padding-bottom:env(safe-area-inset-bottom)"><div class="mx-auto grid w-full max-w-[420px] grid-cols-5"><a data-nav-item data-nav-key="home" data-dom-id="fmm-nav-home" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="home" class="h-[22px] w-[22px]"></i><span class="leading-none">首页</span></a><a data-nav-item data-nav-key="gallery" data-dom-id="fmm-nav-gallery" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-primary"><span class="absolute top-0 h-[3px] w-7 rounded-full bg-primary"></span><i data-lucide="layout-grid" class="h-[22px] w-[22px]"></i><span class="leading-none">展馆</span></a><a data-nav-item data-nav-key="create" data-dom-id="fmm-nav-create" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="plus" class="h-[22px] w-[22px]"></i><span class="leading-none">创建</span></a><a data-nav-item data-nav-key="visit" data-dom-id="fmm-nav-visit" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="eye" class="h-[22px] w-[22px]"></i><span class="leading-none">参观</span></a><a data-nav-item data-nav-key="mine" data-dom-id="fmm-nav-mine" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="user" class="h-[22px] w-[22px]"></i><span class="leading-none">我的</span></a></div></nav>
+
+  <script>if(window.lucide){lucide.createIcons();}</script>
+  <script src="../assets/fmm-app.js"></script>
+  <script>
+  (function(){
+    function ready(fn){ if(document.readyState!=='loading'){fn();}else{document.addEventListener('DOMContentLoaded',fn);} }
+    ready(function(){
+      var FMM = window.FMM;
+      var data = FMM ? FMM.load() : null;
+      var theme = data ? data.theme : null;
+
+      // 主题卡：单选互斥，点击切换选中态
+      var themeCards = Array.prototype.slice.call(document.querySelectorAll('article')).filter(function(a){
+        var btn = a.querySelector('button');
+        return !!btn && (btn.textContent.indexOf('策展') !== -1);
+      });
+      function themeNameOf(card){
+        var h = card.querySelector('h3');
+        return h ? (h.textContent||'').trim() : '';
+      }
+      function setCardSelected(card, selected){
+        var btn = card.querySelector('button');
+        if(!btn) return;
+        if(selected){
+          card.classList.remove('bg-card','border-border');
+          card.classList.add('bg-secondary','border-primary');
+          btn.classList.remove('border','border-border','bg-card','text-foreground');
+          btn.classList.add('bg-primary','text-primary-foreground');
+          btn.innerHTML = '<i data-lucide="check" class="h-3.5 w-3.5"></i>愿意用它策展';
+        }else{
+          card.classList.remove('bg-secondary','border-primary');
+          card.classList.add('bg-card','border-border');
+          btn.classList.remove('bg-primary','text-primary-foreground');
+          btn.classList.add('border','border-border','bg-card','text-foreground');
+          btn.innerHTML = '<i data-lucide="plus" class="h-3.5 w-3.5"></i>我愿意用它策展';
+        }
+      }
+      function applySelectedTheme(name){
+        themeCards.forEach(function(card){ setCardSelected(card, themeNameOf(card) === name); });
+        var disp = document.querySelector('[data-dom-id="fmm-selected-theme-name"]');
+        if(disp){ disp.textContent = name || '尚未选择'; }
+        if(window.lucide){ lucide.createIcons(); }
+      }
+
+      // 加载恢复选中主题
+      var savedSelected = theme ? theme.selected : '一件物品里的陪伴';
+      applySelectedTheme(savedSelected);
+
+      themeCards.forEach(function(card){
+        var btn = card.querySelector('button');
+        if(btn){
+          btn.addEventListener('click', function(){
+            var name = themeNameOf(card);
+            var d = FMM.load();
+            d.theme.selected = name;
+            FMM.save(d);
+            applySelectedTheme(name);
+          });
+        }
+      });
+
+      // 家庭讨论三栏：加载恢复 + input 持久化
+      var discussionMap = {
+        '这个主题哪里打动了你': 'support',
+        '有没有谁的故事没被看见': 'missing',
+        '想先听听谁的想法': 'confirm'
+      };
+      Object.keys(discussionMap).forEach(function(ph){
+        var key = discussionMap[ph];
+        var ta = document.querySelector('textarea[placeholder="'+ph+'"]');
+        if(ta){
+          if(theme && theme.discussion && theme.discussion[key]){ ta.value = theme.discussion[key]; }
+          ta.addEventListener('input', function(){
+            var d = FMM.load();
+            if(!d.theme.discussion){ d.theme.discussion = {support:'',missing:'',confirm:''}; }
+            d.theme.discussion[key] = ta.value;
+            FMM.save(d);
+          });
+        }
+      });
+
+      // 自定义主题：加载恢复 + input 持久化
+      var customTa = document.querySelector('textarea[placeholder*="被反复修好"]');
+      if(customTa){
+        if(theme && theme.customTheme){ customTa.value = theme.customTheme; }
+        customTa.addEventListener('input', function(){
+          var d = FMM.load(); d.theme.customTheme = customTa.value; FMM.save(d);
+        });
+      }
+
+      // 提出我的主题：提交后在输入框下方插入提示（不清空，保留持久化值）
+      var proposeBtn = document.querySelector('[data-dom-id="fmm-propose-theme"]');
+      if(proposeBtn){
+        proposeBtn.addEventListener('click', function(){
+          var input = document.querySelector('textarea[placeholder*="被反复修好"]');
+          var container = input ? input.parentElement : proposeBtn.parentElement;
+          var val = input ? input.value.trim() : '';
+          var text = val ? val : '（未填写）';
+          var tip = container.querySelector('[data-propose-tip]');
+          if(!tip){
+            tip = document.createElement('p');
+            tip.setAttribute('data-propose-tip','');
+            tip.className = 'mt-2 text-[12px] leading-snug text-primary';
+            container.appendChild(tip);
+          }
+          tip.textContent = '已加入讨论：' + text;
+        });
+      }
+
+      // 确认主题按钮：确保选中主题存入数据 + 跳转
+      var confirmBtn = document.querySelector('[data-dom-id="fmm-confirm-theme"]');
+      if(confirmBtn){
+        confirmBtn.addEventListener('click', function(){
+          var d = FMM.load();
+          FMM.save(d);
+          location.href = 'page-exhibition-editor-mobile.html';
+        });
+      }
+
+      // 底部五栏 nav 跳转
+      var navJumps = {
+        'fmm-nav-home': 'page-welcome-setup-mobile.html',
+        'fmm-nav-gallery': 'page-theme-cocuration-mobile.html',
+        'fmm-nav-create': 'page-archive-card-mobile.html',
+        'fmm-nav-visit': 'page-visit-exhibit-mobile.html'
+      };
+      Object.keys(navJumps).forEach(function(domId){
+        document.querySelectorAll('[data-dom-id="'+domId+'"]').forEach(function(el){
+          el.addEventListener('click', function(e){ e.preventDefault(); location.href = navJumps[domId]; });
+        });
+      });
+      document.querySelectorAll('[data-dom-id="fmm-nav-mine"]').forEach(function(el){
+        el.addEventListener('click', function(e){ e.preventDefault(); alert('个人中心 · 待开发'); });
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>占位</title>
+</head>
+<body class="min-h-screen bg-background font-sans antialiased">
+  <!--
+    桌面端 chrome 骨架（document-scroll）
+    - 1440 宽 max-w-[1440px] mx-auto，body 自然滚动
+    - 不含侧栏 / 顶栏（由 curator-desktop / visitor-desktop 注入）
+  -->
+  <div class="mx-auto w-full max-w-[1440px] min-h-screen bg-background">
+    <!-- 内容区 main slot -->
+    <main id="fmm-page-content" class="min-h-screen bg-background p-8">
+      <!-- 叶子页在此填充页面内容 -->
+    </main>
+  </div>
+
+  <script>if(window.lucide){lucide.createIcons();}</script>
+</body>
+</html>

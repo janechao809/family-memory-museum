@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>④展览编辑器</title>
+    <style id="theme-vars">
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* —— 语义表面 —— */
+  --background: #F7F2E9;          /* bg.canvas 暖白纸 */
+  --foreground: #243A36;          /* text.primary */
+  --card: #FFFDF8;                /* bg.surface */
+  --card-foreground: #243A36;
+  --popover: #FFFDF8;
+  --popover-foreground: #243A36;
+
+  /* —— 品牌 / 主操作 —— */
+  --primary: #315B50;             /* brand.forest 主按钮/链接 */
+  --primary-foreground: #FFFDF8;
+  --secondary: #DDE8E2;           /* accent.mist 选中态 */
+  --secondary-foreground: #243A36;
+  --accent: #D8A84D;              /* accent.mustard 编号/路径节点 */
+  --accent-foreground: #243A36;
+  --muted: #EFE7D8;
+  --muted-foreground: #63736D;    /* text.secondary */
+
+  /* —— 描边 / 输入 / 聚焦 —— */
+  --border: #E7DDD0;              /* border.soft */
+  --input: #E7DDD0;
+  --ring: #315B50;
+
+  /* —— 自定义品牌色（多色相，用户文档显式指定） —— */
+  --terracotta: #B86A4A;          /* brand.terracotta 录音/强调 */
+  --terracotta-foreground: #FFFDF8;
+  --private: #5D6F8B;             /* status.private 私密标记 */
+  --private-foreground: #FFFDF8;
+
+  /* —— 图表（低饱和档案感） —— */
+  --chart-1: #315B50;
+  --chart-2: #B86A4A;
+  --chart-3: #D8A84D;
+  --chart-4: #5D6F8B;
+  --chart-5: #63736D;
+
+  /* —— 侧栏 —— */
+  --sidebar: #FFFDF8;
+  --sidebar-foreground: #243A36;
+  --sidebar-primary: #315B50;
+  --sidebar-primary-foreground: #FFFDF8;
+  --sidebar-accent: #DDE8E2;
+  --sidebar-accent-foreground: #243A36;
+  --sidebar-border: #E7DDD0;
+  --sidebar-ring: #315B50;
+
+  /* —— 圆角 —— */
+  --radius: 16px;
+  /* 品牌前缀语义别名（fill-html-head.mjs semantic mapping） */
+  --fmm-radius-sm: 12px;
+  --fmm-radius-md: 12px;
+  --fmm-radius-lg: 16px;
+  --fmm-radius-xl: 20px;
+  --fmm-radius-2xl: 24px;
+
+  /* —— 字体族 —— */
+  --font-serif: "Noto Serif SC", "Songti SC", serif;
+  --font-sans: "PingFang SC", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* —— 语义别名（semantic-token-fallback） —— */
+  --semantic-bg-canvas: var(--background);
+  --semantic-bg-surface: var(--card);
+  --semantic-bg-muted: var(--muted);
+  --semantic-text-primary: var(--foreground);
+  --semantic-text-secondary: var(--muted-foreground);
+  --semantic-text-on-primary: var(--primary-foreground);
+  --semantic-brand-forest: var(--primary);
+  --semantic-brand-terracotta: var(--terracotta);
+  --semantic-accent-mustard: var(--accent);
+  --semantic-accent-mist: var(--secondary);
+  --semantic-border-soft: var(--border);
+  --semantic-status-private: var(--private);
+  --semantic-ring: var(--ring);
+}
+
+.dark {
+  --background: #1E2B27;
+  --foreground: #F2EBDC;
+  --card: #26332F;
+  --card-foreground: #F2EBDC;
+  --popover: #26332F;
+  --popover-foreground: #F2EBDC;
+  --primary: #6FA89B;
+  --primary-foreground: #1E2B27;
+  --secondary: #3A4A44;
+  --secondary-foreground: #F2EBDC;
+  --accent: #E0BC6A;
+  --accent-foreground: #1E2B27;
+  --muted: #313F3A;
+  --muted-foreground: #9CA8A2;
+  --border: #3A4A44;
+  --input: #3A4A44;
+  --ring: #6FA89B;
+  --terracotta: #D08A68;
+  --terracotta-foreground: #1E2B27;
+  --private: #8AA0BD;
+  --private-foreground: #1E2B27;
+  --chart-1: #6FA89B;
+  --chart-2: #D08A68;
+  --chart-3: #E0BC6A;
+  --chart-4: #8AA0BD;
+  --chart-5: #9CA8A2;
+  --sidebar: #26332F;
+  --sidebar-foreground: #F2EBDC;
+  --sidebar-primary: #6FA89B;
+  --sidebar-primary-foreground: #1E2B27;
+  --sidebar-accent: #3A4A44;
+  --sidebar-accent-foreground: #F2EBDC;
+  --sidebar-border: #3A4A44;
+  --sidebar-ring: #6FA89B;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-foreground: var(--terracotta-foreground);
+  --color-private: var(--private);
+  --color-private-foreground: var(--private-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);   /* 12 */
+  --radius-md: calc(var(--radius) - 4px);   /* 12 */
+  --radius-lg: var(--radius);               /* 16 */
+  --radius-xl: calc(var(--radius) + 4px);   /* 20 */
+  --radius-2xl: calc(var(--radius) + 8px);  /* 24 浮层专用 */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
+    <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <style type="text/tailwindcss">
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --radius-sm: var(--fmm-radius-sm);
+    --radius-md: var(--fmm-radius-md);
+    --radius-lg: var(--fmm-radius-lg);
+    --radius-xl: var(--fmm-radius-xl);
+  }
+  @layer base {
+    body { background: var(--background); color: var(--foreground); }
+    td, th { @apply break-words; word-break: break-all; word-break: auto-phrase; }
+    th { @apply whitespace-nowrap; }
+  }
+    </style>
+    <style id="semantic-token-fallback">
+      .bg-background { background-color: var(--background); }
+      .text-background { color: var(--background); }
+      .border-background { border-color: var(--background); }
+      .ring-background { --tw-ring-color: var(--background); }
+      .bg-foreground { background-color: var(--foreground); }
+      .text-foreground { color: var(--foreground); }
+      .border-foreground { border-color: var(--foreground); }
+      .ring-foreground { --tw-ring-color: var(--foreground); }
+      .bg-card { background-color: var(--card); }
+      .text-card { color: var(--card); }
+      .border-card { border-color: var(--card); }
+      .ring-card { --tw-ring-color: var(--card); }
+      .bg-card-foreground { background-color: var(--card-foreground); }
+      .text-card-foreground { color: var(--card-foreground); }
+      .border-card-foreground { border-color: var(--card-foreground); }
+      .ring-card-foreground { --tw-ring-color: var(--card-foreground); }
+      .bg-popover { background-color: var(--popover); }
+      .text-popover { color: var(--popover); }
+      .border-popover { border-color: var(--popover); }
+      .ring-popover { --tw-ring-color: var(--popover); }
+      .bg-popover-foreground { background-color: var(--popover-foreground); }
+      .text-popover-foreground { color: var(--popover-foreground); }
+      .border-popover-foreground { border-color: var(--popover-foreground); }
+      .ring-popover-foreground { --tw-ring-color: var(--popover-foreground); }
+      .bg-primary { background-color: var(--primary); }
+      .text-primary { color: var(--primary); }
+      .border-primary { border-color: var(--primary); }
+      .ring-primary { --tw-ring-color: var(--primary); }
+      .bg-primary-foreground { background-color: var(--primary-foreground); }
+      .text-primary-foreground { color: var(--primary-foreground); }
+      .border-primary-foreground { border-color: var(--primary-foreground); }
+      .ring-primary-foreground { --tw-ring-color: var(--primary-foreground); }
+      .bg-secondary { background-color: var(--secondary); }
+      .text-secondary { color: var(--secondary); }
+      .border-secondary { border-color: var(--secondary); }
+      .ring-secondary { --tw-ring-color: var(--secondary); }
+      .bg-secondary-foreground { background-color: var(--secondary-foreground); }
+      .text-secondary-foreground { color: var(--secondary-foreground); }
+      .border-secondary-foreground { border-color: var(--secondary-foreground); }
+      .ring-secondary-foreground { --tw-ring-color: var(--secondary-foreground); }
+      .bg-muted { background-color: var(--muted); }
+      .text-muted { color: var(--muted); }
+      .border-muted { border-color: var(--muted); }
+      .ring-muted { --tw-ring-color: var(--muted); }
+      .bg-muted-foreground { background-color: var(--muted-foreground); }
+      .text-muted-foreground { color: var(--muted-foreground); }
+      .border-muted-foreground { border-color: var(--muted-foreground); }
+      .ring-muted-foreground { --tw-ring-color: var(--muted-foreground); }
+      .bg-accent { background-color: var(--accent); }
+      .text-accent { color: var(--accent); }
+      .border-accent { border-color: var(--accent); }
+      .ring-accent { --tw-ring-color: var(--accent); }
+      .bg-accent-foreground { background-color: var(--accent-foreground); }
+      .text-accent-foreground { color: var(--accent-foreground); }
+      .border-accent-foreground { border-color: var(--accent-foreground); }
+      .ring-accent-foreground { --tw-ring-color: var(--accent-foreground); }
+      .bg-border { background-color: var(--border); }
+      .text-border { color: var(--border); }
+      .border-border { border-color: var(--border); }
+      .ring-border { --tw-ring-color: var(--border); }
+      .bg-input { background-color: var(--input); }
+      .text-input { color: var(--input); }
+      .border-input { border-color: var(--input); }
+      .ring-input { --tw-ring-color: var(--input); }
+      .bg-ring { background-color: var(--ring); }
+      .text-ring { color: var(--ring); }
+      .border-ring { border-color: var(--ring); }
+      .ring-ring { --tw-ring-color: var(--ring); }
+      .bg-chart-1 { background-color: var(--chart-1); }
+      .text-chart-1 { color: var(--chart-1); }
+      .border-chart-1 { border-color: var(--chart-1); }
+      .ring-chart-1 { --tw-ring-color: var(--chart-1); }
+      .bg-chart-2 { background-color: var(--chart-2); }
+      .text-chart-2 { color: var(--chart-2); }
+      .border-chart-2 { border-color: var(--chart-2); }
+      .ring-chart-2 { --tw-ring-color: var(--chart-2); }
+      .bg-chart-3 { background-color: var(--chart-3); }
+      .text-chart-3 { color: var(--chart-3); }
+      .border-chart-3 { border-color: var(--chart-3); }
+      .ring-chart-3 { --tw-ring-color: var(--chart-3); }
+      .bg-chart-4 { background-color: var(--chart-4); }
+      .text-chart-4 { color: var(--chart-4); }
+      .border-chart-4 { border-color: var(--chart-4); }
+      .ring-chart-4 { --tw-ring-color: var(--chart-4); }
+      .bg-chart-5 { background-color: var(--chart-5); }
+      .text-chart-5 { color: var(--chart-5); }
+      .border-chart-5 { border-color: var(--chart-5); }
+      .ring-chart-5 { --tw-ring-color: var(--chart-5); }
+      .bg-sidebar { background-color: var(--sidebar); }
+      .text-sidebar { color: var(--sidebar); }
+      .border-sidebar { border-color: var(--sidebar); }
+      .ring-sidebar { --tw-ring-color: var(--sidebar); }
+      .bg-sidebar-foreground { background-color: var(--sidebar-foreground); }
+      .text-sidebar-foreground { color: var(--sidebar-foreground); }
+      .border-sidebar-foreground { border-color: var(--sidebar-foreground); }
+      .ring-sidebar-foreground { --tw-ring-color: var(--sidebar-foreground); }
+      .bg-sidebar-primary { background-color: var(--sidebar-primary); }
+      .text-sidebar-primary { color: var(--sidebar-primary); }
+      .border-sidebar-primary { border-color: var(--sidebar-primary); }
+      .ring-sidebar-primary { --tw-ring-color: var(--sidebar-primary); }
+      .bg-sidebar-primary-foreground { background-color: var(--sidebar-primary-foreground); }
+      .text-sidebar-primary-foreground { color: var(--sidebar-primary-foreground); }
+      .border-sidebar-primary-foreground { border-color: var(--sidebar-primary-foreground); }
+      .ring-sidebar-primary-foreground { --tw-ring-color: var(--sidebar-primary-foreground); }
+      .bg-sidebar-accent { background-color: var(--sidebar-accent); }
+      .text-sidebar-accent { color: var(--sidebar-accent); }
+      .border-sidebar-accent { border-color: var(--sidebar-accent); }
+      .ring-sidebar-accent { --tw-ring-color: var(--sidebar-accent); }
+      .bg-sidebar-accent-foreground { background-color: var(--sidebar-accent-foreground); }
+      .text-sidebar-accent-foreground { color: var(--sidebar-accent-foreground); }
+      .border-sidebar-accent-foreground { border-color: var(--sidebar-accent-foreground); }
+      .ring-sidebar-accent-foreground { --tw-ring-color: var(--sidebar-accent-foreground); }
+    </style>
+    <style>
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      [data-icon] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        background-color: currentColor;
+      }
+    </style>
+</head>
+<body class="min-h-screen bg-background font-sans antialiased">
+  <!--
+    ④展览编辑器与路线排序 · 桌面（document-scroll）
+    - 外壳：策展人桌面 shell（sticky 左侧栏 w-60 + 顶栏 + main 容器），create 高亮
+    - 双列：左宽画布(时间线 4 节点) ~65% / 右常驻工具面板 ~35%
+    - 发布展览(fmm-publish) → 隐私检查 modal(fmm-privacy-check，默认 hidden)
+    - head 极简占位，由主代理后续 fill-html-head.mjs 注入
+  -->
+  <div class="mx-auto flex w-full max-w-[1440px] min-h-screen bg-background">
+    <!-- 左侧栏：curatorSidebar 规范，create 高亮（activeItemClasses: text-primary bg-secondary font-medium） -->
+    <aside class="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-border bg-sidebar md:flex">
+      <div class="flex items-center gap-2 px-6 py-5">
+        <span class="h-2.5 w-2.5 rounded-full bg-primary"></span>
+        <span class="font-serif text-lg text-foreground">家·记忆博物馆</span>
+      </div>
+      <nav class="flex flex-1 flex-col gap-1 px-3">
+        <a data-nav-item data-nav-key="home" data-dom-id="fmm-nav-home" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="home" class="h-[18px] w-[18px]"></i>首页</a>
+        <a data-nav-item data-nav-key="gallery" data-dom-id="fmm-nav-gallery" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="layout-grid" class="h-[18px] w-[18px]"></i>展馆</a>
+        <a data-nav-item data-nav-key="create" data-dom-id="fmm-nav-create" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-primary bg-secondary font-medium"><i data-lucide="plus" class="h-[18px] w-[18px]"></i>创建</a>
+        <a data-nav-item data-nav-key="visit" data-dom-id="fmm-nav-visit" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="eye" class="h-[18px] w-[18px]"></i>参观</a>
+        <a data-nav-item data-nav-key="mine" data-dom-id="fmm-nav-mine" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="user" class="h-[18px] w-[18px]"></i>我的</a>
+      </nav>
+      <div class="flex items-center gap-2 px-6 py-4 text-xs text-muted-foreground">
+        <i data-lucide="lock" class="h-3.5 w-3.5"></i>
+        <span>仅家庭成员可见</span>
+      </div>
+    </aside>
+
+    <!-- 右侧：顶栏 + 内容区 -->
+    <div class="flex min-h-screen flex-1 flex-col">
+      <!-- 顶栏：curatorTopbar 规范 -->
+      <header class="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card/80 px-8 py-3 backdrop-blur">
+        <div class="text-sm text-muted-foreground">策展工作台 · 一件物品里的陪伴</div>
+        <div class="flex items-center gap-4">
+          <a data-dom-id="fmm-enter-visit" class="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground hover:bg-muted"><i data-lucide="eye" class="h-4 w-4"></i>预览参观</a>
+          <div class="h-8 w-8 rounded-full bg-secondary text-center text-xs leading-8 text-primary">满</div>
+        </div>
+      </header>
+
+      <!-- 内容区 main slot -->
+      <main id="fmm-page-content" class="flex-1 bg-background p-8">
+
+        <!-- 展览名 + 动线结构切换四 tab -->
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <div class="text-xs text-muted-foreground">展览编辑器 · 路线排序</div>
+            <h1 class="font-serif text-2xl text-foreground">一件物品里的陪伴</h1>
+          </div>
+          <!-- 动线结构切换四 tab（时间线选中 bg-secondary text-primary） -->
+          <div data-dom-id="fmm-structure-switch" class="inline-flex items-center gap-1 rounded-lg border border-border bg-card p-1">
+            <button class="rounded-md bg-secondary px-3 py-1.5 text-sm font-medium text-primary">时间线</button>
+            <button class="rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground">房间地图</button>
+            <button class="rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground">提问线</button>
+            <button class="rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground">对照线</button>
+          </div>
+        </div>
+
+        <!-- 双列：左宽画布 ~65% / 右常驻工具面板 ~35% -->
+        <div class="flex gap-6">
+
+          <!-- 左画布区 -->
+          <div class="min-w-0 flex-1">
+            <div class="rounded-lg border border-border bg-card p-6">
+
+              <!-- 画布标题 + 长按拖拽提示 -->
+              <div class="mb-6 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-sm font-medium text-foreground">
+                  <i data-lucide="route" class="h-4 w-4 text-primary"></i>
+                  <span>参观动线 · 时间线视图</span>
+                </div>
+                <div class="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <i data-lucide="hand" class="h-3.5 w-3.5"></i>
+                  <span>长按拖动调整参观顺序</span>
+                </div>
+              </div>
+
+              <!-- 时间线主轴 -->
+              <div class="flex items-start gap-3">
+
+                <!-- 入口节点（door-open） -->
+                <div class="flex w-[76px] shrink-0 flex-col items-center text-center">
+                  <div class="flex h-[88px] w-[76px] items-center justify-center rounded-lg border border-dashed border-border bg-secondary/50">
+                    <i data-lucide="door-open" class="h-5 w-5 text-primary"></i>
+                  </div>
+                  <div class="mt-2 text-[11px] font-medium text-foreground">入口</div>
+                  <div class="text-[10px] text-muted-foreground">外婆的相册</div>
+                </div>
+
+                <!-- 展品区：4 节点 + 年代轴 -->
+                <div class="min-w-0 flex-1">
+                  <!-- 年代轴 -->
+                  <div class="mb-2 flex justify-between px-10 text-[11px] font-medium text-muted-foreground">
+                    <span>1978</span>
+                    <span>1980s</span>
+                    <span>1990s</span>
+                    <span>约 2023</span>
+                  </div>
+                  <!-- 节点 + 连接线 -->
+                  <div class="relative">
+                    <!-- 横向连线（穿过 4 个展品节点中心） -->
+                    <div class="absolute left-10 right-10 top-[43px] h-px bg-border"></div>
+                    <div class="flex justify-between">
+
+                      <!-- 展品节点 1：1978 搪瓷杯 妈妈—01 -->
+                      <div class="flex w-24 flex-col items-center">
+                        <div class="relative">
+                          <img src="../assets/exhibit-enamel-mug.jpg" alt="搪瓷杯" class="h-[88px] w-24 rounded-lg border border-border object-cover" />
+                          <span class="absolute -left-2 -top-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-mustard px-1.5 text-[11px] font-semibold text-foreground shadow-sm">妈妈—01</span>
+                        </div>
+                        <div class="mt-2 flex items-center gap-1">
+                          <i data-lucide="grip-vertical" class="h-3.5 w-3.5 cursor-grab text-muted-foreground"></i>
+                          <span class="text-[11px] font-medium text-foreground">搪瓷杯</span>
+                          <i data-lucide="lock" class="h-3 w-3 text-private"></i>
+                        </div>
+                      </div>
+
+                      <!-- 展品节点 2：1980s 相册 外婆—02 -->
+                      <div class="flex w-24 flex-col items-center">
+                        <div class="relative">
+                          <img src="../assets/exhibit-photo-album.jpg" alt="相册" class="h-[88px] w-24 rounded-lg border border-border object-cover" />
+                          <span class="absolute -left-2 -top-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-mustard px-1.5 text-[11px] font-semibold text-foreground shadow-sm">外婆—02</span>
+                        </div>
+                        <div class="mt-2 flex items-center gap-1">
+                          <i data-lucide="grip-vertical" class="h-3.5 w-3.5 cursor-grab text-muted-foreground"></i>
+                          <span class="text-[11px] font-medium text-foreground">相册</span>
+                          <i data-lucide="lock" class="h-3 w-3 text-private"></i>
+                        </div>
+                      </div>
+
+                      <!-- 展品节点 3：1990s 机械表 爸爸—03 -->
+                      <div class="flex w-24 flex-col items-center">
+                        <div class="relative">
+                          <img src="../assets/exhibit-mechanical-watch.jpg" alt="机械表" class="h-[88px] w-24 rounded-lg border border-border object-cover" />
+                          <span class="absolute -left-2 -top-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-mustard px-1.5 text-[11px] font-semibold text-foreground shadow-sm">爸爸—03</span>
+                        </div>
+                        <div class="mt-2 flex items-center gap-1">
+                          <i data-lucide="grip-vertical" class="h-3.5 w-3.5 cursor-grab text-muted-foreground"></i>
+                          <span class="text-[11px] font-medium text-foreground">机械表</span>
+                          <i data-lucide="lock" class="h-3 w-3 text-private"></i>
+                        </div>
+                      </div>
+
+                      <!-- 展品节点 4：约 2023 课本 小满—04 -->
+                      <div class="flex w-24 flex-col items-center">
+                        <div class="relative">
+                          <img src="../assets/exhibit-textbook.jpg" alt="课本" class="h-[88px] w-24 rounded-lg border border-border object-cover" />
+                          <span class="absolute -left-2 -top-2 inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-mustard px-1.5 text-[11px] font-semibold text-foreground shadow-sm">小满—04</span>
+                        </div>
+                        <div class="mt-2 flex items-center gap-1">
+                          <i data-lucide="grip-vertical" class="h-3.5 w-3.5 cursor-grab text-muted-foreground"></i>
+                          <span class="text-[11px] font-medium text-foreground">课本</span>
+                          <i data-lucide="lock" class="h-3 w-3 text-private"></i>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 尾厅节点（flag） -->
+                <div class="flex w-[76px] shrink-0 flex-col items-center text-center">
+                  <div class="flex h-[88px] w-[76px] items-center justify-center rounded-lg border border-dashed border-border bg-secondary/50">
+                    <i data-lucide="flag" class="h-5 w-5 text-primary"></i>
+                  </div>
+                  <div class="mt-2 text-[11px] font-medium text-foreground">尾厅</div>
+                  <div class="text-[10px] text-muted-foreground">一句话</div>
+                </div>
+
+              </div>
+
+              <!-- 动线说明 -->
+              <div class="mt-6 flex items-start gap-2 rounded-lg bg-secondary/40 p-3 text-xs leading-relaxed text-muted-foreground">
+                <i data-lucide="info" class="mt-0.5 h-3.5 w-3.5 shrink-0"></i>
+                <span>当前动线以时间为序：从外婆的相册入场，依次走过 1978 的搪瓷杯、1980s 的相册、1990s 的机械表，止于约 2023 的课本，尾厅留一句话收束。长按任一展品节点可重新排序，入口与尾厅位置固定。</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 右常驻工具面板 ~35% -->
+          <div class="w-[340px] shrink-0">
+            <div class="sticky top-24 rounded-lg border border-border bg-card">
+
+              <!-- 四 tab：编号 / 展签 / 语音 / 动线（当前"编号"展开） -->
+              <div class="flex items-center gap-1 border-b border-border p-2">
+                <button class="rounded-md bg-secondary px-3 py-1.5 text-sm font-medium text-primary">编号</button>
+                <button class="rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground">展签</button>
+                <button class="rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground">语音</button>
+                <button class="rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground">动线</button>
+              </div>
+
+              <!-- 编号面板 -->
+              <div class="p-5">
+                <div class="mb-1 text-sm font-medium text-foreground">编号样式</div>
+                <div class="mb-4 text-xs text-muted-foreground">为每件展品生成一致的档案编号</div>
+
+                <!-- 编号样式选择：mustard 圆形选中 + 方形 + 文字 -->
+                <div class="mb-5 grid grid-cols-3 gap-2">
+                  <!-- 圆形（选中） -->
+                  <button data-style-opt="circle" class="flex flex-col items-center gap-2 rounded-lg border-2 border-primary bg-secondary/40 p-3">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-full bg-mustard text-[11px] font-semibold text-foreground">02</span>
+                    <span class="text-[11px] font-medium text-primary">圆形</span>
+                  </button>
+                  <!-- 方形 -->
+                  <button data-style-opt="square" class="flex flex-col items-center gap-2 rounded-lg border border-border p-3 hover:bg-muted">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-md bg-mustard text-[11px] font-semibold text-foreground">02</span>
+                    <span class="text-[11px] text-muted-foreground">方形</span>
+                  </button>
+                  <!-- 文字 -->
+                  <button data-style-opt="text" class="flex flex-col items-center gap-2 rounded-lg border border-border p-3 hover:bg-muted">
+                    <span class="text-[12px] font-semibold text-mustard">妈妈—01</span>
+                    <span class="text-[11px] text-muted-foreground">文字</span>
+                  </button>
+                </div>
+
+                <!-- 自动编号开关 -->
+                <div class="mb-5 flex items-center justify-between rounded-lg border border-border p-3">
+                  <div>
+                    <div class="text-sm font-medium text-foreground">自动编号</div>
+                    <div class="text-xs text-muted-foreground">按动线顺序自动生成 01–04</div>
+                  </div>
+                  <button class="relative h-5 w-9 rounded-full bg-primary" aria-pressed="true">
+                    <span class="absolute right-0.5 top-0.5 h-4 w-4 rounded-full bg-surface"></span>
+                  </button>
+                </div>
+
+                <!-- 说明 -->
+                <div class="mb-5 flex items-start gap-2 rounded-lg bg-secondary/30 p-3 text-xs leading-relaxed text-muted-foreground">
+                  <i data-lucide="info" class="mt-0.5 h-3.5 w-3.5 shrink-0"></i>
+                  <span>编号一旦发布即固定为展品的档案身份，不会因重新排序而改变；调整动线只改变参观顺序，不改编号。</span>
+                </div>
+
+                <!-- 发布展览主按钮（bg-primary，触发隐私检查 modal） -->
+                <button data-dom-id="fmm-publish" class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-medium text-surface hover:bg-primary/90">
+                  <i data-lucide="send" class="h-4 w-4"></i>
+                  发布展览
+                </button>
+                <p class="mt-2 text-center text-[11px] text-muted-foreground">发布前会进行一次隐私检查</p>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- 隐私检查 modal（hidden interaction，默认 hidden） -->
+  <div data-dom-id="fmm-privacy-check" class="fixed inset-0 z-50 hidden items-center justify-center bg-foreground/40 p-4">
+    <div class="w-full max-w-md rounded-2xl bg-card p-6 shadow-lg">
+      <!-- 标题 -->
+      <div class="mb-1 flex items-center gap-2">
+        <i data-lucide="shield-check" class="h-5 w-5 text-private"></i>
+        <h2 class="font-serif text-lg text-foreground">发布前隐私检查</h2>
+      </div>
+      <p class="mb-4 text-sm leading-relaxed text-muted-foreground">请确认：展览表达了每个人愿意被看见的部分。你可以逐件撤回可见性，撤回后该展品不会出现在展览中。</p>
+
+      <!-- 4 件展品可见性勾选（每件 private 色标记 + checkbox，可独立撤回） -->
+      <div class="mb-5 space-y-2">
+        <!-- 妈妈—01 搪瓷杯 1978 -->
+        <label class="flex items-center justify-between rounded-lg border border-border p-3">
+          <div class="flex items-center gap-2.5">
+            <span class="flex h-5 w-5 items-center justify-center rounded-full bg-private/10 text-[10px] font-semibold text-private">02</span>
+            <div>
+              <div class="text-sm font-medium text-foreground">搪瓷杯</div>
+              <div class="text-[11px] text-muted-foreground">1978 · 外婆的陪嫁</div>
+            </div>
+          </div>
+          <input type="checkbox" checked class="h-4 w-4 rounded border-border accent-private" />
+        </label>
+        <!-- 外婆—02 相册 1980s -->
+        <label class="flex items-center justify-between rounded-lg border border-border p-3">
+          <div class="flex items-center gap-2.5">
+            <span class="flex h-5 w-5 items-center justify-center rounded-full bg-private/10 text-[10px] font-semibold text-private">03</span>
+            <div>
+              <div class="text-sm font-medium text-foreground">相册</div>
+              <div class="text-[11px] text-muted-foreground">1980s · 黑绸封面</div>
+            </div>
+          </div>
+          <input type="checkbox" checked class="h-4 w-4 rounded border-border accent-private" />
+        </label>
+        <!-- 爸爸—03 机械表 1990s -->
+        <label class="flex items-center justify-between rounded-lg border border-border p-3">
+          <div class="flex items-center gap-2.5">
+            <span class="flex h-5 w-5 items-center justify-center rounded-full bg-private/10 text-[10px] font-semibold text-private">04</span>
+            <div>
+              <div class="text-sm font-medium text-foreground">机械表</div>
+              <div class="text-[11px] text-muted-foreground">1990s · 爸爸的第一块表</div>
+            </div>
+          </div>
+          <input type="checkbox" checked class="h-4 w-4 rounded border-border accent-private" />
+        </label>
+        <!-- 小满—04 课本 约 2023 -->
+        <label class="flex items-center justify-between rounded-lg border border-border p-3">
+          <div class="flex items-center gap-2.5">
+            <span class="flex h-5 w-5 items-center justify-center rounded-full bg-private/10 text-[10px] font-semibold text-private">01</span>
+            <div>
+              <div class="text-sm font-medium text-foreground">课本</div>
+              <div class="text-[11px] text-muted-foreground">约 2023 · 封面写着"慢慢来"</div>
+            </div>
+          </div>
+          <input type="checkbox" checked class="h-4 w-4 rounded border-border accent-private" />
+        </label>
+      </div>
+
+      <!-- 返回编辑 / 确认发布 -->
+      <div class="flex gap-3">
+        <button data-dom-id="fmm-privacy-back" class="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted">
+          <i data-lucide="arrow-left" class="h-4 w-4"></i>
+          返回编辑
+        </button>
+        <button data-dom-id="fmm-confirm-publish" class="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-surface hover:bg-primary/90">
+          <i data-lucide="check" class="h-4 w-4"></i>
+          确认发布
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>if(window.lucide){lucide.createIcons();}</script>
+  <script src="../assets/fmm-app.js"></script>
+  <script>
+    (function () {
+      var modal = document.querySelector('[data-dom-id="fmm-privacy-check"]');
+      var openBtn = document.querySelector('[data-dom-id="fmm-publish"]');
+      var backBtn = document.querySelector('[data-dom-id="fmm-privacy-back"]');
+      var confirmBtn = document.querySelector('[data-dom-id="fmm-confirm-publish"]');
+      function openModal() { if (modal) { modal.classList.remove('hidden'); modal.classList.add('flex'); } }
+      function closeModal() { if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); } }
+      if (openBtn) { openBtn.addEventListener('click', function (e) { e.preventDefault(); openModal(); }); }
+      if (backBtn) { backBtn.addEventListener('click', function (e) { e.preventDefault(); closeModal(); }); }
+      if (confirmBtn) { confirmBtn.addEventListener('click', function (e) { e.preventDefault(); closeModal(); }); }
+    })();
+  </script>
+  <script>
+  (function(){
+    function ready(fn){ if(document.readyState!=='loading'){fn();}else{document.addEventListener('DOMContentLoaded',fn);} }
+    ready(function(){
+      var FMM = window.FMM;
+      var data = FMM ? FMM.load() : null;
+
+      /* 展览标题同步当前主题（FMM.theme.selected） */
+      if(data && data.theme && data.theme.selected){
+        var themeH1 = document.querySelector('#fmm-page-content h1.font-serif');
+        if(themeH1){ themeH1.textContent = data.theme.selected; }
+        var topbarSub = document.querySelector('header > div.text-sm');
+        if(topbarSub){ topbarSub.textContent = '策展工作台 · ' + data.theme.selected; }
+      }
+
+      function tabGroupEls(tabs, activeClasses, inactiveClasses){
+        tabs = Array.prototype.slice.call(tabs);
+        tabs.forEach(function(t){
+          t.addEventListener('click', function(){
+            tabs.forEach(function(o){
+              activeClasses.split(' ').forEach(function(c){ if(c) o.classList.remove(c); });
+              inactiveClasses.split(' ').forEach(function(c){ if(c) o.classList.add(c); });
+            });
+            activeClasses.split(' ').forEach(function(c){ if(c) t.classList.add(c); });
+            inactiveClasses.split(' ').forEach(function(c){ if(c) t.classList.remove(c); });
+          });
+        });
+      }
+
+      /* 动线结构 tab 互斥（时间线/房间地图/提问线/对照线）+ FMM 持久化 */
+      var structKeys = ['timeline','room','question','contrast'];
+      var structBtns = Array.prototype.slice.call(document.querySelectorAll('[data-dom-id="fmm-structure-switch"] button'));
+      var STRUCT_ACTIVE = ['bg-secondary','text-primary','font-medium'];
+      var STRUCT_INACTIVE = ['text-muted-foreground','hover:text-foreground'];
+      function selectStructure(key, persist){
+        structBtns.forEach(function(b, i){
+          var isActive = (structKeys[i] === key);
+          STRUCT_ACTIVE.forEach(function(c){ b.classList.remove(c); });
+          STRUCT_INACTIVE.forEach(function(c){ b.classList.remove(c); });
+          if(isActive){ STRUCT_ACTIVE.forEach(function(c){ b.classList.add(c); }); }
+          else { STRUCT_INACTIVE.forEach(function(c){ b.classList.add(c); }); }
+        });
+        if(persist){ var d = FMM.load(); d.structure = key; FMM.save(d); }
+      }
+      structBtns.forEach(function(b, i){
+        b.addEventListener('click', function(){ selectStructure(structKeys[i], true); });
+      });
+      var savedStruct = (data && data.structure) ? data.structure : 'timeline';
+      selectStructure(savedStruct, false);
+
+      /* 右工具面板 tab 互斥（编号/展签/语音/动线）—— 保留原有交互 */
+      var toolTexts = ['编号','展签','语音','动线'];
+      var toolTabs = Array.prototype.slice.call(document.querySelectorAll('button')).filter(function(b){
+        return toolTexts.indexOf((b.textContent||'').trim()) !== -1;
+      });
+      tabGroupEls(toolTabs, 'bg-secondary text-primary font-medium', 'text-muted-foreground hover:text-foreground');
+
+      /* 发布展览：点击时存数据（状态已随交互持久化，此处再保存一次确保） */
+      var publishBtn2 = document.querySelector('[data-dom-id="fmm-publish"]');
+      if(publishBtn2){
+        publishBtn2.addEventListener('click', function(e){ var d = FMM.load(); FMM.save(d); });
+      }
+
+      /* 确认发布：modal 关闭由已有 JS 处理，此处追加跳转到 ⑤ */
+      var confirmBtn = document.querySelector('[data-dom-id="fmm-confirm-publish"]');
+      if(confirmBtn){
+        confirmBtn.addEventListener('click', function(){
+          var d = FMM.load(); FMM.save(d);
+          location.href = 'page-label-audio-desktop.html';
+        });
+      }
+
+      /* 预览参观 → 跳转 */
+      var enterVisit = document.querySelector('[data-dom-id="fmm-enter-visit"]');
+      if(enterVisit){
+        enterVisit.addEventListener('click', function(e){
+          e.preventDefault();
+          location.href = 'page-visit-exhibit-desktop.html';
+        });
+      }
+
+      /* 编号样式互斥单选（卡片式：切换 border/bg/标签色）+ FMM 持久化 */
+      var styleBtns = Array.prototype.slice.call(document.querySelectorAll('[data-style-opt]'));
+      var SEL_ON = ['border-2','border-primary','bg-secondary/40'];
+      var SEL_OFF = ['border','border-border'];
+      function selectStyle(key, persist){
+        styleBtns.forEach(function(b){
+          var isActive = (b.getAttribute('data-style-opt') === key);
+          SEL_ON.forEach(function(c){ b.classList.remove(c); });
+          SEL_OFF.forEach(function(c){ b.classList.remove(c); });
+          var sp = b.querySelectorAll('span'); var lt = sp.length ? sp[sp.length-1] : null;
+          if(isActive){
+            SEL_ON.forEach(function(c){ b.classList.add(c); });
+            if(lt){ lt.classList.remove('text-muted-foreground'); lt.classList.add('text-primary','font-medium'); }
+          } else {
+            SEL_OFF.forEach(function(c){ b.classList.add(c); });
+            if(lt){ lt.classList.remove('text-primary','font-medium'); lt.classList.add('text-muted-foreground'); }
+          }
+        });
+        if(persist){ var d = FMM.load(); d.labelStyle = key; FMM.save(d); }
+      }
+      styleBtns.forEach(function(b){
+        b.addEventListener('click', function(){ selectStyle(b.getAttribute('data-style-opt'), true); });
+      });
+      var savedStyle = (data && data.labelStyle) ? data.labelStyle : 'circle';
+      selectStyle(savedStyle, false);
+
+      /* 侧栏 nav 跳转 */
+      var navJumps = {
+        'fmm-nav-home': 'page-welcome-setup-desktop.html',
+        'fmm-nav-gallery': 'page-theme-cocuration-desktop.html',
+        'fmm-nav-create': 'page-archive-card-desktop.html',
+        'fmm-nav-visit': 'page-visit-exhibit-desktop.html'
+      };
+      Object.keys(navJumps).forEach(function(domId){
+        document.querySelectorAll('[data-dom-id="'+domId+'"]').forEach(function(el){
+          el.addEventListener('click', function(e){ e.preventDefault(); location.href = navJumps[domId]; });
+        });
+      });
+      document.querySelectorAll('[data-dom-id="fmm-nav-mine"]').forEach(function(el){
+        el.addEventListener('click', function(e){ e.preventDefault(); alert('个人中心 · 待开发'); });
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

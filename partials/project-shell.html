@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>占位</title>
+</head>
+<body>
+<!--
+  =====================================================================
+  线上家庭记忆博物馆 · 项目级共享契约参考文档（非实际渲染页）
+  =====================================================================
+  本文件不渲染页面内容，仅作为叶子页生成时的项目契约参考。
+
+  【Head 注入契约】
+  - 真实 <head> 由 fill-html-head.mjs --replace-head 注入
+  - 注入内容：theme-vars style 块（:root 语义变量 + @theme inline 映射）
+    + Tailwind CDN（@tailwindcss/browser@4）+ Lucide CDN
+    + semantic-token-fallback style 块
+  - partial 中仅写极简占位 head（charset + viewport + title 占位），不手写 theme-vars 块
+
+  【项目参数】
+  - brandPrefix = fmm
+  - deviceType = freeSize
+  - viewportMode = document-scroll（body 自然滚动，不锁手机视口，不用 100vh 固定高度容器）
+  - 桌面侧栏用 position: sticky; top: 0; height: 100vh（非 fixed app-shell）
+
+  【Token 源】
+  - 全部 CSS token 见 colors_and_type.css
+  - :root 语义变量：--background #F7F2E9 / --foreground #243A36 / --card #FFFDF8
+    / --primary #315B50(forest) / --secondary #DDE8E2(mist) / --accent #D8A84D(mustard)
+    / --terracotta #B86A4A / --private #5D6F8B / --border #E7DDD0 / --muted-foreground #63736D
+  - @theme inline 映射：bg-background / bg-card / bg-primary / text-primary / text-muted-foreground
+    / border-border / bg-sidebar / bg-secondary 等
+
+  【视觉规范 styleContinuityAnchors】
+  - 调色板：canvas #F7F2E9 / surface #FFFDF8 / textPrimary #243A36 / textSecondary #63736D
+    / forest #315B50（主操作/链接/选中文字）/ terracotta #B86A4A（录音强调）
+    / mustard #D8A84D（编号节点）/ mist #DDE8E2（选中态背景）/ borderSoft #E7DDD0
+    / private #5D6F8B（私密标记）
+  - 字体：标题 Noto Serif SC（宋体感，font-serif），正文 PingFang SC / Noto Sans SC（默认 sans）
+  - typeScale：display 32/40, h1 24/32, h2 20/28, body 15/24, caption 12/16
+  - 圆角：sm/md 12, lg 16, xl 20, 2xl 24（2xl 仅底部抽屉/模态浮层；静态表面 radiusMax 16）
+  - surfaceDepthModel：静态表面 border-led（1px border-soft，无重阴影）；
+    浮层（底抽屉/模态/语音胶囊）可用 shadow-lg + 24 圆角
+  - CTA：主按钮 forest 实心 rounded-lg px-5 py-3 text-surface font-medium；
+    录音键 terracotta 圆形；选中态 mist 背景 + forest 文字；次按钮 surface 描边
+  - alignmentRhythm：移动 4 列栅格 12 间距，安全区顶59底34左右20；
+    桌面 12 列，侧栏 240px + 内容区 max-w 1440
+  - imagery：真实物品照片，4:3 为主、封面 3:2，低饱和、柔光、纸/木背景、编辑档案感
+  - tone：克制、平等、可反思；不幼儿化、不游戏化、不点赞排行
+
+  【导航 shell 契约 sharedProjectShellContract】
+  - 策展人侧(①–⑤)：桌面常驻左侧栏五项(home/gallery/create/visit/mine) + 顶栏(curatorTopbar)
+    / 移动底部五栏 nav
+  - 观众侧(⑥⑦)：桌面极简顶栏(visitorTopbar)无左栏 / 移动沉浸式无底部 nav
+  - 移动 nav 规范 class 见 orchestration-summary.json → mobileNavigation
+    （navClass / innerClass / itemClass / iconClass / labelClass / activeClass / inactiveClass / activeIndicator）
+  - 桌面 sidebar 规范 class 见 orchestration-summary.json → desktopNavigation.curatorSidebar
+    （containerClass / itemClass / activeItemClasses / inactiveItemClasses / iconClass）
+  - canonicalHtml（sidebar / curatorTopbar / visitorTopbar / mobileNav byKey）见同上
+
+  【Lucide 图标】
+  - 用 <i data-lucide="图标名"></i> 形式，页面加载后由 lucide.createIcons() 渲染
+  - partial <body> 末尾加 <script>if(window.lucide){lucide.createIcons();}</script>
+
+  【内容 slot】
+  - 每个外壳 partial 用 <main id="fmm-page-content" class="..."> 包裹内容区
+  - 内部放注释占位 <!-- 叶子页在此填充页面内容 -->
+  - 叶子页生成时读取对应 partial 作为外壳参考，替换 slot 内容
+-->
+</body>
+</html>
