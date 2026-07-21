@@ -654,12 +654,16 @@
         if(!file) return;
         var reader = new FileReader();
         reader.onload = function(e){
-          var dataUrl = e.target.result;
-          photoImg.src = dataUrl;
-          /* 持久化照片到当前展品（idx 为闭包引用，始终是当前成员的展品索引） */
-          FMM.setExhibit(idx, { photo: dataUrl });
-          /* 保存成功视觉反馈 */
-          showPhotoSaved(photoCard);
+          var rawUrl = e.target.result;
+          /* 先用原图预览，压缩后替换并持久化 */
+          photoImg.src = rawUrl;
+          FMM.compressImage(rawUrl, 800, 0.72, function(dataUrl){
+            photoImg.src = dataUrl;
+            /* 持久化压缩后照片到当前展品 */
+            FMM.setExhibit(idx, { photo: dataUrl });
+            /* 保存成功视觉反馈 */
+            showPhotoSaved(photoCard);
+          });
         };
         reader.readAsDataURL(file);
       });
