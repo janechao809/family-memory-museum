@@ -425,7 +425,7 @@
         memberListEl.innerHTML = '';
         MEMBERS.forEach(function(m){
           var ex = exhibits[m.idx];
-          var isSaved = !!(ex && ex.saved === true);
+          var isSaved = !!(ex && (ex.saved === true || (ex.photo && String(ex.photo).trim().length > 0)));
           if(isSaved) confirmedCount++;
           var item = document.createElement('div');
           item.className = 'flex items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2';
