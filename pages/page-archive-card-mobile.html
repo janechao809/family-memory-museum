@@ -624,6 +624,22 @@
     var photoImg = document.querySelector('[data-fmm-role="photo-img"]');
     var photoInput = document.querySelector('[data-fmm-role="photo-input"]');
     var photoOverlay = document.querySelector('[data-fmm-role="photo-overlay"]');
+    /* 照片保存成功视觉反馈：边框闪烁绿色 + 显示"已保存"提示 */
+    function showPhotoSaved(card){
+      if(!card) return;
+      card.style.transition = 'box-shadow .3s ease';
+      card.style.boxShadow = '0 0 0 3px #315B50';
+      var badge = document.createElement('div');
+      badge.textContent = '已保存';
+      badge.style.cssText = 'position:absolute;top:8px;right:8px;background:#315B50;color:#FFFDF8;padding:4px 10px;border-radius:9999px;font-size:12px;font-weight:500;z-index:10;opacity:0;transition:opacity .3s ease;';
+      card.appendChild(badge);
+      setTimeout(function(){ badge.style.opacity = '1'; }, 10);
+      setTimeout(function(){
+        card.style.boxShadow = '';
+        badge.style.opacity = '0';
+        setTimeout(function(){ if(badge.parentNode){ badge.parentNode.removeChild(badge); } }, 300);
+      }, 1500);
+    }
     if(photoCard && photoInput && photoImg){
       /* 恢复已存照片 */
       if(ex.photo){ photoImg.src = ex.photo; }
@@ -637,12 +653,10 @@
         reader.onload = function(e){
           var dataUrl = e.target.result;
           photoImg.src = dataUrl;
-          /* base64 存 localStorage（限制大小，超 2MB 不存） */
-          if(dataUrl.length < 2*1024*1024){
-            FMM.setExhibit(idx, { photo: dataUrl });
-          } else {
-            FMM.setExhibit(idx, { photo: dataUrl });
-          }
+          /* 持久化照片到当前展品（idx 为闭包引用，始终是当前成员的展品索引） */
+          FMM.setExhibit(idx, { photo: dataUrl });
+          /* 保存成功视觉反馈 */
+          showPhotoSaved(photoCard);
         };
         reader.readAsDataURL(file);
       });
@@ -740,6 +754,8 @@
         }
         navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
           recording = true;
+          /* 录音时停止背景音乐，确保录音清晰 */
+          if(typeof FMM !== 'undefined' && FMM.music && FMM.music.isPlaying()){ FMM.music.stop(); }
           audioChunks = [];
           try { mediaRecorder = new MediaRecorder(stream); }
           catch(e){ alert('录音初始化失败：' + e.message); stream.getTracks().forEach(function(t){t.stop();}); recording=false; return; }
@@ -753,6 +769,8 @@
             };
             reader.readAsDataURL(blob);
             stream.getTracks().forEach(function(t){ t.stop(); });
+            /* 录音结束后恢复背景音乐（如果之前在播放） */
+            if(typeof FMM !== 'undefined' && FMM.music && FMM.music.shouldPlay()){ setTimeout(function(){ FMM.music.tryRestore(); }, 500); }
           };
           mediaRecorder.start();
           rec.style.backgroundColor = '#dc2626';
@@ -809,7 +827,7 @@
           year: yearInput ? yearInput.value : (ex.year||''),
           teller: tellerInput ? tellerInput.value : (ex.teller||'')
         });
-        location.href = 'page-theme-cocuration-mobile.html';
+        location.href = 'page-welcome-setup-mobile.html';
       });
     }
 
@@ -823,11 +841,11 @@
         year: yearInput ? yearInput.value : (ex.year||''),
         teller: tellerInput ? tellerInput.value : (ex.teller||'')
       });
-      location.href = 'page-theme-cocuration-mobile.html';
+      location.href = 'page-exhibition-editor-mobile.html';
     }); }
     var navJumps = {
       'fmm-nav-home': 'page-welcome-setup-mobile.html',
-      'fmm-nav-gallery': 'page-theme-cocuration-mobile.html',
+      'fmm-nav-gallery': 'page-exhibition-editor-mobile.html',
       'fmm-nav-create': 'page-archive-card-mobile.html',
       'fmm-nav-visit': 'page-visit-exhibit-mobile.html'
     };

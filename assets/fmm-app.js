@@ -149,8 +149,8 @@
     var style=document.createElement('style');
     style.textContent='@keyframes fmm-pulse{0%,100%{box-shadow:0 2px 8px rgba(0,0,0,0.06)}50%{box-shadow:0 2px 16px rgba(49,91,80,0.25)}}';
     document.head.appendChild(style);
-    if(FMM.music.shouldPlay()){ setTimeout(function(){ if(FMM.music.tryRestore()) updateBtn(); },500); }
-    document.addEventListener('click',function(){ if(FMM.music.shouldPlay()&&!FMM.music.isPlaying()){ if(FMM.music.tryRestore()) updateBtn(); } },{passive:true});
+    /* 不自动播放背景音乐，仅用户点击按钮时播放 */
+    localStorage.setItem('fmm_music','off');
   }
   /* 按钮悬浮动效（温馨提升感，全站通用，覆盖 14 个页面） */
   function injectButtonHoverFx(){

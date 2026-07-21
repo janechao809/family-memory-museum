@@ -376,8 +376,8 @@
       </div>
       <nav class="flex flex-1 flex-col gap-1 px-3">
         <a data-nav-item data-nav-key="home" data-dom-id="fmm-nav-home" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="home" class="h-[18px] w-[18px]"></i>首页</a>
-        <a data-nav-item data-nav-key="gallery" data-dom-id="fmm-nav-gallery" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="layout-grid" class="h-[18px] w-[18px]"></i>展馆</a>
         <a data-nav-item data-nav-key="create" data-dom-id="fmm-nav-create" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-primary bg-secondary font-medium"><i data-lucide="plus" class="h-[18px] w-[18px]"></i>创建</a>
+        <a data-nav-item data-nav-key="gallery" data-dom-id="fmm-nav-gallery" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="layout-grid" class="h-[18px] w-[18px]"></i>展馆</a>
         <a data-nav-item data-nav-key="visit" data-dom-id="fmm-nav-visit" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="eye" class="h-[18px] w-[18px]"></i>参观</a>
         <a data-nav-item data-nav-key="mine" data-dom-id="fmm-nav-mine" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="user" class="h-[18px] w-[18px]"></i>我的</a>
       </nav>
@@ -396,6 +396,20 @@
           <div class="text-xs text-muted-foreground">展览编辑器 · 第 4 步</div>
           <h1 class="font-serif text-2xl text-foreground mt-1.5">发布展览</h1>
           <p class="mt-2 text-sm text-muted-foreground">确认展品信息后，发布你的家庭记忆展览</p>
+        </section>
+
+        <!-- 家庭成员确认 -->
+        <section class="mb-6 mt-6 max-w-2xl">
+          <div class="rounded-lg border border-border bg-card p-6">
+            <div class="mb-4 flex items-center justify-between">
+              <h2 class="font-serif text-lg text-foreground">家庭成员确认</h2>
+              <span data-fmm-role="confirm-count" class="shrink-0 rounded-full bg-secondary px-3 py-1 text-[13px] font-medium text-primary">0 / 5 已上传</span>
+            </div>
+            <p class="mb-4 text-[13px] leading-relaxed text-muted-foreground">每位家人上传展品照片后视为确认。全部确认后即可发布展览。</p>
+            <div data-fmm-role="member-list" class="grid grid-cols-2 gap-2">
+              <!-- JS 动态填充 -->
+            </div>
+          </div>
         </section>
 
         <!-- 发布主按钮 -->
@@ -417,12 +431,46 @@
     ready(function(){
       var FMM = window.FMM;
 
-      /* 发布展览：跳转到 ⑤ 展签与语音 */
+      /* 家庭成员确认：基于 photo 字段判断是否已上传展品 */
+      var MEMBERS = [
+        { owner: '妈妈', idx: 0, label: '妈' },
+        { owner: '外婆', idx: 1, label: '婆' },
+        { owner: '爸爸', idx: 2, label: '爸' },
+        { owner: '孩子', idx: 3, label: '子' },
+        { owner: '外公', idx: 4, label: '公' }
+      ];
+      var fmmData = FMM.load();
+      var exhibits = fmmData.exhibits || [];
+      var confirmedCount = 0;
+      var memberListEl = document.querySelector('[data-fmm-role="member-list"]');
+      if(memberListEl){
+        memberListEl.innerHTML = '';
+        MEMBERS.forEach(function(m){
+          var ex = exhibits[m.idx];
+          var hasPhoto = !!(ex && ex.photo && String(ex.photo).trim().length > 0);
+          if(hasPhoto) confirmedCount++;
+          var item = document.createElement('div');
+          item.className = 'flex items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2';
+          item.innerHTML =
+            '<span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-medium ' + (hasPhoto ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground') + '">' + m.label + '</span>'
+            + '<span class="flex-1 text-[13px] ' + (hasPhoto ? 'text-foreground' : 'text-muted-foreground') + '">' + m.owner + (ex && ex.name ? ' · ' + ex.name : '') + '</span>'
+            + '<span class="text-[12px] ' + (hasPhoto ? 'text-primary' : 'text-muted-foreground') + '">' + (hasPhoto ? '✓ 已上传' : '○ 待上传') + '</span>';
+          memberListEl.appendChild(item);
+        });
+      }
+      var confirmCounter = document.querySelector('[data-fmm-role="confirm-count"]');
+      if(confirmCounter){ confirmCounter.textContent = confirmedCount + ' / 5 已上传'; }
+
+      /* 发布按钮：未全部确认时提示，并跳转 ⑤ 展签与语音 */
       var publishBtn = document.querySelector('[data-dom-id="fmm-publish"]');
       if(publishBtn){
         publishBtn.addEventListener('click', function(e){
-          e.preventDefault();
-          var d = FMM.load(); FMM.save(d);
+          if(confirmedCount < 5){
+            if(!confirm('还有 ' + (5 - confirmedCount) + ' 位家人未上传展品照片，确定要发布吗？')){
+              e.preventDefault();
+              return;
+            }
+          }
           location.href = 'page-label-audio-desktop.html';
         });
       }
@@ -430,7 +478,7 @@
       /* 侧栏 nav 跳转 */
       var navJumps = {
         'fmm-nav-home': 'page-welcome-setup-desktop.html',
-        'fmm-nav-gallery': 'page-theme-cocuration-desktop.html',
+        'fmm-nav-gallery': 'page-exhibition-editor-desktop.html',
         'fmm-nav-create': 'page-archive-card-desktop.html',
         'fmm-nav-visit': 'page-visit-exhibit-desktop.html'
       };

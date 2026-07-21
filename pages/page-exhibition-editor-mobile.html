@@ -369,6 +369,20 @@
         <p class="mt-2 text-sm text-muted-foreground">确认展品信息后，发布你的家庭记忆展览</p>
       </section>
 
+      <!-- 家庭成员确认 -->
+      <section class="px-4 pb-4 mt-8">
+        <div class="rounded-lg border border-border bg-card p-4">
+          <div class="mb-3 flex items-center justify-between">
+            <h2 class="font-serif text-[16px] text-foreground">家庭成员确认</h2>
+            <span data-fmm-role="confirm-count" class="shrink-0 rounded-full bg-secondary px-2.5 py-0.5 text-[11px] font-medium text-primary">0 / 5 已上传</span>
+          </div>
+          <p class="mb-3 text-[12px] leading-snug text-muted-foreground">每位家人上传展品照片后视为确认。全部确认后即可发布展览。</p>
+          <div data-fmm-role="member-list" class="space-y-2">
+            <!-- JS 动态填充 -->
+          </div>
+        </div>
+      </section>
+
       <!-- 发布主按钮 -->
       <div class="mt-8">
         <button data-dom-id="fmm-publish" class="w-full rounded-lg bg-primary px-5 py-3 text-sm font-medium text-primary-foreground">
@@ -391,12 +405,46 @@
     ready(function(){
       var FMM = window.FMM;
 
-      /* 发布展览：跳转到 ⑤ 展签与语音 */
+      /* 家庭成员确认：基于 photo 字段判断是否已上传展品 */
+      var MEMBERS = [
+        { owner: '妈妈', idx: 0, label: '妈' },
+        { owner: '外婆', idx: 1, label: '婆' },
+        { owner: '爸爸', idx: 2, label: '爸' },
+        { owner: '孩子', idx: 3, label: '子' },
+        { owner: '外公', idx: 4, label: '公' }
+      ];
+      var fmmData = FMM.load();
+      var exhibits = fmmData.exhibits || [];
+      var confirmedCount = 0;
+      var memberListEl = document.querySelector('[data-fmm-role="member-list"]');
+      if(memberListEl){
+        memberListEl.innerHTML = '';
+        MEMBERS.forEach(function(m){
+          var ex = exhibits[m.idx];
+          var hasPhoto = !!(ex && ex.photo && String(ex.photo).trim().length > 0);
+          if(hasPhoto) confirmedCount++;
+          var item = document.createElement('div');
+          item.className = 'flex items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2';
+          item.innerHTML =
+            '<span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-medium ' + (hasPhoto ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground') + '">' + m.label + '</span>'
+            + '<span class="flex-1 text-[13px] ' + (hasPhoto ? 'text-foreground' : 'text-muted-foreground') + '">' + m.owner + (ex && ex.name ? ' · ' + ex.name : '') + '</span>'
+            + '<span class="text-[12px] ' + (hasPhoto ? 'text-primary' : 'text-muted-foreground') + '">' + (hasPhoto ? '✓ 已上传' : '○ 待上传') + '</span>';
+          memberListEl.appendChild(item);
+        });
+      }
+      var confirmCounter = document.querySelector('[data-fmm-role="confirm-count"]');
+      if(confirmCounter){ confirmCounter.textContent = confirmedCount + ' / 5 已上传'; }
+
+      /* 发布按钮：未全部确认时提示，并跳转 ⑤ 展签与语音 */
       var publishBtn = document.querySelector('[data-dom-id="fmm-publish"]');
       if(publishBtn){
         publishBtn.addEventListener('click', function(e){
-          e.preventDefault();
-          var d = FMM.load(); FMM.save(d);
+          if(confirmedCount < 5){
+            if(!confirm('还有 ' + (5 - confirmedCount) + ' 位家人未上传展品照片，确定要发布吗？')){
+              e.preventDefault();
+              return;
+            }
+          }
           location.href = 'page-label-audio-mobile.html';
         });
       }
@@ -404,7 +452,7 @@
       /* 底部五栏 nav 跳转 */
       var navJumps = {
         'fmm-nav-home': 'page-welcome-setup-mobile.html',
-        'fmm-nav-gallery': 'page-theme-cocuration-mobile.html',
+        'fmm-nav-gallery': 'page-exhibition-editor-mobile.html',
         'fmm-nav-create': 'page-archive-card-mobile.html',
         'fmm-nav-visit': 'page-visit-exhibit-mobile.html'
       };
