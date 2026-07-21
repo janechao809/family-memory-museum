@@ -496,6 +496,7 @@
 
       <!-- ④ 底部双按钮：上一展品（surface 描边）+ 完成·发布展览（bg-primary） -->
       <section class="pt-6">
+        <p data-fmm-progress class="mb-2.5 text-center text-[12px] text-muted-foreground">第 1 / 5 件</p>
         <div class="flex gap-3">
           <button type="button" data-dom-id="fmm-prev-exhibit" class="flex-1 rounded-lg border border-border bg-card px-5 py-3 text-[15px] font-medium text-foreground active:opacity-90">
             上一展品
@@ -561,6 +562,12 @@
 
     ready(function(){
       var ex = getExhibit();
+
+      /* —— 0. 进度提示：当前第几件 / 共 5 件 —— */
+      var progressEl = document.querySelector('[data-fmm-progress]');
+      if(progressEl){
+        progressEl.textContent = '第 ' + (getIdx() + 1) + ' / 5 件';
+      }
 
       /* —— 1. 展签字段持久化：加载时从 FMM 恢复，input 时写回 —— */
       var fields = document.querySelectorAll('[data-fmm-field]');
@@ -794,13 +801,26 @@
         });
       }
 
-      /* 上一展品：退回档案卡页编辑上一件展品 */
+      /* 上一展品：保存当前表单 → 循环切换到上一件展品 → 刷新当前页面 */
       var prevExhibitBtn = document.querySelector('[data-dom-id="fmm-prev-exhibit"]');
       if(prevExhibitBtn){
         prevExhibitBtn.addEventListener('click', function(){
+          // 1. 保存当前表单数据到 FMM
           var curIdx = FMM.currentIdx();
-          if(curIdx > 0){ FMM.setCurrentIdx(curIdx - 1); }
-          location.href = 'page-archive-card-mobile.html';
+          var fields = document.querySelectorAll('[data-fmm-field]');
+          var patch = {};
+          fields.forEach(function(f){
+            var key = f.getAttribute('data-fmm-field');
+            patch[key] = f.value;
+          });
+          if(Object.keys(patch).length > 0){ FMM.setExhibit(curIdx, patch); }
+
+          // 2. 切换到上一个展品（到 0 时循环到最后一个）
+          var prevIdx = curIdx > 0 ? curIdx - 1 : 4;
+          FMM.setCurrentIdx(prevIdx);
+
+          // 3. 刷新当前页面（带时间戳防缓存）
+          location.href = location.pathname + '?t=' + Date.now();
         });
       }
 

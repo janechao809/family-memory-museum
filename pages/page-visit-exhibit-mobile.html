@@ -461,6 +461,11 @@
     <!-- ⑥ 底部 sticky 浮层：下一站进度条 + 悬浮语音胶囊（floating，距底部安全区） -->
     <div class="fixed inset-x-0 bottom-0 z-40" style="padding-bottom:env(safe-area-inset-bottom)">
       <div class="mx-auto w-full max-w-[420px] px-4 pb-3">
+        <!-- 上一站按钮：点击 → 上一展品 / 返回展览编辑器 -->
+        <a data-dom-id="fmm-prev-stop" class="mb-2 flex items-center justify-between rounded-lg border border-border bg-card/95 px-4 py-2.5 backdrop-blur active:opacity-90">
+          <i data-lucide="arrow-left" class="h-4 w-4 text-foreground"></i>
+          <span class="text-[13px] text-muted-foreground">上一站</span>
+        </a>
         <!-- 下一站进度条：点击 → 下一展品 / ⑦ -->
         <a data-dom-id="fmm-next-stop" class="mb-2 flex items-center justify-between rounded-lg border border-border bg-card/95 px-4 py-2.5 backdrop-blur active:opacity-90">
           <span class="text-[13px] text-muted-foreground">2 / 4 · 下一站：老照片相册</span>
@@ -596,12 +601,39 @@
       /* 下一站：切换展品索引 */
       var nextStop = document.querySelector('[data-dom-id="fmm-next-stop"]');
       if(nextStop){
+        /* 动态更新下一站进度条文字 */
+        var nextStopSpan = nextStop.querySelector('span');
+        if(nextStopSpan){
+          var totalEx = FMM.load().exhibits.length;
+          var curNum = idx + 1;
+          if(idx + 1 >= totalEx){
+            nextStopSpan.textContent = '完成 · 查看展览尾厅';
+          } else {
+            var nextEx = FMM.getExhibit(idx + 1);
+            nextStopSpan.textContent = curNum + ' / ' + totalEx + ' · 下一站：' + (nextEx ? nextEx.name : '');
+          }
+        }
         nextStop.addEventListener('click', function(){
           var nextIdx = idx + 1;
           if(nextIdx >= FMM.load().exhibits.length){
             location.href = 'page-visit-end-mobile.html';
           } else {
             FMM.setCurrentIdx(nextIdx);
+            location.href = 'page-visit-exhibit-mobile.html';
+          }
+        });
+      }
+
+      /* 上一站：切换到上一展品 / 返回展览编辑器 */
+      var prevStop = document.querySelector('[data-dom-id="fmm-prev-stop"]');
+      if(prevStop){
+        prevStop.addEventListener('click', function(){
+          var prevIdx = idx - 1;
+          if(prevIdx < 0){
+            /* 如果已经是第一个展品，返回展览编辑器 */
+            location.href = 'page-exhibition-editor-mobile.html';
+          } else {
+            FMM.setCurrentIdx(prevIdx);
             location.href = 'page-visit-exhibit-mobile.html';
           }
         });

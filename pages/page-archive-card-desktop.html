@@ -516,6 +516,25 @@
               </div>
             </div>
 
+            <!-- 可编辑字段：物品名 / 年代 / 讲述者 -->
+            <div class="mt-3 rounded-lg border border-border bg-card p-4">
+              <p class="mb-3 text-[12px] font-medium text-muted-foreground">编辑物品信息</p>
+              <div class="grid grid-cols-1 gap-3 md:grid-cols-3">
+                <label class="block">
+                  <span class="mb-1 block text-[11px] text-muted-foreground">物品名</span>
+                  <input type="text" data-fmm-role="edit-name" class="block w-full rounded-md border border-border bg-background px-3 py-2 text-[14px] text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" placeholder="物品名" />
+                </label>
+                <label class="block">
+                  <span class="mb-1 block text-[11px] text-muted-foreground">年代</span>
+                  <input type="text" data-fmm-role="edit-year" class="block w-full rounded-md border border-border bg-background px-3 py-2 text-[14px] text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" placeholder="如 20年代" />
+                </label>
+                <label class="block">
+                  <span class="mb-1 block text-[11px] text-muted-foreground">讲述者</span>
+                  <input type="text" data-fmm-role="edit-teller" class="block w-full rounded-md border border-border bg-background px-3 py-2 text-[14px] text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" placeholder="讲述者" />
+                </label>
+              </div>
+            </div>
+
             <!-- 步标题 + 三层结构提示条 -->
             <div class="mt-6 flex flex-wrap items-end justify-between gap-3">
               <div>
@@ -605,7 +624,7 @@
             <!-- 底部双按钮：保存草稿（surface 描边）+ 下一步（bg-primary） -->
             <div class="mt-8 flex items-center gap-3">
               <button type="button" data-dom-id="fmm-save-draft" class="rounded-lg border border-border bg-card px-5 py-3 text-[15px] font-medium text-foreground hover:bg-muted active:opacity-90">
-                保存草稿
+                返回
               </button>
               <button type="button" data-dom-id="fmm-step-next" class="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground hover:opacity-95 active:opacity-90">
                 <span>下一步</span>
@@ -676,12 +695,18 @@
       var yEl = document.querySelector('[data-fmm-role="exhibit-year"]');
       var tEl = document.querySelector('[data-fmm-role="exhibit-teller"]');
       var sInput = document.getElementById('fmm-story-input');
+      var eName = document.querySelector('[data-fmm-role="edit-name"]');
+      var eYear = document.querySelector('[data-fmm-role="edit-year"]');
+      var eTeller = document.querySelector('[data-fmm-role="edit-teller"]');
       if(pImg){ pImg.setAttribute('src', cur.photo || ('../assets/' + (ASSET_MAP[cur.owner]||'exhibit-textbook.jpg'))); pImg.setAttribute('alt', cur.name||''); }
       if(nEl){ nEl.textContent = cur.name||''; }
       if(nmEl){ nmEl.innerHTML = '<i data-lucide="hash" class="h-3 w-3"></i>'+(cur.owner||'')+'—'+(cur.number||''); }
       if(yEl){ yEl.innerHTML = '<i data-lucide="calendar" class="h-3 w-3"></i>年代 · '+(cur.year||''); }
       if(tEl){ tEl.innerHTML = '<i data-lucide="user-round" class="h-3 w-3"></i>讲述者 · '+(cur.teller||''); }
       if(sInput){ sInput.value = cur.story||''; }
+      if(eName){ eName.value = cur.name||''; }
+      if(eYear){ eYear.value = cur.year||''; }
+      if(eTeller){ eTeller.value = cur.teller||''; }
       /* 情绪标签同步（桌面版用 data-emotion + renderEmotionButton） */
       savedEmotions = (cur.emotion||[]).slice();
       emotionButtons.forEach(renderEmotionButton);
@@ -755,6 +780,37 @@
       if(ex && ex.story){ storyInput.value = ex.story; }
       storyInput.addEventListener('input', function(){
         FMM.setExhibit(idx, { story: storyInput.value });
+      });
+    }
+
+    /* —— 物品名 / 年代 / 讲述者 可编辑输入框持久化 —— */
+    var nameInput = document.querySelector('[data-fmm-role="edit-name"]');
+    var yearInput = document.querySelector('[data-fmm-role="edit-year"]');
+    var tellerInput = document.querySelector('[data-fmm-role="edit-teller"]');
+    if(nameInput){
+      nameInput.value = (ex && ex.name) ? ex.name : '';
+      nameInput.addEventListener('input', function(){
+        FMM.setExhibit(idx, { name: nameInput.value });
+        var nEl = document.querySelector('[data-fmm-role="exhibit-name"]');
+        if(nEl){ nEl.textContent = nameInput.value; }
+        var pImg = document.querySelector('[data-fmm-role="photo-img"]');
+        if(pImg){ pImg.setAttribute('alt', nameInput.value); }
+      });
+    }
+    if(yearInput){
+      yearInput.value = (ex && ex.year) ? ex.year : '';
+      yearInput.addEventListener('input', function(){
+        FMM.setExhibit(idx, { year: yearInput.value });
+        var yEl = document.querySelector('[data-fmm-role="exhibit-year"]');
+        if(yEl){ yEl.innerHTML = '<i data-lucide="calendar" class="h-3 w-3"></i>年代 · '+(yearInput.value); }
+      });
+    }
+    if(tellerInput){
+      tellerInput.value = (ex && ex.teller) ? ex.teller : '';
+      tellerInput.addEventListener('input', function(){
+        FMM.setExhibit(idx, { teller: tellerInput.value });
+        var tEl = document.querySelector('[data-fmm-role="exhibit-teller"]');
+        if(tEl){ tEl.innerHTML = '<i data-lucide="user-round" class="h-3 w-3"></i>讲述者 · '+(tellerInput.value); }
       });
     }
 
@@ -901,20 +957,31 @@
       });
     }
 
-    /* —— 保存草稿 + 下一步前置保存 —— */
+    /* —— 返回按钮（原保存草稿）：保存全部字段后返回上一页 —— */
     var saveDraftBtn = document.querySelector('[data-dom-id="fmm-save-draft"]');
     if(saveDraftBtn){
       saveDraftBtn.addEventListener('click', function(){
-        FMM.setExhibit(idx, { story: storyInput.value, emotion: savedEmotions.slice() });
-        var orig = saveDraftBtn.textContent;
-        saveDraftBtn.textContent = '已保存 ✓';
-        setTimeout(function(){ saveDraftBtn.textContent = orig; }, 2000);
+        FMM.setExhibit(idx, {
+          story: storyInput.value,
+          emotion: savedEmotions.slice(),
+          name: nameInput ? nameInput.value : ((ex && ex.name) ? ex.name : ''),
+          year: yearInput ? yearInput.value : ((ex && ex.year) ? ex.year : ''),
+          teller: tellerInput ? tellerInput.value : ((ex && ex.teller) ? ex.teller : '')
+        });
+        if(inIframe()){ return; }
+        try{ location.href = 'page-theme-cocuration-desktop.html'; }catch(_){}
       });
     }
     var nextStepBtn = document.querySelector('[data-dom-id="fmm-step-next"]');
     if(nextStepBtn){
       nextStepBtn.addEventListener('click', function(){
-        FMM.setExhibit(idx, { story: storyInput.value, emotion: savedEmotions.slice() });
+        FMM.setExhibit(idx, {
+          story: storyInput.value,
+          emotion: savedEmotions.slice(),
+          name: nameInput ? nameInput.value : ((ex && ex.name) ? ex.name : ''),
+          year: yearInput ? yearInput.value : ((ex && ex.year) ? ex.year : ''),
+          teller: tellerInput ? tellerInput.value : ((ex && ex.teller) ? ex.teller : '')
+        });
         if(inIframe()){ return; }
         try{ location.href = 'page-theme-cocuration-desktop.html'; }catch(_){}
       });

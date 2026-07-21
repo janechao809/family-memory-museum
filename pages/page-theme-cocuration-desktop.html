@@ -418,47 +418,62 @@
           <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <figure class="rounded-lg border border-border bg-card p-2">
               <div class="overflow-hidden rounded-md">
-                <img src="../assets/exhibit-textbook.jpg" alt="课本" class="h-[88px] w-full object-cover" />
+                <img src="../assets/exhibit-textbook.jpg" alt="课本" data-exhibit-idx="3" class="h-[88px] w-full object-cover" />
               </div>
-              <figcaption class="mt-2 flex items-baseline justify-between text-[11px] leading-tight">
-                <span class="text-muted-foreground">孩子</span>
-                <span class="font-medium text-foreground">课本</span>
+              <figcaption class="mt-2 text-[11px] leading-tight">
+                <div class="flex items-baseline justify-between">
+                  <span class="text-muted-foreground">孩子</span>
+                  <span class="font-medium text-foreground">课本</span>
+                </div>
+                <span class="block text-center text-[10px] text-muted-foreground mt-0.5" data-exhibit-number>04</span>
               </figcaption>
             </figure>
             <figure class="rounded-lg border border-border bg-card p-2">
               <div class="overflow-hidden rounded-md">
-                <img src="../assets/exhibit-enamel-mug.jpg" alt="搪瓷杯" class="h-[88px] w-full object-cover" />
+                <img src="../assets/exhibit-enamel-mug.jpg" alt="搪瓷杯" data-exhibit-idx="0" class="h-[88px] w-full object-cover" />
               </div>
-              <figcaption class="mt-2 flex items-baseline justify-between text-[11px] leading-tight">
-                <span class="text-muted-foreground">妈妈</span>
-                <span class="font-medium text-foreground">搪瓷杯</span>
+              <figcaption class="mt-2 text-[11px] leading-tight">
+                <div class="flex items-baseline justify-between">
+                  <span class="text-muted-foreground">妈妈</span>
+                  <span class="font-medium text-foreground">搪瓷杯</span>
+                </div>
+                <span class="block text-center text-[10px] text-muted-foreground mt-0.5" data-exhibit-number>01</span>
               </figcaption>
             </figure>
             <figure class="rounded-lg border border-border bg-card p-2">
               <div class="overflow-hidden rounded-md">
-                <img src="../assets/exhibit-photo-album.jpg" alt="相册" class="h-[88px] w-full object-cover" />
+                <img src="../assets/exhibit-photo-album.jpg" alt="相册" data-exhibit-idx="1" class="h-[88px] w-full object-cover" />
               </div>
-              <figcaption class="mt-2 flex items-baseline justify-between text-[11px] leading-tight">
-                <span class="text-muted-foreground">外婆</span>
-                <span class="font-medium text-foreground">相册</span>
+              <figcaption class="mt-2 text-[11px] leading-tight">
+                <div class="flex items-baseline justify-between">
+                  <span class="text-muted-foreground">外婆</span>
+                  <span class="font-medium text-foreground">相册</span>
+                </div>
+                <span class="block text-center text-[10px] text-muted-foreground mt-0.5" data-exhibit-number>02</span>
               </figcaption>
             </figure>
             <figure class="rounded-lg border border-border bg-card p-2">
               <div class="overflow-hidden rounded-md">
-                <img src="../assets/exhibit-mechanical-watch.jpg" alt="机械表" class="h-[88px] w-full object-cover" />
+                <img src="../assets/exhibit-mechanical-watch.jpg" alt="机械表" data-exhibit-idx="2" class="h-[88px] w-full object-cover" />
               </div>
-              <figcaption class="mt-2 flex items-baseline justify-between text-[11px] leading-tight">
-                <span class="text-muted-foreground">爸爸</span>
-                <span class="font-medium text-foreground">机械表</span>
+              <figcaption class="mt-2 text-[11px] leading-tight">
+                <div class="flex items-baseline justify-between">
+                  <span class="text-muted-foreground">爸爸</span>
+                  <span class="font-medium text-foreground">机械表</span>
+                </div>
+                <span class="block text-center text-[10px] text-muted-foreground mt-0.5" data-exhibit-number>03</span>
               </figcaption>
             </figure>
             <figure class="rounded-lg border border-border bg-card p-2">
               <div class="overflow-hidden rounded-md">
-                <img src="../assets/exhibit-fountain-pen.jpg" alt="钢笔" class="h-[88px] w-full object-cover" />
+                <img src="../assets/exhibit-fountain-pen.jpg" alt="钢笔" data-exhibit-idx="4" class="h-[88px] w-full object-cover" />
               </div>
-              <figcaption class="mt-2 flex items-baseline justify-between text-[11px] leading-tight">
-                <span class="text-muted-foreground">外公</span>
-                <span class="font-medium text-foreground">钢笔</span>
+              <figcaption class="mt-2 text-[11px] leading-tight">
+                <div class="flex items-baseline justify-between">
+                  <span class="text-muted-foreground">外公</span>
+                  <span class="font-medium text-foreground">钢笔</span>
+                </div>
+                <span class="block text-center text-[10px] text-muted-foreground mt-0.5" data-exhibit-number>05</span>
               </figcaption>
             </figure>
           </div>
@@ -695,6 +710,26 @@
       var FMM = window.FMM;
       var data = FMM ? FMM.load() : null;
       var theme = data ? data.theme : null;
+
+      // 展品照片从 FMM 加载
+      var PHOTO_MAP = ['exhibit-enamel-mug.jpg','exhibit-photo-album.jpg','exhibit-mechanical-watch.jpg','exhibit-textbook.jpg','exhibit-fountain-pen.jpg'];
+      var fmmData = FMM.load();
+      var exhibits = fmmData.exhibits || [];
+      document.querySelectorAll('img[data-exhibit-idx]').forEach(function(img){
+        var i = parseInt(img.getAttribute('data-exhibit-idx'), 10);
+        var ex = exhibits[i];
+        if(ex){
+          if(ex.photo){ img.src = ex.photo; }
+          else if(PHOTO_MAP[i]){ img.src = '../assets/' + PHOTO_MAP[i]; }
+          img.alt = ex.name || '';
+          // 编号从 FMM exhibit.number 获取
+          var fig = img.closest('figure');
+          if(fig){
+            var numEl = fig.querySelector('[data-exhibit-number]');
+            if(numEl && ex.number){ numEl.textContent = ex.number; }
+          }
+        }
+      });
 
       // 主题卡：单选互斥，点击切换选中态
       var themeCards = Array.prototype.slice.call(document.querySelectorAll('article')).filter(function(a){

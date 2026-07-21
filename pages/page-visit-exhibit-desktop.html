@@ -467,16 +467,22 @@
             </div>
           </div>
 
-          <!-- 下一站进度：2 / 4 · 下一站：老照片相册 + bg-primary 按钮 -->
+          <!-- 上一站 / 下一站进度：2 / 4 · 下一站：老照片相册 + bg-primary 按钮 -->
           <div class="flex items-center justify-between rounded-lg border border-border bg-card p-5">
             <div>
-              <div class="text-[12px] text-muted-foreground">2 / 4 · 下一站：老照片相册</div>
+              <div data-dom-id="fmm-next-stop-label" class="text-[12px] text-muted-foreground">2 / 4 · 下一站：老照片相册</div>
               <div class="mt-0.5 font-serif text-[16px] text-foreground">继续参观</div>
             </div>
-            <button type="button" data-dom-id="fmm-next-stop" class="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground transition hover:bg-primary/90 active:opacity-90">
-              下一站
-              <i data-lucide="arrow-right" class="h-4 w-4"></i>
-            </button>
+            <div class="flex items-center gap-3">
+              <button type="button" data-dom-id="fmm-prev-stop" class="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground transition hover:bg-primary/90 active:opacity-90">
+                <i data-lucide="arrow-left" class="h-4 w-4"></i>
+                上一站
+              </button>
+              <button type="button" data-dom-id="fmm-next-stop" class="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground transition hover:bg-primary/90 active:opacity-90">
+                下一站
+                <i data-lucide="arrow-right" class="h-4 w-4"></i>
+              </button>
+            </div>
           </div>
 
         </div>
@@ -589,12 +595,39 @@
       /* 下一站：切换展品索引 */
       var nextStop = document.querySelector('[data-dom-id="fmm-next-stop"]');
       if(nextStop){
+        /* 动态更新下一站进度条文字 */
+        var nextStopLabel = document.querySelector('[data-dom-id="fmm-next-stop-label"]');
+        if(nextStopLabel){
+          var totalEx = FMM.load().exhibits.length;
+          var curNum = idx + 1;
+          if(idx + 1 >= totalEx){
+            nextStopLabel.textContent = '完成 · 查看展览尾厅';
+          } else {
+            var nextEx = FMM.getExhibit(idx + 1);
+            nextStopLabel.textContent = curNum + ' / ' + totalEx + ' · 下一站：' + (nextEx ? nextEx.name : '');
+          }
+        }
         nextStop.addEventListener('click', function(){
           var nextIdx = idx + 1;
           if(nextIdx >= FMM.load().exhibits.length){
             location.href = 'page-visit-end-desktop.html';
           } else {
             FMM.setCurrentIdx(nextIdx);
+            location.href = 'page-visit-exhibit-desktop.html';
+          }
+        });
+      }
+
+      /* 上一站：切换到上一展品 / 返回展览编辑器 */
+      var prevStop = document.querySelector('[data-dom-id="fmm-prev-stop"]');
+      if(prevStop){
+        prevStop.addEventListener('click', function(){
+          var prevIdx = idx - 1;
+          if(prevIdx < 0){
+            /* 如果已经是第一个展品，返回展览编辑器 */
+            location.href = 'page-exhibition-editor-desktop.html';
+          } else {
+            FMM.setCurrentIdx(prevIdx);
             location.href = 'page-visit-exhibit-desktop.html';
           }
         });
