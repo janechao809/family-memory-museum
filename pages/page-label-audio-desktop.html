@@ -652,8 +652,8 @@
         /* 展品图片：优先用户上传 photo，否则按 idx 取默认图 */
         var photoImg = document.getElementById('fmm-exhibit-photo');
         if(photoImg){
-          var PHOTO_MAP = ['exhibit-enamel-mug.jpg','exhibit-photo-album.jpg','exhibit-mechanical-watch.jpg','exhibit-textbook.jpg','exhibit-fountain-pen.jpg'];
-          var NAME_MAP = ['搪瓷杯','相册','机械表','课本','钢笔'];
+          var PHOTO_MAP = ['exhibit-enamel-mug.jpg','exhibit-photo-album.jpg','exhibit-fountain-pen.jpg','exhibit-mechanical-watch.jpg','exhibit-textbook.jpg'];
+          var NAME_MAP = ['搪瓷杯','相册','钢笔','机械表','课本'];
           var idx = getIdx();
           if(ex.photo){ photoImg.src = ex.photo; }
           else if(PHOTO_MAP[idx]){ photoImg.src = '../assets/' + PHOTO_MAP[idx]; }
