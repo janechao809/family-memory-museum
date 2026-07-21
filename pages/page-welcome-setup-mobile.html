@@ -581,14 +581,19 @@
         if(!file) return;
         var reader = new FileReader();
         reader.onload = function(ev){
-          var d = FMM.load(); d.museum.coverCustom = ev.target.result; FMM.save(d);
+          var rawUrl = ev.target.result;
+          /* 先用原图预览，压缩后再持久化 */
           if(coverUpload){
-            coverUpload.style.backgroundImage = 'url(' + ev.target.result + ')';
+            coverUpload.style.backgroundImage = 'url(' + rawUrl + ')';
             coverUpload.style.backgroundSize = 'cover';
             coverUpload.style.backgroundPosition = 'center';
             coverUpload.innerHTML = '';
           }
           selectCover(1);
+          FMM.compressImage(rawUrl, 1000, 0.72, function(dataUrl){
+            var d = FMM.load(); d.museum.coverCustom = dataUrl; FMM.save(d);
+            if(coverUpload){ coverUpload.style.backgroundImage = 'url(' + dataUrl + ')'; }
+          });
         };
         reader.readAsDataURL(file);
       });
