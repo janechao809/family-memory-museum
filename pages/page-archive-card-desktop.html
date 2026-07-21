@@ -621,16 +621,19 @@
               </div>
             </div>
 
-            <!-- 底部双按钮：保存草稿（surface 描边）+ 下一步（bg-primary） -->
+            <!-- 底部三按钮：返回 + 保存 + 下一步 -->
             <div class="mt-8 flex items-center gap-3">
-              <button type="button" data-dom-id="fmm-save-draft" class="rounded-lg border border-border bg-card px-5 py-3 text-[15px] font-medium text-foreground hover:bg-muted active:opacity-90">
+              <button type="button" data-dom-id="fmm-save-draft" class="rounded-lg border border-border bg-card px-5 py-3 text-[14px] font-medium text-foreground hover:bg-muted active:opacity-90">
                 返回
               </button>
-              <button type="button" data-dom-id="fmm-step-next" class="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground hover:opacity-95 active:opacity-90">
+              <button type="button" data-dom-id="fmm-save-info" class="rounded-lg border border-primary bg-secondary px-5 py-3 text-[14px] font-medium text-primary hover:opacity-95 active:opacity-90">
+                保存
+              </button>
+              <button type="button" data-dom-id="fmm-step-next" class="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-[14px] font-medium text-primary-foreground hover:opacity-95 active:opacity-90">
                 <span>下一步</span>
                 <i data-lucide="arrow-right" class="h-4 w-4"></i>
               </button>
-              <p class="ml-1 text-[12px] leading-snug text-muted-foreground">下一步：它对你意味着什么。</p>
+              <p class="ml-1 text-[12px] leading-snug text-muted-foreground">点击保存确认展品信息，下一步进入发布展览。</p>
             </div>
 
           </section>
@@ -980,7 +983,7 @@
       });
     }
 
-    /* —— 返回按钮（原保存草稿）：保存全部字段后返回上一页 —— */
+    /* —— 返回按钮：保存全部字段后返回上一页 —— */
     var saveDraftBtn = document.querySelector('[data-dom-id="fmm-save-draft"]');
     if(saveDraftBtn){
       saveDraftBtn.addEventListener('click', function(){
@@ -989,10 +992,36 @@
           emotion: savedEmotions.slice(),
           name: nameInput ? nameInput.value : ((ex && ex.name) ? ex.name : ''),
           year: yearInput ? yearInput.value : ((ex && ex.year) ? ex.year : ''),
-          teller: tellerInput ? tellerInput.value : ((ex && ex.teller) ? ex.teller : '')
+          teller: tellerInput ? tellerInput.value : ((ex && ex.teller) ? ex.teller : ''),
+          saved: true
         });
         if(inIframe()){ return; }
         try{ location.href = 'page-welcome-setup-desktop.html'; }catch(_){}
+      });
+    }
+    /* —— 保存按钮：保存全部字段，不跳转，显示反馈 —— */
+    var saveInfoBtn = document.querySelector('[data-dom-id="fmm-save-info"]');
+    if(saveInfoBtn){
+      saveInfoBtn.addEventListener('click', function(){
+        FMM.setExhibit(idx, {
+          story: storyInput.value,
+          emotion: savedEmotions.slice(),
+          name: nameInput ? nameInput.value : ((ex && ex.name) ? ex.name : ''),
+          year: yearInput ? yearInput.value : ((ex && ex.year) ? ex.year : ''),
+          teller: tellerInput ? tellerInput.value : ((ex && ex.teller) ? ex.teller : ''),
+          saved: true
+        });
+        var orig = saveInfoBtn.textContent;
+        saveInfoBtn.textContent = '已保存 ✓';
+        saveInfoBtn.style.backgroundColor = '#315B50';
+        saveInfoBtn.style.color = '#FFFDF8';
+        saveInfoBtn.style.borderColor = '#315B50';
+        setTimeout(function(){
+          saveInfoBtn.textContent = orig;
+          saveInfoBtn.style.backgroundColor = '';
+          saveInfoBtn.style.color = '';
+          saveInfoBtn.style.borderColor = '';
+        }, 2000);
       });
     }
     var nextStepBtn = document.querySelector('[data-dom-id="fmm-step-next"]');
@@ -1003,7 +1032,8 @@
           emotion: savedEmotions.slice(),
           name: nameInput ? nameInput.value : ((ex && ex.name) ? ex.name : ''),
           year: yearInput ? yearInput.value : ((ex && ex.year) ? ex.year : ''),
-          teller: tellerInput ? tellerInput.value : ((ex && ex.teller) ? ex.teller : '')
+          teller: tellerInput ? tellerInput.value : ((ex && ex.teller) ? ex.teller : ''),
+          saved: true
         });
         if(inIframe()){ return; }
         try{ location.href = 'page-exhibition-editor-desktop.html'; }catch(_){}

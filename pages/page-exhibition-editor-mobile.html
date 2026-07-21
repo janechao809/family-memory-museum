@@ -384,8 +384,12 @@
       </section>
 
       <!-- 发布主按钮 -->
-      <div class="mt-8">
-        <button data-dom-id="fmm-publish" class="w-full rounded-lg bg-primary px-5 py-3 text-sm font-medium text-primary-foreground">
+      <div class="mt-8 flex gap-3">
+        <button data-dom-id="fmm-back-upload" class="flex-1 rounded-lg border border-border bg-card px-5 py-3 text-sm font-medium text-foreground active:opacity-90">
+          返回上一页
+        </button>
+        <button data-dom-id="fmm-publish" class="flex flex-[1.4] items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-medium text-primary-foreground active:opacity-90">
+          <i data-lucide="send" class="h-4 w-4"></i>
           发布展览
         </button>
       </div>
@@ -405,7 +409,7 @@
     ready(function(){
       var FMM = window.FMM;
 
-      /* 家庭成员确认：基于 photo 字段判断是否已上传展品 */
+      /* 家庭成员确认：基于 saved 字段判断是否已保存展品信息 */
       var MEMBERS = [
         { owner: '妈妈', idx: 0, label: '妈' },
         { owner: '外婆', idx: 1, label: '婆' },
@@ -421,26 +425,34 @@
         memberListEl.innerHTML = '';
         MEMBERS.forEach(function(m){
           var ex = exhibits[m.idx];
-          var hasPhoto = !!(ex && ex.photo && String(ex.photo).trim().length > 0);
-          if(hasPhoto) confirmedCount++;
+          var isSaved = !!(ex && ex.saved === true);
+          if(isSaved) confirmedCount++;
           var item = document.createElement('div');
           item.className = 'flex items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2';
           item.innerHTML =
-            '<span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-medium ' + (hasPhoto ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground') + '">' + m.label + '</span>'
-            + '<span class="flex-1 text-[13px] ' + (hasPhoto ? 'text-foreground' : 'text-muted-foreground') + '">' + m.owner + (ex && ex.name ? ' · ' + ex.name : '') + '</span>'
-            + '<span class="text-[12px] ' + (hasPhoto ? 'text-primary' : 'text-muted-foreground') + '">' + (hasPhoto ? '✓ 已上传' : '○ 待上传') + '</span>';
+            '<span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-medium ' + (isSaved ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground') + '">' + m.label + '</span>'
+            + '<span class="flex-1 text-[13px] ' + (isSaved ? 'text-foreground' : 'text-muted-foreground') + '">' + m.owner + (ex && ex.name ? ' · ' + ex.name : '') + '</span>'
+            + '<span class="text-[12px] ' + (isSaved ? 'text-primary' : 'text-muted-foreground') + '">' + (isSaved ? '✓ 已上传' : '○ 待上传') + '</span>';
           memberListEl.appendChild(item);
         });
       }
       var confirmCounter = document.querySelector('[data-fmm-role="confirm-count"]');
       if(confirmCounter){ confirmCounter.textContent = confirmedCount + ' / 5 已上传'; }
 
+      /* 返回上一页按钮：回到档案卡继续为其他家人上传展品 */
+      var backUploadBtn = document.querySelector('[data-dom-id="fmm-back-upload"]');
+      if(backUploadBtn){
+        backUploadBtn.addEventListener('click', function(){
+          location.href = 'page-archive-card-mobile.html';
+        });
+      }
+
       /* 发布按钮：未全部确认时提示，并跳转 ⑤ 展签与语音 */
       var publishBtn = document.querySelector('[data-dom-id="fmm-publish"]');
       if(publishBtn){
         publishBtn.addEventListener('click', function(e){
           if(confirmedCount < 5){
-            if(!confirm('还有 ' + (5 - confirmedCount) + ' 位家人未上传展品照片，确定要发布吗？')){
+            if(!confirm('还有 ' + (5 - confirmedCount) + ' 位家人未保存展品信息，确定要发布吗？')){
               e.preventDefault();
               return;
             }
