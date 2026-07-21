@@ -63,8 +63,34 @@
     }
   }
   function save(data) {
-    try { localStorage.setItem(FMM_KEY, JSON.stringify(data || load())); }
-    catch (e) { /* localStorage 满或禁用，静默降级 */ }
+    try { localStorage.setItem(FMM_KEY, JSON.stringify(data || load())); return true; }
+    catch (e) { /* localStorage 满或禁用 */ console.warn('[FMM] 保存失败：', e.message); return false; }
+  }
+  /* 图片压缩：用 Canvas 缩放 + JPEG 压缩，避免 localStorage 超配额 */
+  function compressImage(dataUrl, maxW, quality, cb) {
+    if (!maxW) { maxW = 800; }
+    if (quality === undefined) { quality = 0.72; }
+    var img = new Image();
+    img.onload = function () {
+      var w = img.naturalWidth || img.width;
+      var h = img.naturalHeight || img.height;
+      var scale = Math.min(1, maxW / w);
+      var cw = Math.round(w * scale);
+      var ch = Math.round(h * scale);
+      var canvas = document.createElement('canvas');
+      canvas.width = cw; canvas.height = ch;
+      var ctx = canvas.getContext('2d');
+      /* 白底，避免透明 PNG 压成 JPEG 后变黑 */
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, cw, ch);
+      ctx.drawImage(img, 0, 0, cw, ch);
+      var out = canvas.toDataURL('image/jpeg', quality);
+      /* 如果压缩后反而更大（极小图），退回原图 */
+      if (out.length >= dataUrl.length && dataUrl.indexOf('image/jpeg') !== -1) { cb(dataUrl); }
+      else { cb(out); }
+    };
+    img.onerror = function () { cb(dataUrl); };
+    img.src = dataUrl;
   }
   function deepMerge(base, over) {
     if (Array.isArray(base)) { return over !== undefined ? over : base; }
@@ -80,6 +106,7 @@
     KEY: FMM_KEY,
     load: load,
     save: save,
+    compressImage: compressImage,
     reset: function () { localStorage.removeItem(FMM_KEY); return load(); },
     /* 展品快捷操作 */
     getExhibit: function (idx) { var d = load(); return d.exhibits[idx] || d.exhibits[0]; },
