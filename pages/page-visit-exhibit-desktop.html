@@ -515,8 +515,8 @@
       if(subtitle && ex.year){ subtitle.textContent = ex.year + ' · ' + ex.source + ' · 讲述者 ' + ex.teller; }
       var heroImg = document.querySelector('.sticky img');
       if(heroImg){
-        var PHOTO_MAP = ['exhibit-enamel-mug.jpg','exhibit-photo-album.jpg','exhibit-mechanical-watch.jpg','exhibit-textbook.jpg'];
-        var NAME_MAP = ['搪瓷杯','相册','机械表','课本'];
+        var PHOTO_MAP = ['exhibit-enamel-mug.jpg','exhibit-photo-album.jpg','exhibit-mechanical-watch.jpg','exhibit-textbook.jpg','exhibit-fountain-pen.jpg'];
+        var NAME_MAP = ['搪瓷杯','相册','机械表','课本','钢笔'];
         if(ex.photo){ heroImg.src = ex.photo; }
         else if(PHOTO_MAP[idx]){ heroImg.src = '../assets/' + PHOTO_MAP[idx]; }
         heroImg.alt = ex.name || NAME_MAP[idx] || '展品';

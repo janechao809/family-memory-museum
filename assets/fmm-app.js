@@ -4,9 +4,9 @@
  */
 (function (global) {
   'use strict';
-  var FMM_KEY = 'fmm_museum_v1';
+  var FMM_KEY = 'fmm_museum_v2';
 
-  /* 默认数据骨架：4 件家庭展品的占位信息 */
+  /* 默认数据骨架：5 件家庭展品的占位信息 */
   function defaultData() {
     return {
       museum: { name: '我们家的小博物馆', cover: 0, identity: '妈妈', privacy: 'family' },
@@ -27,11 +27,16 @@
           story: '爸爸用第一个月工资买的，戴了三十年。那道划痕是我出生那年磕的，他没修。',
           meaning: '时间一直在走，但有些瞬间被表盘记住了。',
           emotion: ['安心'], visibility: 'family', photo: '', audio: '', label: '' },
-        { id: 'exhibit-004', owner: '小满', number: '04', name: '课本', year: '约 2023', source: '初一开学', teller: '小满',
+        { id: 'exhibit-004', owner: '孩子', number: '04', name: '课本', year: '约 2023', source: '初一开学', teller: '孩子',
           what: '初一数学课本，牛皮纸包皮，扉页有妈妈写的"慢慢来"三个字。',
           story: '初一开学那天，妈妈用牛皮纸把这本数学课本包好，在内页写了"慢慢来"三个字。那年我数学跟不上，她每晚陪我重做错题。',
           meaning: '三个字比任何辅导都管用，它让我知道跟不上也没关系。',
-          emotion: ['陪伴'], visibility: 'family', photo: '', audio: '', label: '' }
+          emotion: ['陪伴'], visibility: 'family', photo: '', audio: '', label: '' },
+        { id: 'exhibit-005', owner: '外公', number: '05', name: '钢笔', year: '约 1980s', source: '外公退休留念', teller: '外公',
+          what: '一支墨绿色的老式钢笔，笔帽有一道细纹，笔尖磨出了外公握笔的凹痕。',
+          story: '外公用了四十年的钢笔。他每天早起练字，写家信、记账都靠它。笔尖的凹痕，是几十年同一姿势留下的。',
+          meaning: '一支笔写完了大半辈子，磨出的凹痕比任何字迹都更像他。',
+          emotion: ['想念'], visibility: 'family', photo: '', audio: '', label: '' }
       ],
       labelStyle: 'circle', /* circle / square / text */
       structure: 'timeline', /* timeline / room / question / contrast */

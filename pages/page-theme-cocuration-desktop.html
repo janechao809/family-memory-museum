@@ -413,11 +413,11 @@
           <p class="mt-2 text-[14px] leading-6 text-muted-foreground">AI 读了你们的物品故事，提出几个策展主题。家庭一起讨论，决定用哪个。</p>
         </section>
 
-        <!-- ② 展品缩略横排：4 件物品 + 成员名 -->
+        <!-- ② 展品缩略横排：5 件物品 + 成员名 -->
         <section class="mb-7">
           <div class="mb-2 flex items-baseline justify-between">
             <h2 class="text-[13px] font-medium text-foreground">已记录的展品</h2>
-            <span class="text-[11px] text-muted-foreground">4 件 · 作为主题候选的素材</span>
+            <span class="text-[11px] text-muted-foreground">5 件 · 作为主题候选的素材</span>
           </div>
           <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <figure class="rounded-lg border border-border bg-card p-2">
@@ -425,7 +425,7 @@
                 <img src="../assets/exhibit-textbook.jpg" alt="课本" class="h-[88px] w-full object-cover" />
               </div>
               <figcaption class="mt-2 flex items-baseline justify-between text-[11px] leading-tight">
-                <span class="text-muted-foreground">小满</span>
+                <span class="text-muted-foreground">孩子</span>
                 <span class="font-medium text-foreground">课本</span>
               </figcaption>
             </figure>
@@ -454,6 +454,15 @@
               <figcaption class="mt-2 flex items-baseline justify-between text-[11px] leading-tight">
                 <span class="text-muted-foreground">爸爸</span>
                 <span class="font-medium text-foreground">机械表</span>
+              </figcaption>
+            </figure>
+            <figure class="rounded-lg border border-border bg-card p-2">
+              <div class="overflow-hidden rounded-md">
+                <img src="../assets/exhibit-fountain-pen.jpg" alt="钢笔" class="h-[88px] w-full object-cover" />
+              </div>
+              <figcaption class="mt-2 flex items-baseline justify-between text-[11px] leading-tight">
+                <span class="text-muted-foreground">外公</span>
+                <span class="font-medium text-foreground">钢笔</span>
               </figcaption>
             </figure>
           </div>
@@ -537,7 +546,7 @@
                     </div>
                   </div>
                   <div class="mt-auto flex items-center justify-between pt-4">
-                    <span class="text-[11px] text-muted-foreground">涉及 4 件展品</span>
+                    <span class="text-[11px] text-muted-foreground">涉及 5 件展品</span>
                     <button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-[12px] font-medium text-foreground hover:border-primary hover:text-primary active:opacity-90">
                       <i data-lucide="plus" class="h-3.5 w-3.5"></i>我愿意用它策展
                     </button>
@@ -596,13 +605,13 @@
               <!-- 已确认成员进度 2/4 -->
               <div class="mb-1.5 flex items-baseline justify-between">
                 <h4 class="text-[12px] font-medium text-foreground">家庭成员确认</h4>
-                <span class="rounded-full bg-secondary px-2 py-0.5 text-[11px] text-primary">2 / 4 已确认</span>
+                <span class="rounded-full bg-secondary px-2 py-0.5 text-[11px] text-primary">2 / 5 已确认</span>
               </div>
               <ul class="space-y-2">
                 <li class="flex items-center justify-between rounded-md bg-background px-3 py-2">
                   <div class="flex items-center gap-2">
-                    <span class="h-6 w-6 rounded-full bg-secondary text-center text-[11px] leading-6 text-primary">满</span>
-                    <span class="text-[13px] text-foreground">小满</span>
+                    <span class="h-6 w-6 rounded-full bg-secondary text-center text-[11px] leading-6 text-primary">孩</span>
+                    <span class="text-[13px] text-foreground">孩子</span>
                   </div>
                   <span class="inline-flex items-center gap-1 text-[11px] text-primary">
                     <i data-lucide="check" class="h-3.5 w-3.5"></i>已确认
@@ -630,6 +639,15 @@
                   <div class="flex items-center gap-2">
                     <span class="h-6 w-6 rounded-full bg-muted text-center text-[11px] leading-6 text-muted-foreground">爸</span>
                     <span class="text-[13px] text-foreground">爸爸</span>
+                  </div>
+                  <span class="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+                    <i data-lucide="more-horizontal" class="h-3.5 w-3.5"></i>等待中
+                  </span>
+                </li>
+                <li class="flex items-center justify-between rounded-md bg-background px-3 py-2">
+                  <div class="flex items-center gap-2">
+                    <span class="h-6 w-6 rounded-full bg-muted text-center text-[11px] leading-6 text-muted-foreground">公</span>
+                    <span class="text-[13px] text-foreground">外公</span>
                   </div>
                   <span class="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
                     <i data-lucide="more-horizontal" class="h-3.5 w-3.5"></i>等待中

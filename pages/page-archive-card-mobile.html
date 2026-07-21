@@ -414,8 +414,9 @@
           <div class="flex flex-1 gap-1.5">
             <button type="button" data-fmm-role="member-switch" data-member="妈妈" class="flex-1 rounded-full border border-border bg-card px-2 py-1.5 text-[12px] text-muted-foreground">妈妈</button>
             <button type="button" data-fmm-role="member-switch" data-member="外婆" class="flex-1 rounded-full border border-border bg-card px-2 py-1.5 text-[12px] text-muted-foreground">外婆</button>
+            <button type="button" data-fmm-role="member-switch" data-member="外公" class="flex-1 rounded-full border border-border bg-card px-2 py-1.5 text-[12px] text-muted-foreground">外公</button>
             <button type="button" data-fmm-role="member-switch" data-member="爸爸" class="flex-1 rounded-full border border-border bg-card px-2 py-1.5 text-[12px] text-muted-foreground">爸爸</button>
-            <button type="button" data-fmm-role="member-switch" data-member="小满" class="flex-1 rounded-full border border-border bg-card px-2 py-1.5 text-[12px] text-muted-foreground">小满</button>
+            <button type="button" data-fmm-role="member-switch" data-member="孩子" class="flex-1 rounded-full border border-border bg-card px-2 py-1.5 text-[12px] text-muted-foreground">孩子</button>
           </div>
         </div>
       </section>
@@ -530,7 +531,7 @@
     var ex = FMM.getExhibit(idx);
 
     /* —— 展品图片资源映射 + 按成员定位展品 —— */
-    var ASSET_MAP = { '妈妈':'exhibit-enamel-mug.jpg', '外婆':'exhibit-photo-album.jpg', '爸爸':'exhibit-mechanical-watch.jpg', '小满':'exhibit-textbook.jpg' };
+    var ASSET_MAP = { '妈妈':'exhibit-enamel-mug.jpg', '外婆':'exhibit-photo-album.jpg', '外公':'exhibit-fountain-pen.jpg', '爸爸':'exhibit-mechanical-watch.jpg', '孩子':'exhibit-textbook.jpg' };
     function findIdxByOwner(member){
       var d = FMM.load();
       for(var i=0;i<d.exhibits.length;i++){ if(d.exhibits[i].owner === member){ return i; } }
