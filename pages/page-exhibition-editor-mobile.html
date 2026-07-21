@@ -420,19 +420,25 @@
       var fmmData = FMM.load();
       var exhibits = fmmData.exhibits || [];
       var confirmedCount = 0;
+      /* 系统范例图映射（按展品索引） */
+      var PHOTO_MAP = ['exhibit-enamel-mug.jpg','exhibit-photo-album.jpg','exhibit-mechanical-watch.jpg','exhibit-textbook.jpg','exhibit-fountain-pen.jpg'];
       var memberListEl = document.querySelector('[data-fmm-role="member-list"]');
       if(memberListEl){
         memberListEl.innerHTML = '';
         MEMBERS.forEach(function(m){
           var ex = exhibits[m.idx];
-          var isSaved = !!(ex && (ex.saved === true || (ex.photo && String(ex.photo).trim().length > 0)));
+          var hasUpload = !!(ex && ex.photo && String(ex.photo).trim().length > 0);
+          var isSaved = !!(ex && (ex.saved === true || hasUpload));
           if(isSaved) confirmedCount++;
+          /* 照片：有上传用上传图，否则用系统范例图 */
+          var photoSrc = hasUpload ? ex.photo : ('../assets/' + (PHOTO_MAP[m.idx] || 'exhibit-enamel-mug.jpg'));
+          var photoAlt = (ex && ex.name) ? ex.name : m.owner;
           var item = document.createElement('div');
           item.className = 'flex items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2';
           item.innerHTML =
-            '<span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-medium ' + (isSaved ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground') + '">' + m.label + '</span>'
-            + '<span class="flex-1 text-[13px] ' + (isSaved ? 'text-foreground' : 'text-muted-foreground') + '">' + m.owner + (ex && ex.name ? ' · ' + ex.name : '') + '</span>'
-            + '<span class="text-[12px] ' + (isSaved ? 'text-primary' : 'text-muted-foreground') + '">' + (isSaved ? '✓ 已上传' : '○ 待上传') + '</span>';
+            '<img src="' + photoSrc + '" alt="' + photoAlt + '" class="h-10 w-10 shrink-0 rounded-md object-cover" />'
+            + '<div class="flex-1 min-w-0"><p class="truncate text-[13px] ' + (isSaved ? 'text-foreground' : 'text-muted-foreground') + '">' + m.owner + (ex && ex.name ? ' · ' + ex.name : '') + '</p></div>'
+            + '<span class="shrink-0 text-[12px] ' + (hasUpload ? 'text-primary' : 'text-muted-foreground') + '">' + (hasUpload ? '✓ 已上传' : '范例图') + '</span>';
           memberListEl.appendChild(item);
         });
       }
