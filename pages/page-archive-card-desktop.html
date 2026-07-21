@@ -381,10 +381,6 @@
         <a data-nav-item data-nav-key="visit" data-dom-id="fmm-nav-visit" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="eye" class="h-[18px] w-[18px]"></i>参观</a>
         <a data-nav-item data-nav-key="mine" data-dom-id="fmm-nav-mine" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="user" class="h-[18px] w-[18px]"></i>我的</a>
       </nav>
-      <div class="flex items-center gap-2 px-6 py-4 text-xs text-muted-foreground">
-        <i data-lucide="lock" class="h-3.5 w-3.5"></i>
-        <span>仅家庭成员可见</span>
-      </div>
     </aside>
 
     <!-- 右侧：顶栏 + 内容区 -->
@@ -394,7 +390,7 @@
         <div class="text-sm text-muted-foreground">策展工作台 · 一件物品里的陪伴</div>
         <div class="flex items-center gap-4">
           <a data-dom-id="fmm-enter-visit" class="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-foreground hover:bg-muted"><i data-lucide="eye" class="h-4 w-4"></i>预览参观</a>
-          <div class="h-8 w-8 rounded-full bg-secondary text-center text-xs leading-8 text-primary">满</div>
+          <div data-fmm-role="current-member-avatar" class="h-8 w-8 rounded-full bg-secondary text-center text-xs leading-8 text-primary">满</div>
         </div>
       </header>
 
@@ -463,7 +459,7 @@
                     <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-card text-[13px] text-muted-foreground">4</span>
                     <div class="min-w-0">
                       <p class="text-[14px] text-muted-foreground">④ 情绪与可见性</p>
-                      <p class="mt-0.5 text-[12px] leading-snug text-muted-foreground">情绪标签 + 谁能看见</p>
+                      <p class="mt-0.5 text-[12px] leading-snug text-muted-foreground">情绪标签</p>
                     </div>
                   </div>
                 </li>
@@ -487,6 +483,17 @@
           <!-- 右列：宽表单区 flex-1 -->
           <section class="min-w-0 flex-1">
 
+            <!-- 当前策展成员（可切换） -->
+            <div class="mb-4 flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3">
+              <span class="text-[13px] text-muted-foreground shrink-0">策展成员</span>
+              <div class="flex flex-1 gap-2">
+                <button type="button" data-fmm-role="member-switch" data-member="妈妈" class="flex-1 rounded-full border border-border bg-background px-3 py-1.5 text-[13px] text-muted-foreground hover:border-primary/50">妈妈</button>
+                <button type="button" data-fmm-role="member-switch" data-member="外婆" class="flex-1 rounded-full border border-border bg-background px-3 py-1.5 text-[13px] text-muted-foreground hover:border-primary/50">外婆</button>
+                <button type="button" data-fmm-role="member-switch" data-member="爸爸" class="flex-1 rounded-full border border-border bg-background px-3 py-1.5 text-[13px] text-muted-foreground hover:border-primary/50">爸爸</button>
+                <button type="button" data-fmm-role="member-switch" data-member="小满" class="flex-1 rounded-full border border-border bg-background px-3 py-1.5 text-[13px] text-muted-foreground hover:border-primary/50">小满</button>
+              </div>
+            </div>
+
             <!-- 顶部物品卡：左缩略 120×90 + 右物品名/年代/讲述者 -->
             <div class="flex items-center gap-4 rounded-lg border border-border bg-card p-4">
               <figure data-fmm-role="photo-card" class="relative block h-[90px] w-[120px] shrink-0 cursor-pointer overflow-hidden rounded-lg">
@@ -500,14 +507,14 @@
               </figure>
               <div class="min-w-0 flex-1">
                 <div class="flex flex-wrap items-center gap-2">
-                  <p class="font-serif text-[18px] leading-tight text-foreground">初一数学课本</p>
-                  <span class="inline-flex items-center gap-1 rounded-full bg-accent/15 px-2 py-0.5 text-[11px] font-medium text-accent">
+                  <p data-fmm-role="exhibit-name" class="font-serif text-[18px] leading-tight text-foreground">初一数学课本</p>
+                  <span data-fmm-role="exhibit-number" class="inline-flex items-center gap-1 rounded-full bg-accent/15 px-2 py-0.5 text-[11px] font-medium text-accent">
                     <i data-lucide="hash" class="h-3 w-3"></i>爸爸—03
                   </span>
                 </div>
                 <div class="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-muted-foreground">
-                  <span class="inline-flex items-center gap-1"><i data-lucide="calendar" class="h-3 w-3"></i>年代 · 约 2023</span>
-                  <span class="inline-flex items-center gap-1"><i data-lucide="user-round" class="h-3 w-3"></i>讲述者 · 小满·16 岁</span>
+                  <span data-fmm-role="exhibit-year" class="inline-flex items-center gap-1"><i data-lucide="calendar" class="h-3 w-3"></i>年代 · 约 2023</span>
+                  <span data-fmm-role="exhibit-teller" class="inline-flex items-center gap-1"><i data-lucide="user-round" class="h-3 w-3"></i>讲述者 · 小满·16 岁</span>
                 </div>
               </div>
             </div>
@@ -598,22 +605,6 @@
               </div>
             </div>
 
-            <!-- 可见性：仅家庭成员可见 lock 标记 -->
-            <div class="mt-6 flex items-center justify-between rounded-lg border border-border bg-card px-4 py-3">
-              <div class="flex items-center gap-3">
-                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-private/10 text-private">
-                  <i data-lucide="lock" class="h-4 w-4"></i>
-                </span>
-                <div>
-                  <p class="text-[14px] font-medium text-foreground">仅家庭成员可见</p>
-                  <p class="mt-0.5 text-[12px] text-muted-foreground">只有加入这座馆的家人能读到这段记忆。</p>
-                </div>
-              </div>
-              <span class="inline-flex items-center gap-1.5 rounded-full bg-private/10 px-2.5 py-1 text-[11px] font-medium text-private">
-                <i data-lucide="shield-check" class="h-3 w-3"></i>私密
-              </span>
-            </div>
-
             <!-- 底部双按钮：保存草稿（surface 描边）+ 下一步（bg-primary） -->
             <div class="mt-8 flex items-center gap-3">
               <button type="button" class="rounded-lg border border-border bg-card px-5 py-3 text-[15px] font-medium text-foreground hover:bg-muted active:opacity-90">
@@ -671,6 +662,69 @@
     if(!FMM || typeof FMM.currentIdx !== 'function'){ if(window.lucide){ lucide.createIcons(); } return; }
     var idx = FMM.currentIdx();
     var ex = FMM.getExhibit(idx);
+
+    /* —— 展品图片资源映射 + 按成员定位展品 —— */
+    var ASSET_MAP = { '妈妈':'exhibit-enamel-mug.jpg', '外婆':'exhibit-photo-album.jpg', '爸爸':'exhibit-mechanical-watch.jpg', '小满':'exhibit-textbook.jpg' };
+    function findIdxByOwner(member){
+      var d = FMM.load();
+      for(var i=0;i<d.exhibits.length;i++){ if(d.exhibits[i].owner === member){ return i; } }
+      return -1;
+    }
+
+    /* —— 渲染当前展品到档案卡（初始 + 切换成员复用）—— */
+    function renderExhibit(){
+      var cur = FMM.getExhibit(idx);
+      var pImg = document.querySelector('[data-fmm-role="photo-img"]');
+      var nEl = document.querySelector('[data-fmm-role="exhibit-name"]');
+      var nmEl = document.querySelector('[data-fmm-role="exhibit-number"]');
+      var yEl = document.querySelector('[data-fmm-role="exhibit-year"]');
+      var tEl = document.querySelector('[data-fmm-role="exhibit-teller"]');
+      var sInput = document.getElementById('fmm-story-input');
+      if(pImg){ pImg.setAttribute('src', cur.photo || ('../assets/' + (ASSET_MAP[cur.owner]||'exhibit-textbook.jpg'))); pImg.setAttribute('alt', cur.name||''); }
+      if(nEl){ nEl.textContent = cur.name||''; }
+      if(nmEl){ nmEl.innerHTML = '<i data-lucide="hash" class="h-3 w-3"></i>'+(cur.owner||'')+'—'+(cur.number||''); }
+      if(yEl){ yEl.innerHTML = '<i data-lucide="calendar" class="h-3 w-3"></i>年代 · '+(cur.year||''); }
+      if(tEl){ tEl.innerHTML = '<i data-lucide="user-round" class="h-3 w-3"></i>讲述者 · '+(cur.teller||''); }
+      if(sInput){ sInput.value = cur.story||''; }
+      /* 情绪标签同步（桌面版用 data-emotion + renderEmotionButton） */
+      savedEmotions = (cur.emotion||[]).slice();
+      emotionButtons.forEach(renderEmotionButton);
+      if(window.lucide){ lucide.createIcons(); }
+    }
+
+    /* —— 当前策展成员切换 + 顶栏头像（所有家庭成员均可策展）—— */
+    var memberSwitchBtns = document.querySelectorAll('[data-fmm-role="member-switch"]');
+    var memberAvatar = document.querySelector('[data-fmm-role="current-member-avatar"]');
+    var mData = FMM.load();
+    var curMember = (mData && mData.museum && mData.museum.identity) ? mData.museum.identity : '妈妈';
+    /* 若 identity 对应某成员，则同步到该成员的展品 */
+    var syncIdx = findIdxByOwner(curMember);
+    if(syncIdx !== -1){ idx = syncIdx; FMM.setCurrentIdx(idx); ex = FMM.getExhibit(idx); }
+    function setActiveMember(member){
+      var firstChar = member.charAt(0);
+      if(memberAvatar){ memberAvatar.textContent = firstChar; }
+      memberSwitchBtns.forEach(function(b){
+        var m = b.getAttribute('data-member');
+        if(m === member){
+          b.classList.add('border-primary','bg-secondary','text-primary');
+          b.classList.remove('border-border','bg-background','text-muted-foreground','hover:border-primary/50');
+        } else {
+          b.classList.remove('border-primary','bg-secondary','text-primary');
+          b.classList.add('border-border','bg-background','text-muted-foreground','hover:border-primary/50');
+        }
+      });
+    }
+    setActiveMember(curMember);
+    memberSwitchBtns.forEach(function(b){
+      b.addEventListener('click', function(){
+        var member = b.getAttribute('data-member');
+        var d = FMM.load(); d.museum.identity = member; FMM.save(d);
+        var ni = findIdxByOwner(member);
+        if(ni !== -1){ idx = ni; FMM.setCurrentIdx(idx); }
+        setActiveMember(member);
+        renderExhibit();
+      });
+    });
 
     /* —— ① 照片上传 —— */
     var photoCard = document.querySelector('[data-fmm-role="photo-card"]');
@@ -851,6 +905,7 @@
       });
     }
 
+    renderExhibit();
     if(window.lucide){ lucide.createIcons(); }
   });
 })();

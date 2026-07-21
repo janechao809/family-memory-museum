@@ -9,7 +9,7 @@
   /* 默认数据骨架：4 件家庭展品的占位信息 */
   function defaultData() {
     return {
-      museum: { name: '我们家的小博物馆', cover: 0, identity: 'student', privacy: 'family' },
+      museum: { name: '我们家的小博物馆', cover: 0, identity: '妈妈', privacy: 'family' },
       theme: { selected: '一件物品里的陪伴', discussion: { support: '', missing: '', confirm: '' }, customTheme: '' },
       exhibits: [
         { id: 'exhibit-001', owner: '妈妈', number: '01', name: '搪瓷杯', year: '约 1978', source: '外婆陪嫁', teller: '林雯',
@@ -87,8 +87,71 @@
     addNote: function (type, text) { var d = load(); d.notes.push({ type: type, text: text }); save(d); return d.notes; },
     /* 当前展品索引（跨页传递，默认 0） */
     currentIdx: function () { return parseInt(sessionStorage.getItem('fmm_current_idx') || '0', 10) || 0; },
-    setCurrentIdx: function (i) { sessionStorage.setItem('fmm_current_idx', String(i)); }
+    setCurrentIdx: function (i) { sessionStorage.setItem('fmm_current_idx', String(i)); },
+
+    /* 背景音乐模块（Web Audio API · 纯前端生成温馨钢琴旋律） */
+    music: {
+      ctx: null, gain: null, playing: false, timer: null, noteIndex: 0,
+      /* 五声音阶温馨旋律 */
+      notes: [523.25,659.25,783.99,659.25,523.25,440,523.25,659.25,783.99,880,783.99,659.25,587.33,659.25,523.25,440],
+      init: function(){ if(this.ctx) return; try{ var AC=window.AudioContext||window.webkitAudioContext; this.ctx=new AC(); this.gain=this.ctx.createGain(); this.gain.gain.value=0.12; this.gain.connect(this.ctx.destination); }catch(e){} },
+      playNote: function(){
+        if(!this.ctx||!this.playing) return;
+        var f=this.notes[this.noteIndex%this.notes.length]; var t=this.ctx.currentTime;
+        var o=this.ctx.createOscillator(); var g=this.ctx.createGain();
+        o.type='sine'; o.frequency.value=f;
+        g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.22,t+0.05); g.gain.exponentialRampToValueAtTime(0.001,t+2);
+        o.connect(g); g.connect(this.gain); o.start(t); o.stop(t+2);
+        var o2=this.ctx.createOscillator(); var g2=this.ctx.createGain();
+        o2.type='triangle'; o2.frequency.value=f*2;
+        g2.gain.setValueAtTime(0,t); g2.gain.linearRampToValueAtTime(0.06,t+0.05); g2.gain.exponentialRampToValueAtTime(0.001,t+1.5);
+        o2.connect(g2); g2.connect(this.gain); o2.start(t); o2.stop(t+1.5);
+        this.noteIndex++;
+      },
+      start: function(){ this.init(); if(!this.ctx) return false; if(this.ctx.state==='suspended') this.ctx.resume(); this.playing=true; localStorage.setItem('fmm_music','on'); this.playNote(); var s=this; this.timer=setInterval(function(){ s.playNote(); },1800); return true; },
+      stop: function(){ this.playing=false; localStorage.setItem('fmm_music','off'); if(this.timer){ clearInterval(this.timer); this.timer=null; } },
+      toggle: function(){ if(this.playing){ this.stop(); return false; } return this.start(); },
+      isPlaying: function(){ return this.playing; },
+      shouldPlay: function(){ return localStorage.getItem('fmm_music')==='on'; },
+      tryRestore: function(){ if(this.shouldPlay()){ return this.start(); } return false; }
+    }
   };
+
+  /* 自动注入背景音乐控制按钮到页面 */
+  function injectMusicButton(){
+    if(document.getElementById('fmm-music-btn')) return;
+    var btn=document.createElement('div');
+    btn.id='fmm-music-btn';
+    btn.style.cssText='position:fixed;top:14px;right:14px;z-index:9998;width:38px;height:38px;border-radius:50%;border:1px solid #E7DDD0;background:rgba(255,253,248,0.92);backdrop-filter:blur(4px);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all .2s;';
+    btn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#63736D"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>';
+    btn.title='点击播放/暂停背景音乐';
+    function updateBtn(){
+      var svg=btn.querySelector('svg');
+      if(FMM.music.isPlaying()){ svg.style.color='#315B50'; btn.style.animation='fmm-pulse 2s ease-in-out infinite'; }
+      else { svg.style.color='#63736D'; btn.style.animation=''; }
+    }
+    btn.addEventListener('click',function(){ FMM.music.toggle(); updateBtn(); });
+    document.body.appendChild(btn);
+    var style=document.createElement('style');
+    style.textContent='@keyframes fmm-pulse{0%,100%{box-shadow:0 2px 8px rgba(0,0,0,0.06)}50%{box-shadow:0 2px 16px rgba(49,91,80,0.25)}}';
+    document.head.appendChild(style);
+    if(FMM.music.shouldPlay()){ setTimeout(function(){ if(FMM.music.tryRestore()) updateBtn(); },500); }
+    document.addEventListener('click',function(){ if(FMM.music.shouldPlay()&&!FMM.music.isPlaying()){ if(FMM.music.tryRestore()) updateBtn(); } },{passive:true});
+  }
+  /* 按钮悬浮动效（温馨提升感，全站通用，覆盖 14 个页面） */
+  function injectButtonHoverFx(){
+    if(document.getElementById('fmm-hover-fx')) return;
+    var css='button,a[role="button"],input[type="submit"],input[type="button"],.fmm-btn,[data-fmm-role="member-select"],[data-fmm-role="member-switch"],#fmm-music-btn{transition:transform .28s cubic-bezier(.34,1.2,.64,1),box-shadow .28s ease,background-color .22s ease,border-color .22s ease,color .2s ease}'
+      +'button:hover:not(:disabled):not([data-fmm-no-hover]),a[role="button"]:hover,input[type="submit"]:hover,input[type="button"]:hover,.fmm-btn:hover,[data-fmm-role="member-select"]:hover,[data-fmm-role="member-switch"]:hover,#fmm-music-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px -8px rgba(49,91,80,0.28),0 4px 10px -4px rgba(49,91,80,0.14)}'
+      +'button:active:not(:disabled),a[role="button"]:active,.fmm-btn:active,#fmm-music-btn:active{transform:translateY(0);transition-duration:.1s}'
+      +'.bg-primary:hover{box-shadow:0 12px 28px -8px rgba(49,91,80,0.38)}'
+      +'.bg-terracotta:hover{box-shadow:0 12px 28px -8px rgba(184,106,74,0.38)}'
+      +'@media (prefers-reduced-motion:reduce){button,a[role="button"],.fmm-btn,#fmm-music-btn{transition:none!important}button:hover,a[role="button"]:hover,.fmm-btn:hover,#fmm-music-btn:hover{transform:none!important}}';
+    var s=document.createElement('style');s.id='fmm-hover-fx';s.textContent=css;document.head.appendChild(s);
+  }
+  function fmmReady(fn){ if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',fn); } else { fn(); } }
+  fmmReady(injectMusicButton);
+  fmmReady(injectButtonHoverFx);
 
   global.FMM = FMM;
 })(window);

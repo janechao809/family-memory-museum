@@ -392,34 +392,28 @@
         <p class="mt-3 text-[15px] leading-relaxed text-muted-foreground">每位家人选一件有故事的物品，一起搭一座只属于你们的小博物馆。</p>
       </section>
 
-      <!-- ③ 身份选择：两张卡，选中态 bg-secondary border-primary -->
+      <!-- ③ 身份选择：4 位家庭成员均可策展 -->
       <section class="pt-6">
         <div class="mb-2.5 flex items-baseline justify-between">
-          <h2 class="text-[13px] font-medium text-foreground">先选一个身份</h2>
-          <span class="text-[12px] text-muted-foreground">可随时切换</span>
+          <h2 class="text-[13px] font-medium text-foreground">选择策展成员</h2>
+          <span class="text-[12px] text-muted-foreground">每位家人都可上传展品</span>
         </div>
-        <div class="grid grid-cols-2 gap-3">
-          <!-- 选中：我是学生·我来策展 -->
-          <button type="button" data-dom-id="fmm-identity-student" class="flex flex-col items-start gap-1.5 rounded-lg border border-primary bg-secondary p-4 text-left">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-              <i data-lucide="graduation-cap" class="h-[18px] w-[18px] text-primary"></i>
-            </span>
-            <span class="font-serif text-[15px] leading-tight text-primary">我是学生</span>
-            <span class="text-[12px] leading-snug text-muted-foreground">我来策展</span>
-            <span class="mt-1 inline-flex items-center gap-1 text-[11px] font-medium text-primary">
-              <i data-lucide="check" class="h-3 w-3"></i>已选
-            </span>
+        <div class="grid grid-cols-4 gap-2.5">
+          <button type="button" data-fmm-role="member-select" data-member="妈妈" class="flex flex-col items-center gap-1.5 rounded-lg border border-border bg-card p-2.5">
+            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-muted font-serif text-[14px] text-foreground">妈</span>
+            <span class="text-[12px] text-foreground">妈妈</span>
           </button>
-          <!-- 未选：我是家人·我来贡献物品 -->
-          <button type="button" data-dom-id="fmm-identity-family" class="flex flex-col items-start gap-1.5 rounded-lg border border-border bg-card p-4 text-left">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-muted">
-              <i data-lucide="users" class="h-[18px] w-[18px] text-muted-foreground"></i>
-            </span>
-            <span class="font-serif text-[15px] leading-tight text-foreground">我是家人</span>
-            <span class="text-[12px] leading-snug text-muted-foreground">我来贡献物品</span>
-            <span class="mt-1 inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground">
-              <i data-lucide="plus" class="h-3 w-3"></i>选择
-            </span>
+          <button type="button" data-fmm-role="member-select" data-member="外婆" class="flex flex-col items-center gap-1.5 rounded-lg border border-border bg-card p-2.5">
+            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-muted font-serif text-[14px] text-foreground">婆</span>
+            <span class="text-[12px] text-foreground">外婆</span>
+          </button>
+          <button type="button" data-fmm-role="member-select" data-member="爸爸" class="flex flex-col items-center gap-1.5 rounded-lg border border-border bg-card p-2.5">
+            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-muted font-serif text-[14px] text-foreground">爸</span>
+            <span class="text-[12px] text-foreground">爸爸</span>
+          </button>
+          <button type="button" data-fmm-role="member-select" data-member="小满" class="flex flex-col items-center gap-1.5 rounded-lg border border-border bg-card p-2.5">
+            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-muted font-serif text-[14px] text-foreground">满</span>
+            <span class="text-[12px] text-foreground">小满</span>
           </button>
         </div>
       </section>
@@ -442,50 +436,22 @@
             </div>
           </div>
 
-          <!-- 封面选择：一行 4 个缩略候选，用 hero 图裁切 -->
+          <!-- 封面选择：1 张系统生成 + 1 张自定义上传 -->
           <div class="mt-4">
             <div class="mb-1.5 flex items-baseline justify-between">
               <label class="block text-[13px] font-medium text-foreground">封面</label>
-              <span class="text-[11px] text-muted-foreground">从静物照里挑一张</span>
+              <span class="text-[11px] text-muted-foreground">系统推荐或自定义上传</span>
             </div>
-            <div class="grid grid-cols-4 gap-2">
-              <button type="button" data-dom-id="fmm-cover-option-1" class="overflow-hidden rounded-md border-2 border-primary bg-background">
-                <img src="../assets/hero-objects-stilllife.jpg" alt="封面候选一" class="aspect-square w-full object-cover object-[25%_50%]" />
+            <div class="grid grid-cols-2 gap-2.5">
+              <button type="button" data-fmm-role="cover-option" data-idx="0" class="overflow-hidden rounded-md border-2 border-primary bg-background">
+                <img src="../assets/hero-objects-stilllife.jpg" alt="系统封面" class="aspect-[4/3] w-full object-cover" />
               </button>
-              <button type="button" data-dom-id="fmm-cover-option-2" class="overflow-hidden rounded-md border-2 border-border bg-background">
-                <img src="../assets/hero-objects-stilllife.jpg" alt="封面候选二" class="aspect-square w-full object-cover object-[50%_50%]" />
+              <button type="button" id="fmm-cover-upload" data-fmm-role="cover-option" data-idx="1" class="relative flex aspect-[4/3] flex-col items-center justify-center gap-1.5 rounded-md border-2 border-border bg-background text-muted-foreground">
+                <i data-lucide="upload-cloud" class="h-6 w-6"></i>
+                <span class="text-[12px]">上传自定义封面</span>
               </button>
-              <button type="button" data-dom-id="fmm-cover-option-3" class="overflow-hidden rounded-md border-2 border-border bg-background">
-                <img src="../assets/hero-objects-stilllife.jpg" alt="封面候选三" class="aspect-square w-full object-cover object-[75%_50%]" />
-              </button>
-              <button type="button" data-dom-id="fmm-cover-option-4" class="overflow-hidden rounded-md border-2 border-border bg-background">
-                <img src="../assets/hero-objects-stilllife.jpg" alt="封面候选四" class="aspect-square w-full object-cover object-[50%_20%]" />
-              </button>
+              <input type="file" id="fmm-cover-file" accept="image/*" class="hidden" />
             </div>
-          </div>
-
-          <!-- 可见性：公开 / 仅家庭成员可见 两项可选 -->
-          <div class="mt-4">
-            <label class="mb-1.5 block text-[13px] font-medium text-foreground">谁能看见</label>
-            <div class="flex flex-col gap-2">
-              <!-- 公开 -->
-              <button type="button" data-fmm-role="visibility-public" class="flex items-center gap-2 rounded-lg border border-border bg-background px-3.5 py-3 text-left">
-                <i data-lucide="globe" class="h-4 w-4 shrink-0 text-muted-foreground"></i>
-                <span class="text-[14px] text-foreground">公开</span>
-                <span class="ml-auto inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                  <i data-lucide="earth" class="h-3 w-3"></i>公开
-                </span>
-              </button>
-              <!-- 仅家庭成员可见（默认选中） -->
-              <button type="button" data-fmm-role="visibility-private" class="flex items-center gap-2 rounded-lg border border-border bg-background px-3.5 py-3 text-left">
-                <i data-lucide="lock" class="h-4 w-4 shrink-0 text-private"></i>
-                <span class="text-[14px] text-foreground">仅家庭成员可见</span>
-                <span class="ml-auto inline-flex items-center gap-1 rounded-full bg-private/10 px-2 py-0.5 text-[11px] font-medium text-private">
-                  <i data-lucide="shield-check" class="h-3 w-3"></i>私密
-                </span>
-              </button>
-            </div>
-            <p class="mt-1.5 text-[12px] leading-snug text-muted-foreground">默认只有被你邀请的家人能进来，不对外公开，也不会出现在参观广场。</p>
           </div>
         </div>
       </section>
@@ -520,35 +486,7 @@
     });
   }
 
-  /* —— 身份选择（移动端卡片式：border/bg/图标圆/标题色/状态文本联动）—— */
-  function setIdentityMobile(btn, selected){
-    if(!btn) return;
-    var spans = btn.querySelectorAll('span');
-    var iconCircle = spans[0], title = spans[1], status = spans[3];
-    var ic = iconCircle ? iconCircle.querySelector('i, svg') : null;
-    if(selected){
-      btn.classList.remove('border-border','bg-card');
-      btn.classList.add('border-primary','bg-secondary');
-      if(iconCircle){ iconCircle.classList.remove('bg-muted'); iconCircle.classList.add('bg-primary/10'); }
-      if(ic){ ic.classList.remove('text-muted-foreground'); ic.classList.add('text-primary'); }
-      if(title){ title.classList.remove('text-foreground'); title.classList.add('text-primary'); }
-      if(status){
-        status.classList.remove('text-muted-foreground'); status.classList.add('text-primary');
-        status.innerHTML = '<i data-lucide="check" class="h-3 w-3"></i>已选';
-      }
-    } else {
-      btn.classList.remove('border-primary','bg-secondary');
-      btn.classList.add('border-border','bg-card');
-      if(iconCircle){ iconCircle.classList.remove('bg-primary/10'); iconCircle.classList.add('bg-muted'); }
-      if(ic){ ic.classList.remove('text-primary'); ic.classList.add('text-muted-foreground'); }
-      if(title){ title.classList.remove('text-primary'); title.classList.add('text-foreground'); }
-      if(status){
-        status.classList.remove('text-primary'); status.classList.add('text-muted-foreground');
-        status.innerHTML = '<i data-lucide="plus" class="h-3 w-3"></i>选择';
-      }
-    }
-  }
-
+  /* —— 封面选择（border 联动）—— */
   function setCoverMobile(btn, selected){
     if(!btn) return;
     if(selected){ btn.classList.remove('border-border'); btn.classList.add('border-primary'); }
@@ -560,20 +498,16 @@
     var data = FMM ? FMM.load() : null;
     var museum = data ? data.museum : null;
 
-    /* 身份选择：加载恢复 + 点击持久化 */
-    var identityIds = ['fmm-identity-student','fmm-identity-family'];
-    var identityMap = { 'fmm-identity-student':'student', 'fmm-identity-family':'family' };
-    var identityBtns = identityIds.map(function(id){ return document.querySelector('[data-dom-id="'+id+'"]'); });
-    var curIdentity = museum ? museum.identity : 'student';
-    identityBtns.forEach(function(btn){
-      if(!btn) return;
-      setIdentityMobile(btn, identityMap[btn.getAttribute('data-dom-id')] === curIdentity);
+    /* 身份选择 - 所有家庭成员均可策展 */
+    var memberButtons = document.querySelectorAll('[data-fmm-role="member-select"]');
+    var curIdentity = museum ? (museum.identity || '妈妈') : '妈妈';
+    memberButtons.forEach(function(btn){
+      var member = btn.getAttribute('data-member');
+      if(member === curIdentity){ btn.classList.add('border-primary','bg-secondary'); btn.classList.remove('border-border','bg-card'); }
       btn.addEventListener('click', function(){
-        var d = FMM.load();
-        d.museum.identity = identityMap[btn.getAttribute('data-dom-id')];
-        FMM.save(d);
-        identityBtns.forEach(function(o){ if(o) setIdentityMobile(o, o === btn); });
-        if(window.lucide){ lucide.createIcons(); }
+        memberButtons.forEach(function(b){ b.classList.remove('border-primary','bg-secondary'); b.classList.add('border-border','bg-card'); });
+        btn.classList.add('border-primary','bg-secondary'); btn.classList.remove('border-border','bg-card');
+        var d = FMM.load(); d.museum.identity = member; FMM.save(d);
       });
     });
 
@@ -586,47 +520,73 @@
       });
     }
 
-    /* 封面候选：加载恢复 + 点击持久化（0-3） */
-    var coverIds = ['fmm-cover-option-1','fmm-cover-option-2','fmm-cover-option-3','fmm-cover-option-4'];
-    var coverBtns = coverIds.map(function(id){ return document.querySelector('[data-dom-id="'+id+'"]'); });
+    /* 封面候选：1 系统生成 + 1 自定义上传 */
+    var coverOptionBtns = document.querySelectorAll('[data-fmm-role="cover-option"]');
+    var coverUpload = document.getElementById('fmm-cover-upload');
+    var coverFileInput = document.getElementById('fmm-cover-file');
     var curCover = museum ? museum.cover : 0;
-    coverBtns.forEach(function(btn, idx){
-      if(!btn) return;
-      setCoverMobile(btn, idx === curCover);
-      btn.addEventListener('click', function(){
-        var d = FMM.load(); d.museum.cover = idx; FMM.save(d);
-        coverBtns.forEach(function(o, j){ setCoverMobile(o, j === idx); });
+
+    function selectCover(idx){
+      var d = FMM.load(); d.museum.cover = idx; FMM.save(d);
+      coverOptionBtns.forEach(function(b){
+        if(String(b.getAttribute('data-idx')) === String(idx)){
+          b.classList.remove('border-border'); b.classList.add('border-primary');
+        } else {
+          b.classList.remove('border-primary'); b.classList.add('border-border');
+        }
       });
+    }
+
+    /* 初始化选中态 */
+    coverOptionBtns.forEach(function(b){
+      var bIdx = b.getAttribute('data-idx');
+      if(String(bIdx) === String(curCover)){
+        b.classList.remove('border-border'); b.classList.add('border-primary');
+      } else {
+        b.classList.remove('border-primary'); b.classList.add('border-border');
+      }
     });
 
-    /* 可见性选择：公开 / 仅家庭成员可见 */
-    var visPublic = document.querySelector('[data-fmm-role="visibility-public"]');
-    var visPrivate = document.querySelector('[data-fmm-role="visibility-private"]');
-    var visBtns = [visPublic, visPrivate];
-    function setVis(sel){
-      visBtns.forEach(function(b){ if(!b) return;
-        b.style.borderColor = '';
-        b.style.borderWidth = '';
-        b.style.boxShadow = '';
-      });
-      if(sel){
-        sel.style.borderColor = 'var(--primary)';
-        sel.style.borderWidth = '2px';
-        sel.style.boxShadow = '0 0 0 3px rgba(49,91,80,0.1)';
+    /* 系统封面（idx=0）点击选中 */
+    coverOptionBtns.forEach(function(b){
+      if(String(b.getAttribute('data-idx')) === '0'){
+        b.addEventListener('click', function(){ selectCover(0); });
       }
+    });
+
+    /* 恢复自定义封面预览 */
+    if(coverUpload && museum && museum.coverCustom){
+      coverUpload.style.backgroundImage = 'url(' + museum.coverCustom + ')';
+      coverUpload.style.backgroundSize = 'cover';
+      coverUpload.style.backgroundPosition = 'center';
+      coverUpload.innerHTML = '';
     }
-    var curPrivacy = museum ? (museum.privacy || 'family') : 'family';
-    setVis(curPrivacy === 'public' ? visPublic : visPrivate);
-    if(visPublic){
-      visPublic.addEventListener('click', function(){
-        var d = FMM.load(); d.museum.privacy = 'public'; FMM.save(d);
-        setVis(visPublic);
+
+    /* 上传按钮点击 → 触发 file input */
+    if(coverUpload){
+      coverUpload.addEventListener('click', function(e){
+        e.preventDefault();
+        if(coverFileInput){ coverFileInput.click(); }
       });
     }
-    if(visPrivate){
-      visPrivate.addEventListener('click', function(){
-        var d = FMM.load(); d.museum.privacy = 'family'; FMM.save(d);
-        setVis(visPrivate);
+
+    /* 封面上传：FileReader 读取 → 预览 → 选中 */
+    if(coverFileInput){
+      coverFileInput.addEventListener('change', function(e){
+        var file = e.target.files[0];
+        if(!file) return;
+        var reader = new FileReader();
+        reader.onload = function(ev){
+          var d = FMM.load(); d.museum.coverCustom = ev.target.result; FMM.save(d);
+          if(coverUpload){
+            coverUpload.style.backgroundImage = 'url(' + ev.target.result + ')';
+            coverUpload.style.backgroundSize = 'cover';
+            coverUpload.style.backgroundPosition = 'center';
+            coverUpload.innerHTML = '';
+          }
+          selectCover(1);
+        };
+        reader.readAsDataURL(file);
       });
     }
 

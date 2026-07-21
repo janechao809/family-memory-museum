@@ -407,6 +407,19 @@
         <p class="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">一次只讲一个小片段就够，不必说完所有事。</p>
       </section>
 
+      <!-- 当前策展成员（可切换） -->
+      <section class="pt-4">
+        <div class="flex items-center gap-2">
+          <span class="text-[12px] text-muted-foreground shrink-0">策展成员</span>
+          <div class="flex flex-1 gap-1.5">
+            <button type="button" data-fmm-role="member-switch" data-member="妈妈" class="flex-1 rounded-full border border-border bg-card px-2 py-1.5 text-[12px] text-muted-foreground">妈妈</button>
+            <button type="button" data-fmm-role="member-switch" data-member="外婆" class="flex-1 rounded-full border border-border bg-card px-2 py-1.5 text-[12px] text-muted-foreground">外婆</button>
+            <button type="button" data-fmm-role="member-switch" data-member="爸爸" class="flex-1 rounded-full border border-border bg-card px-2 py-1.5 text-[12px] text-muted-foreground">爸爸</button>
+            <button type="button" data-fmm-role="member-switch" data-member="小满" class="flex-1 rounded-full border border-border bg-card px-2 py-1.5 text-[12px] text-muted-foreground">小满</button>
+          </div>
+        </div>
+      </section>
+
       <!-- ② 物品缩略图卡：可点击上传/更换照片 -->
       <section class="pt-5">
         <figure data-fmm-role="photo-card" class="relative overflow-hidden rounded-lg border border-border bg-card cursor-pointer">
@@ -417,12 +430,12 @@
           <input type="file" accept="image/*" data-fmm-role="photo-input" class="hidden" />
           <figcaption class="flex items-center justify-between gap-3 px-4 py-3">
             <div class="min-w-0">
-              <p class="font-serif text-[16px] leading-tight text-foreground">初一数学课本</p>
-              <p class="mt-0.5 flex items-center gap-1.5 text-[12px] text-muted-foreground">
+              <p data-fmm-role="exhibit-name" class="font-serif text-[16px] leading-tight text-foreground">初一数学课本</p>
+              <p data-fmm-role="exhibit-year" class="mt-0.5 flex items-center gap-1.5 text-[12px] text-muted-foreground">
                 <i data-lucide="calendar" class="h-3 w-3"></i>约 2023
               </p>
             </div>
-            <span class="inline-flex shrink-0 items-center gap-1 rounded-full bg-accent/15 px-2.5 py-1 text-[11px] font-medium text-accent">
+            <span data-fmm-role="exhibit-number" class="inline-flex shrink-0 items-center gap-1 rounded-full bg-accent/15 px-2.5 py-1 text-[11px] font-medium text-accent">
               <i data-lucide="hash" class="h-3 w-3"></i>爸爸—03
             </span>
           </figcaption>
@@ -515,6 +528,69 @@
   ready(function(){
     var idx = FMM.currentIdx();
     var ex = FMM.getExhibit(idx);
+
+    /* —— 展品图片资源映射 + 按成员定位展品 —— */
+    var ASSET_MAP = { '妈妈':'exhibit-enamel-mug.jpg', '外婆':'exhibit-photo-album.jpg', '爸爸':'exhibit-mechanical-watch.jpg', '小满':'exhibit-textbook.jpg' };
+    function findIdxByOwner(member){
+      var d = FMM.load();
+      for(var i=0;i<d.exhibits.length;i++){ if(d.exhibits[i].owner === member){ return i; } }
+      return -1;
+    }
+
+    /* —— 渲染当前展品到档案卡（初始 + 切换成员复用）—— */
+    function renderExhibit(){
+      var cur = FMM.getExhibit(idx);
+      var pImg = document.querySelector('[data-fmm-role="photo-img"]');
+      var nEl = document.querySelector('[data-fmm-role="exhibit-name"]');
+      var yEl = document.querySelector('[data-fmm-role="exhibit-year"]');
+      var nmEl = document.querySelector('[data-fmm-role="exhibit-number"]');
+      var sInput = document.getElementById('fmm-story-input');
+      if(pImg){ pImg.src = cur.photo || ('../assets/' + (ASSET_MAP[cur.owner]||'exhibit-textbook.jpg')); pImg.alt = cur.name||''; }
+      if(nEl){ nEl.textContent = cur.name||''; }
+      if(yEl){ yEl.innerHTML = '<i data-lucide="calendar" class="h-3 w-3"></i>'+(cur.year||''); }
+      if(nmEl){ nmEl.innerHTML = '<i data-lucide="hash" class="h-3 w-3"></i>'+(cur.owner||'')+'—'+(cur.number||''); }
+      if(sInput){ sInput.value = cur.story||''; }
+      /* 情绪标签同步 */
+      savedEmotions = (cur.emotion||[]).slice();
+      document.querySelectorAll('button').forEach(function(btn){
+        var t=(btn.textContent||'').replace(/\s+/g,'');
+        if(words.indexOf(t)===-1){ return; }
+        if(savedEmotions.indexOf(t)!==-1){ inactive.forEach(function(c){btn.classList.remove(c);}); active.forEach(function(c){btn.classList.add(c);}); }
+        else { active.forEach(function(c){btn.classList.remove(c);}); inactive.forEach(function(c){btn.classList.add(c);}); }
+      });
+      if(window.lucide){ lucide.createIcons(); }
+    }
+
+    /* —— 当前策展成员切换（所有家庭成员均可策展）—— */
+    var memberSwitchBtns = document.querySelectorAll('[data-fmm-role="member-switch"]');
+    var mData = FMM.load();
+    var curMember = (mData && mData.museum && mData.museum.identity) ? mData.museum.identity : '妈妈';
+    /* 若 identity 对应某成员，则同步到该成员的展品 */
+    var syncIdx = findIdxByOwner(curMember);
+    if(syncIdx !== -1){ idx = syncIdx; FMM.setCurrentIdx(idx); ex = FMM.getExhibit(idx); }
+    function setActiveMember(member){
+      memberSwitchBtns.forEach(function(b){
+        var m = b.getAttribute('data-member');
+        if(m === member){
+          b.classList.add('border-primary','bg-secondary','text-primary');
+          b.classList.remove('border-border','bg-card','text-muted-foreground');
+        } else {
+          b.classList.remove('border-primary','bg-secondary','text-primary');
+          b.classList.add('border-border','bg-card','text-muted-foreground');
+        }
+      });
+    }
+    setActiveMember(curMember);
+    memberSwitchBtns.forEach(function(b){
+      b.addEventListener('click', function(){
+        var member = b.getAttribute('data-member');
+        var d = FMM.load(); d.museum.identity = member; FMM.save(d);
+        var ni = findIdxByOwner(member);
+        if(ni !== -1){ idx = ni; FMM.setCurrentIdx(idx); }
+        setActiveMember(member);
+        renderExhibit();
+      });
+    });
 
     /* —— 照片上传：点击图卡 → 选图 → FileReader 预览 + 存 base64 —— */
     var photoCard = document.querySelector('[data-fmm-role="photo-card"]');
@@ -683,6 +759,7 @@
     document.querySelectorAll('[data-dom-id="fmm-nav-mine"]').forEach(function(el){
       el.addEventListener('click', function(e){ e.preventDefault(); alert('个人中心 · 待开发'); });
     });
+    renderExhibit();
     if(window.lucide){ lucide.createIcons(); }
   });
 })();

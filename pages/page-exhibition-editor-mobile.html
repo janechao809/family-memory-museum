@@ -571,105 +571,9 @@
   <!-- 底部五栏 nav：canonicalHtmlByKey["create"]（create active） -->
   <nav data-mobile-nav="global" class="fixed bottom-0 inset-x-0 z-40 border-t border-border bg-card/95 backdrop-blur" style="padding-bottom:env(safe-area-inset-bottom)"><div class="mx-auto grid w-full max-w-[420px] grid-cols-5"><a data-nav-item data-nav-key="home" data-dom-id="fmm-nav-home" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="home" class="h-[22px] w-[22px]"></i><span class="leading-none">首页</span></a><a data-nav-item data-nav-key="gallery" data-dom-id="fmm-nav-gallery" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="layout-grid" class="h-[22px] w-[22px]"></i><span class="leading-none">展馆</span></a><a data-nav-item data-nav-key="create" data-dom-id="fmm-nav-create" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-primary"><span class="absolute top-0 h-[3px] w-7 rounded-full bg-primary"></span><i data-lucide="plus" class="h-[22px] w-[22px]"></i><span class="leading-none">创建</span></a><a data-nav-item data-nav-key="visit" data-dom-id="fmm-nav-visit" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="eye" class="h-[22px] w-[22px]"></i><span class="leading-none">参观</span></a><a data-nav-item data-nav-key="mine" data-dom-id="fmm-nav-mine" class="relative flex flex-col items-center justify-center gap-1 pt-2.5 pb-3 text-[11px] font-medium text-muted-foreground"><i data-lucide="user" class="h-[22px] w-[22px]"></i><span class="leading-none">我的</span></a></div></nav>
 
-  <!-- 隐私检查 modal（hidden interaction，默认隐藏） -->
-  <div data-dom-id="fmm-privacy-check" class="fixed inset-0 z-50 hidden">
-    <!-- 半透明遮罩 -->
-    <div class="absolute inset-0 bg-foreground/40 backdrop-blur-sm"></div>
-    <!-- 居中卡 -->
-    <div class="relative mx-auto flex min-h-screen w-full max-w-[420px] items-center justify-center p-5">
-      <div class="w-full rounded-2xl bg-card p-6 shadow-lg">
-        <div class="flex items-center gap-2">
-          <i data-lucide="shield-check" class="h-5 w-5 text-private"></i>
-          <h2 class="font-serif text-lg text-foreground">发布前隐私检查</h2>
-        </div>
-        <p class="mt-2 text-sm text-muted-foreground leading-relaxed">请确认：展览表达了每个人愿意被看见的部分</p>
-
-        <!-- 4 件展品可见性勾选 -->
-        <div class="mt-4 space-y-2.5">
-          <label class="flex items-center gap-3 rounded-lg border border-border p-3">
-            <input type="checkbox" checked class="h-4 w-4 shrink-0" style="accent-color: var(--private);">
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <span class="inline-flex items-center rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground">妈妈—01</span>
-                <span class="text-xs font-medium text-foreground">搪瓷杯</span>
-                <span class="text-xs text-muted-foreground">1978</span>
-              </div>
-            </div>
-            <span class="inline-flex items-center gap-1 rounded border border-private px-1.5 py-0.5 text-[10px] text-private">
-              <i data-lucide="lock" class="h-3 w-3"></i>私密
-            </span>
-          </label>
-
-          <label class="flex items-center gap-3 rounded-lg border border-border p-3">
-            <input type="checkbox" checked class="h-4 w-4 shrink-0" style="accent-color: var(--private);">
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <span class="inline-flex items-center rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground">外婆—02</span>
-                <span class="text-xs font-medium text-foreground">相册</span>
-                <span class="text-xs text-muted-foreground">1980s</span>
-              </div>
-            </div>
-            <span class="inline-flex items-center gap-1 rounded border border-private px-1.5 py-0.5 text-[10px] text-private">
-              <i data-lucide="lock" class="h-3 w-3"></i>私密
-            </span>
-          </label>
-
-          <label class="flex items-center gap-3 rounded-lg border border-border p-3">
-            <input type="checkbox" checked class="h-4 w-4 shrink-0" style="accent-color: var(--private);">
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <span class="inline-flex items-center rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground">爸爸—03</span>
-                <span class="text-xs font-medium text-foreground">机械表</span>
-                <span class="text-xs text-muted-foreground">1990s</span>
-              </div>
-            </div>
-            <span class="inline-flex items-center gap-1 rounded border border-private px-1.5 py-0.5 text-[10px] text-private">
-              <i data-lucide="lock" class="h-3 w-3"></i>私密
-            </span>
-          </label>
-
-          <label class="flex items-center gap-3 rounded-lg border border-border p-3">
-            <input type="checkbox" checked class="h-4 w-4 shrink-0" style="accent-color: var(--private);">
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2">
-                <span class="inline-flex items-center rounded-md bg-accent px-1.5 py-0.5 text-[10px] font-medium text-accent-foreground">小满—04</span>
-                <span class="text-xs font-medium text-foreground">课本</span>
-                <span class="text-xs text-muted-foreground">2023</span>
-              </div>
-            </div>
-            <span class="inline-flex items-center gap-1 rounded border border-private px-1.5 py-0.5 text-[10px] text-private">
-              <i data-lucide="lock" class="h-3 w-3"></i>私密
-            </span>
-          </label>
-        </div>
-
-        <!-- 按钮 -->
-        <div class="mt-5 flex gap-3">
-          <button data-dom-id="fmm-privacy-back" class="flex-1 rounded-lg border border-border px-4 py-2.5 text-sm text-foreground">返回编辑</button>
-          <button data-dom-id="fmm-confirm-publish" class="flex-1 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground">确认发布</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script src="../assets/fmm-app.js"></script>
   <script>
     if (window.lucide) { lucide.createIcons(); }
-    document.addEventListener('DOMContentLoaded', function() {
-      var modal = document.querySelector('[data-dom-id="fmm-privacy-check"]');
-      var publishBtn = document.querySelector('[data-dom-id="fmm-publish"]');
-      var backBtn = document.querySelector('[data-dom-id="fmm-privacy-back"]');
-      var confirmBtn = document.querySelector('[data-dom-id="fmm-confirm-publish"]');
-      if (publishBtn && modal) {
-        publishBtn.addEventListener('click', function() { modal.classList.remove('hidden'); });
-      }
-      if (backBtn && modal) {
-        backBtn.addEventListener('click', function() { modal.classList.add('hidden'); });
-      }
-      if (confirmBtn && modal) {
-        confirmBtn.addEventListener('click', function() { modal.classList.add('hidden'); });
-      }
-    });
   </script>
   <script>
   (function(){
@@ -745,18 +649,11 @@
       var savedStyle = (data && data.labelStyle) ? data.labelStyle : 'circle';
       selectStyle(savedStyle, false);
 
-      /* 发布展览：点击时存数据（状态已随交互持久化，此处再保存一次确保） */
+      /* 发布展览：直接跳转到 ⑤ 展签与语音 */
       var publishBtn2 = document.querySelector('[data-dom-id="fmm-publish"]');
       if(publishBtn2){
-        publishBtn2.addEventListener('click', function(){
-          var d = FMM.load(); FMM.save(d);
-        });
-      }
-
-      /* 确认发布：modal 关闭由已有 JS 处理，此处追加跳转到 ⑤ */
-      var confirmBtn = document.querySelector('[data-dom-id="fmm-confirm-publish"]');
-      if(confirmBtn){
-        confirmBtn.addEventListener('click', function(){
+        publishBtn2.addEventListener('click', function(e){
+          e.preventDefault();
           var d = FMM.load(); FMM.save(d);
           location.href = 'page-label-audio-mobile.html';
         });
