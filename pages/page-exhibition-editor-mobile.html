@@ -410,34 +410,29 @@
       var FMM = window.FMM;
 
       /* 家庭成员确认：基于 saved 字段判断是否已保存展品信息 */
-      var MEMBERS = [
-        { owner: '妈妈', idx: 0, label: '妈' },
-        { owner: '外婆', idx: 1, label: '婆' },
-        { owner: '爸爸', idx: 2, label: '爸' },
-        { owner: '孩子', idx: 3, label: '子' },
-        { owner: '外公', idx: 4, label: '公' }
-      ];
       var fmmData = FMM.load();
       var exhibits = fmmData.exhibits || [];
       var confirmedCount = 0;
-      /* 系统范例图映射（按展品索引） */
+      /* 系统范例图映射（按展品索引，与数据顺序严格一致） */
       var PHOTO_MAP = ['exhibit-enamel-mug.jpg','exhibit-photo-album.jpg','exhibit-mechanical-watch.jpg','exhibit-textbook.jpg','exhibit-fountain-pen.jpg'];
       var memberListEl = document.querySelector('[data-fmm-role="member-list"]');
       if(memberListEl){
         memberListEl.innerHTML = '';
-        MEMBERS.forEach(function(m){
-          var ex = exhibits[m.idx];
+        /* 直接从数据派生成员列表，确保顺序与内容始终与数据一致 */
+        exhibits.forEach(function(ex, idx){
           var hasUpload = !!(ex && ex.photo && String(ex.photo).trim().length > 0);
           var isSaved = !!(ex && (ex.saved === true || hasUpload));
           if(isSaved) confirmedCount++;
           /* 照片：有上传用上传图，否则用系统范例图 */
-          var photoSrc = hasUpload ? ex.photo : ('../assets/' + (PHOTO_MAP[m.idx] || 'exhibit-enamel-mug.jpg'));
-          var photoAlt = (ex && ex.name) ? ex.name : m.owner;
+          var photoSrc = hasUpload ? ex.photo : ('../assets/' + (PHOTO_MAP[idx] || 'exhibit-enamel-mug.jpg'));
+          var photoAlt = (ex && ex.name) ? ex.name : (ex ? ex.owner : '');
+          var ownerLabel = (ex && ex.owner) ? ex.owner : '';
+          var nameLabel = (ex && ex.name) ? ' · ' + ex.name : '';
           var item = document.createElement('div');
           item.className = 'flex items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2';
           item.innerHTML =
             '<img src="' + photoSrc + '" alt="' + photoAlt + '" class="h-10 w-10 shrink-0 rounded-md object-cover" />'
-            + '<div class="flex-1 min-w-0"><p class="truncate text-[13px] ' + (isSaved ? 'text-foreground' : 'text-muted-foreground') + '">' + m.owner + (ex && ex.name ? ' · ' + ex.name : '') + '</p></div>'
+            + '<div class="flex-1 min-w-0"><p class="truncate text-[13px] ' + (isSaved ? 'text-foreground' : 'text-muted-foreground') + '">' + ownerLabel + nameLabel + '</p></div>'
             + '<span class="shrink-0 text-[12px] ' + (hasUpload ? 'text-primary' : 'text-muted-foreground') + '">' + (hasUpload ? '✓ 已上传' : '范例图') + '</span>';
           memberListEl.appendChild(item);
         });
