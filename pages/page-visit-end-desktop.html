@@ -188,6 +188,7 @@
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.1/dist/index.global.js"></script>
     <script src="https://unpkg.com/lucide@1.8.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style type="text/tailwindcss">
   @theme inline {
     --color-background: var(--background);
@@ -374,7 +375,6 @@
         <span class="font-serif text-base text-foreground">一件物品里的陪伴</span>
       </div>
       <div class="flex items-center gap-4 text-sm text-muted-foreground">
-        <span data-dom-id="fmm-visit-progress">2 / 4</span>
         <a data-dom-id="fmm-exit-visit" class="inline-flex items-center gap-1 hover:text-foreground">
           <i data-lucide="log-out" class="h-4 w-4"></i>退出
         </a>
@@ -416,10 +416,12 @@
                 <span class="text-[12px] font-medium tracking-wide text-muted-foreground">策展人反思</span>
               </div>
               <p class="mt-3 font-serif text-[17px] leading-7 text-foreground">我的策展让观众看见了什么？又遗漏了什么？</p>
-              <button type="button" data-dom-id="fmm-curator-reflect" class="mt-4 inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2.5 text-[14px] font-medium text-foreground transition hover:bg-muted">
-                进入反思
-                <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
-              </button>
+              <textarea data-dom-id="fmm-curator-reflect-input" rows="4" placeholder="在这里写下你的反思……" class="mt-4 w-full resize-none rounded-lg border border-border bg-background px-3 py-2.5 text-[14px] leading-6 text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none"></textarea>
+              <div class="mt-2 flex justify-end">
+                <button type="button" data-dom-id="fmm-curator-reflect-save" class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-[13px] font-medium text-primary-foreground transition hover:bg-primary/90 active:opacity-90">
+                  <i data-lucide="save" class="h-4 w-4"></i>保存
+                </button>
+              </div>
             </div>
 
           </div>
@@ -459,26 +461,7 @@
               <span class="text-[12px] font-medium tracking-wide text-muted-foreground">已留下的便签</span>
             </div>
             <div data-dom-id="fmm-notes-list" class="mt-3 gap-4 [column-count:2]">
-              <!-- 便签 1 · mist/secondary -->
-              <div class="mb-4 break-inside-avoid rounded-lg bg-secondary p-4">
-                <p class="font-serif text-[15px] leading-7 text-primary">我看见了——外婆端着杯子坐在阳台上的样子，比杯子本身更清楚。</p>
-                <div class="mt-3 text-[12px] text-muted-foreground">小满 · 刚刚</div>
-              </div>
-              <!-- 便签 2 · mustard 淡底 -->
-              <div class="mb-4 break-inside-avoid rounded-lg bg-accent/10 p-4">
-                <p class="font-serif text-[15px] leading-7 text-foreground">我想知道——那个缺口，表哥还记得吗？</p>
-                <div class="mt-3 text-[12px] text-muted-foreground">一位参观者</div>
-              </div>
-              <!-- 便签 3 · mist/secondary -->
-              <div class="mb-4 break-inside-avoid rounded-lg bg-secondary p-4">
-                <p class="font-serif text-[15px] leading-7 text-primary">原来一只杯子可以装下三十年。我也想回家找找。</p>
-                <div class="mt-3 text-[12px] text-muted-foreground">林同学</div>
-              </div>
-              <!-- 便签 4 · mustard 淡底 -->
-              <div class="mb-4 break-inside-avoid rounded-lg bg-accent/10 p-4">
-                <p class="font-serif text-[15px] leading-7 text-foreground">看见缺口的时候，我忽然觉得，不完美的东西才更像家。</p>
-                <div class="mt-3 text-[12px] text-muted-foreground">阿木</div>
-              </div>
+              <!-- 初始为空；用户提交便签后动态插入 -->
             </div>
           </div>
 
@@ -486,13 +469,28 @@
 
       </div>
 
-      <!-- 底部完成参观：bg-primary 主按钮 -->
+      <!-- 展品快照：5 件展品缩略图横排（桌面端 grid-cols-5） -->
+      <section class="mt-8">
+        <div class="flex items-center gap-2 px-1">
+          <i data-lucide="images" class="h-4 w-4 text-muted-foreground"></i>
+          <span class="text-[12px] font-medium tracking-wide text-muted-foreground">展品快照</span>
+        </div>
+        <div data-dom-id="fmm-exhibit-snapshots" class="mt-3 grid grid-cols-5 gap-4"></div>
+      </section>
+
+      <!-- 底部完成参观：bg-primary 主按钮 + 保存为图片 -->
       <div class="mt-10 flex flex-col items-center gap-3 border-t border-border pt-8">
         <p class="font-serif text-[16px] text-foreground">谢谢你走完这次展览。</p>
-        <button type="button" data-dom-id="fmm-finish-visit" class="inline-flex items-center gap-2 rounded-lg bg-primary px-7 py-3 text-[15px] font-medium text-primary-foreground transition hover:bg-primary/90 active:opacity-90">
-          完成参观
-          <i data-lucide="check" class="h-4 w-4"></i>
-        </button>
+        <div class="flex items-center gap-3">
+          <button type="button" data-dom-id="fmm-finish-visit" class="inline-flex items-center gap-2 rounded-lg bg-primary px-7 py-3 text-[15px] font-medium text-primary-foreground transition hover:bg-primary/90 active:opacity-90">
+            完成参观
+            <i data-lucide="check" class="h-4 w-4"></i>
+          </button>
+          <button type="button" data-dom-id="fmm-save-image" class="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-6 py-3 text-[15px] font-medium text-foreground transition hover:bg-muted active:opacity-90">
+            <i data-lucide="download" class="h-4 w-4"></i>
+            保存为图片
+          </button>
+        </div>
       </div>
     </main>
   </div>
@@ -509,7 +507,16 @@
       var FMM = window.FMM;
       var labels = ['我看见了','我想知道'];
 
-      /* 已留便签列表：加载时从 FMM.load().notes 动态渲染（替换静态占位） */
+      /* 初始状态：清除默认示例便签，使"已留下的便签"区域为空（仅本会话首次进入） */
+      var NOTES_INIT_KEY = 'fmm_visit_end_notes_init';
+      if (FMM && !sessionStorage.getItem(NOTES_INIT_KEY)) {
+        var dInit = FMM.load();
+        dInit.notes = [];
+        FMM.save(dInit);
+        sessionStorage.setItem(NOTES_INIT_KEY, '1');
+      }
+
+      /* 已留便签列表：加载时从 FMM.load().notes 动态渲染 */
       var notesContainer = document.querySelector('[data-dom-id="fmm-notes-list"]');
       function renderNote(note){
         var art = document.createElement('article');
@@ -559,11 +566,91 @@
         });
       }
 
-      /* 策展人反思 */
-      var reflectBtn = document.querySelector('[data-dom-id="fmm-curator-reflect"]');
-      if(reflectBtn){
-        reflectBtn.addEventListener('click', function(){
-          alert('反思：我的策展让观众看见了什么？又遗漏了什么？');
+      /* 策展人反思：textarea 直接输入 + 保存到 FMM（museum.curatorReflection） */
+      var reflectInput = document.querySelector('[data-dom-id="fmm-curator-reflect-input"]');
+      var reflectSaveBtn = document.querySelector('[data-dom-id="fmm-curator-reflect-save"]');
+      if (reflectInput && FMM) {
+        var dRefl = FMM.load();
+        var savedRefl = dRefl.museum && dRefl.museum.curatorReflection;
+        if (savedRefl) { reflectInput.value = savedRefl; }
+      }
+      if (reflectSaveBtn && reflectInput) {
+        reflectSaveBtn.addEventListener('click', function(){
+          if (!FMM) { alert('数据未就绪，请稍后再试'); return; }
+          var d = FMM.load();
+          if (!d.museum) d.museum = {};
+          d.museum.curatorReflection = reflectInput.value || '';
+          FMM.save(d);
+          var orig = reflectSaveBtn.innerHTML;
+          reflectSaveBtn.innerHTML = '<i data-lucide="check" class="h-4 w-4"></i>已保存';
+          if (window.lucide) lucide.createIcons();
+          setTimeout(function(){
+            reflectSaveBtn.innerHTML = orig;
+            if (window.lucide) lucide.createIcons();
+          }, 1600);
+        });
+      }
+
+      /* 展品快照：5 件展品缩略图（ex.photo 优先，否则回退 PHOTO_MAP） */
+      var PHOTO_MAP = ['exhibit-enamel-mug.jpg','exhibit-photo-album.jpg','exhibit-fountain-pen.jpg','exhibit-mechanical-watch.jpg','exhibit-textbook.jpg'];
+      var snapContainer = document.querySelector('[data-dom-id="fmm-exhibit-snapshots"]');
+      if (snapContainer) {
+        var exData = FMM ? FMM.load() : null;
+        var exhibits = (exData && exData.exhibits) ? exData.exhibits : [];
+        PHOTO_MAP.forEach(function(fallback, idx){
+          var ex = exhibits[idx] || {};
+          var src = ex.photo ? ex.photo : ('../assets/' + fallback);
+          var name = ex.name || ('展品 ' + (idx + 1));
+          var number = ex.number || String(idx + 1).padStart(2, '0');
+          var card = document.createElement('div');
+          card.className = 'flex flex-col gap-2';
+          var imgWrap = document.createElement('div');
+          imgWrap.className = 'aspect-square overflow-hidden rounded-lg border border-border bg-muted';
+          var img = document.createElement('img');
+          img.src = src;
+          img.alt = name;
+          img.loading = 'lazy';
+          img.className = 'h-full w-full object-cover';
+          imgWrap.appendChild(img);
+          var meta = document.createElement('div');
+          meta.className = 'text-center';
+          var numEl = document.createElement('div');
+          numEl.className = 'text-[11px] text-muted-foreground';
+          numEl.textContent = number;
+          var nameEl = document.createElement('div');
+          nameEl.className = 'font-serif text-[14px] text-foreground';
+          nameEl.textContent = name;
+          meta.appendChild(numEl);
+          meta.appendChild(nameEl);
+          card.appendChild(imgWrap);
+          card.appendChild(meta);
+          snapContainer.appendChild(card);
+        });
+      }
+
+      /* 保存为图片：html2canvas 截取 main 内容并下载 PNG */
+      var saveImgBtn = document.querySelector('[data-dom-id="fmm-save-image"]');
+      if (saveImgBtn) {
+        saveImgBtn.addEventListener('click', function(){
+          var target = document.querySelector('main') || document.body;
+          if (typeof html2canvas === 'undefined') {
+            alert('图片库加载中，请稍后再试');
+            return;
+          }
+          saveImgBtn.setAttribute('disabled', 'disabled');
+          saveImgBtn.style.opacity = '0.7';
+          html2canvas(target, { scale: 2, backgroundColor: '#F5F3EE', useCORS: true }).then(function(canvas){
+            var link = document.createElement('a');
+            link.download = 'family-memory-museum.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+          }).catch(function(err){
+            alert('图片生成失败，请重试');
+            console.warn('[FMM] html2canvas error:', err);
+          }).then(function(){
+            saveImgBtn.removeAttribute('disabled');
+            saveImgBtn.style.opacity = '';
+          });
         });
       }
 
