@@ -430,10 +430,25 @@
               </div>
             </div>
 
-            <!-- 展签文案 -->
-            <div>
-              <label class="text-[12px] font-medium text-muted-foreground">展签文案</label>
-              <textarea data-fmm-field="label" class="mt-1 block min-h-[96px] w-full resize-none rounded-md border border-border bg-background px-3 py-2.5 text-[14px] leading-relaxed text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"></textarea>
+            <!-- 三层记忆展签文案：它是什么 / 发生过什么 / 对我意味着什么 -->
+            <div class="space-y-3">
+              <div class="flex items-center gap-1.5">
+                <i data-lucide="layers" class="h-3.5 w-3.5 text-muted-foreground"></i>
+                <span class="text-[12px] font-medium text-muted-foreground">三层记忆展签</span>
+                <span class="text-[11px] text-muted-foreground">· 与参观页三层记忆同步</span>
+              </div>
+              <div>
+                <label class="text-[12px] font-medium text-foreground">它是什么</label>
+                <textarea data-fmm-field="what" class="mt-1 block min-h-[64px] w-full resize-none rounded-md border border-border bg-background px-3 py-2.5 text-[14px] leading-relaxed text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" placeholder="描述这件物品的外观、年代、来历……"></textarea>
+              </div>
+              <div>
+                <label class="text-[12px] font-medium text-foreground">发生过什么</label>
+                <textarea data-fmm-field="story" class="mt-1 block min-h-[64px] w-full resize-none rounded-md border border-border bg-background px-3 py-2.5 text-[14px] leading-relaxed text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" placeholder="讲述这件物品背后的故事……"></textarea>
+              </div>
+              <div>
+                <label class="text-[12px] font-medium text-foreground">对我意味着什么</label>
+                <textarea data-fmm-field="meaning" class="mt-1 block min-h-[64px] w-full resize-none rounded-md border border-border bg-background px-3 py-2.5 text-[14px] leading-relaxed text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" placeholder="写下这件物品对你的意义……"></textarea>
+              </div>
             </div>
           </div>
         </div>
@@ -553,11 +568,18 @@
     }
     function syncPreview(ex){
       if(!ex) return;
-      var map = { 'number': ex.number, 'name': ex.name, 'label': ex.label, 'subtitle': buildSubtitle(ex) };
+      var map = { 'number': ex.number, 'name': ex.name, 'subtitle': buildSubtitle(ex) };
       Object.keys(map).forEach(function(k){
         var nodes = document.querySelectorAll('[data-fmm-preview="'+k+'"]');
         for(var i=0;i<nodes.length;i++){ nodes[i].textContent = map[k] || ''; }
       });
+      /* 三层记忆预览同步 */
+      var previewWhat = document.querySelector('[data-fmm-preview="what"]');
+      if(previewWhat){ previewWhat.textContent = ex.what || ''; }
+      var previewStory = document.querySelector('[data-fmm-preview="story"]');
+      if(previewStory){ previewStory.textContent = ex.story || ''; }
+      var previewMeaning = document.querySelector('[data-fmm-preview="meaning"]');
+      if(previewMeaning){ previewMeaning.textContent = ex.meaning || ''; }
     }
 
     ready(function(){

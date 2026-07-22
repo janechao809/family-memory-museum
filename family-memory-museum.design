@@ -609,10 +609,24 @@
       "devMetadata": {
         "imageSrc": "assets/exhibit-mechanical-watch.jpg"
       }
+    },
+    {
+      "id": "image-6",
+      "title": "image",
+      "type": "image",
+      "version": 1,
+      "createdAt": 1784685246709,
+      "canvasData": {
+        "x": 2760,
+        "y": 2904
+      },
+      "devMetadata": {
+        "imageSrc": "assets/image.png"
+      }
     }
   ],
   "config": {
-    "autoLayout": true,
+    "autoLayout": false,
     "deviceType": "freeSize",
     "projectName": "线上家庭记忆博物馆"
   }
