@@ -472,15 +472,15 @@
         <textarea id="fmm-story-input" class="block min-h-[160px] w-full resize-none rounded-lg border border-border bg-card px-4 py-3 text-[15px] leading-relaxed text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" placeholder="可以讲一个小片段，不必说完所有事">初一开学那天，妈妈用牛皮纸把这本数学课本包好，在内页写了"慢慢来"三个字。那年我数学跟不上，她每晚陪我重做错题，从没说过"你怎么又错"。</textarea>
       </section>
 
-      <!-- ④ 按住录音键：terracotta 圆形大按钮，松开生成 30 秒语音 -->
+      <!-- ④ 录音键：terracotta 圆形大按钮，点击开始/停止录音 -->
       <section class="pt-6">
         <div class="flex flex-col items-center gap-2 rounded-lg border border-border bg-card px-4 py-6">
           <button type="button" data-fmm-role="record" class="flex h-16 w-16 items-center justify-center rounded-full bg-terracotta text-terracotta-foreground shadow-sm transition active:scale-95">
             <i data-lucide="mic" class="h-6 w-6"></i>
           </button>
-          <p class="text-[14px] font-medium text-foreground">按住说话</p>
+          <p class="text-[14px] font-medium text-foreground">点击录音</p>
           <p class="flex items-center gap-1 text-[12px] text-muted-foreground">
-            <i data-lucide="circle-dot" class="h-3 w-3 text-terracotta"></i>松开后生成 30 秒语音
+            <i data-lucide="circle-dot" class="h-3 w-3 text-terracotta"></i>点击开始，再次点击停止
           </p>
           <!-- 回听播放按钮 -->
           <button type="button" data-fmm-role="playback" class="mt-3 inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-[13px] font-medium text-foreground transition active:scale-95">
@@ -727,7 +727,7 @@
     /* —— 真实录音：MediaRecorder + click 切换 —— */
     var rec = document.querySelector('[data-fmm-role="record"]');
     if(rec){
-      var statusEl = rec.parentElement.querySelector('p.text-\\[14px\\]') || rec.parentElement.querySelectorAll('p')[0];
+      var statusEl = rec.parentElement.querySelectorAll('p')[0];
       var hintEl = rec.parentElement.querySelectorAll('p')[1];
       var recording = false;
       var mediaRecorder = null;
@@ -745,7 +745,7 @@
           return;
         }
         /* 开始录音 */
-        if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+        if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof window.MediaRecorder === 'undefined'){
           alert('当前浏览器不支持录音功能，请使用 Chrome/Safari/Edge。');
           return;
         }
@@ -758,16 +758,35 @@
           catch(e){ alert('录音初始化失败：' + e.message); stream.getTracks().forEach(function(t){t.stop();}); recording=false; return; }
           mediaRecorder.ondataavailable = function(e){ if(e.data && e.data.size > 0){ audioChunks.push(e.data); } };
           mediaRecorder.onstop = function(){
-            var blob = new Blob(audioChunks, { type: 'audio/webm' });
+            /* 使用实际 MIME 类型，兼容 iOS Safari (audio/mp4) 和 Chrome (audio/webm) */
+            var mime = mediaRecorder.mimeType || 'audio/webm';
+            var blob = new Blob(audioChunks, { type: mime });
             var reader = new FileReader();
-            reader.onloadend = function(){
+            reader.onload = function(){
               var audioUrl = reader.result;
-              if(audioUrl.length < 5*1024*1024){ FMM.setExhibit(idx, { audio: audioUrl }); }
+              if(audioUrl && audioUrl.length < 5*1024*1024){
+                FMM.setExhibit(idx, { audio: audioUrl });
+              } else if(audioUrl && audioUrl.length >= 5*1024*1024){
+                alert('录音文件过大，请缩短录音时间后重试。');
+              }
+            };
+            reader.onerror = function(){
+              alert('录音读取失败，请重试。');
             };
             reader.readAsDataURL(blob);
             stream.getTracks().forEach(function(t){ t.stop(); });
+            mediaRecorder = null;
+            audioChunks = [];
             /* 录音结束后恢复背景音乐（如果之前在播放） */
             if(typeof FMM !== 'undefined' && FMM.music && FMM.music.shouldPlay()){ setTimeout(function(){ FMM.music.tryRestore(); }, 500); }
+          };
+          mediaRecorder.onerror = function(){
+            recording = false;
+            rec.style.backgroundColor = '';
+            rec.style.transform = '';
+            rec.style.boxShadow = '';
+            if(statusEl){ statusEl.textContent = '录音出错'; }
+            stream.getTracks().forEach(function(t){ t.stop(); });
           };
           mediaRecorder.start();
           rec.style.backgroundColor = '#dc2626';
@@ -775,7 +794,15 @@
           rec.style.boxShadow = '0 0 0 4px rgba(220,38,38,0.2)';
           if(statusEl){ statusEl.textContent = '正在录音… 点击停止'; }
         }).catch(function(err){
-          alert('无法访问麦克风：' + (err.message || err.name) + '\n请在浏览器设置中允许麦克风权限。');
+          recording = false;
+          var name = err && err.name ? err.name : '';
+          if(name === 'NotAllowedError' || name === 'SecurityError'){
+            alert('麦克风权限被拒绝，请在浏览器设置中允许后重试。');
+          } else if(name === 'NotFoundError'){
+            alert('未检测到麦克风设备。');
+          } else {
+            alert('无法访问麦克风：' + (err.message || err.name || '未知错误'));
+          }
         });
       });
     }

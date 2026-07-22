@@ -552,13 +552,13 @@
               <textarea id="fmm-story-input" class="block min-h-[220px] w-full resize-y rounded-lg border border-border bg-card px-4 py-3 text-[15px] leading-relaxed text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20" placeholder="可以讲一个小片段，不必说完所有事">初一数学没考好，我把卷子塞进课本里哭。外婆没讲道理，只在扉页用铅笔写了三个字：慢慢来。从那以后每次翻开，都像被轻轻拍了一下背。</textarea>
             </div>
 
-            <!-- 按住录音键 terracotta 圆形 + 波形 -->
+            <!-- 录音键 terracotta 圆形 + 波形 -->
             <div class="mt-4 flex items-center gap-5 rounded-lg border border-border bg-card px-5 py-4">
-              <button type="button" data-fmm-role="record" class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-terracotta text-terracotta-foreground shadow-sm transition active:scale-95" aria-label="按住录音">
+              <button type="button" data-fmm-role="record" class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-terracotta text-terracotta-foreground shadow-sm transition active:scale-95" aria-label="点击录音">
                 <i data-lucide="mic" class="h-5 w-5"></i>
               </button>
               <div class="min-w-0 flex-1">
-                <p class="text-[14px] font-medium text-foreground">按住说话，松开生成 30 秒语音</p>
+                <p class="text-[14px] font-medium text-foreground">点击录音，再次点击停止</p>
                 <p class="mt-0.5 text-[12px] text-muted-foreground">尚未录音 · 也可只用文字记录</p>
                 <!-- 波形：静态低饱和条形 -->
                 <div class="mt-2 flex items-end gap-[3px]" aria-hidden="true">
@@ -910,10 +910,19 @@
             if(e.data && e.data.size > 0){ chunks.push(e.data); }
           });
           mediaRecorder.addEventListener('stop', function(){
-            var blob = new Blob(chunks, { type: 'audio/webm' });
+            /* 使用实际 MIME 类型，兼容 iOS Safari (audio/mp4) 和 Chrome (audio/webm) */
+            var mime = (mediaRecorder && mediaRecorder.mimeType) ? mediaRecorder.mimeType : 'audio/webm';
+            var blob = new Blob(chunks, { type: mime });
             var reader = new FileReader();
             reader.onload = function(){
-              FMM.setExhibit(idx, { audio: reader.result });
+              if(reader.result && reader.result.length < 5*1024*1024){
+                FMM.setExhibit(idx, { audio: reader.result });
+              } else if(reader.result && reader.result.length >= 5*1024*1024){
+                alert('录音文件过大，请缩短录音时间后重试。');
+              }
+            };
+            reader.onerror = function(){
+              alert('录音读取失败，请重试。');
             };
             reader.readAsDataURL(blob);
             if(stream){ stream.getTracks().forEach(function(t){ t.stop(); }); stream = null; }
