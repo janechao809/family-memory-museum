@@ -20,7 +20,7 @@
   /* 默认数据骨架：5 件家庭展品的占位信息 */
   function defaultData() {
     return {
-      museum: { name: '我们家的小博物馆', cover: 0, identity: '妈妈', privacy: 'family' },
+      museum: { name: '我们家的小博物馆', cover: 0, identity: '妈妈', privacy: 'family', savedImage: '' },
       theme: { selected: '一件物品里的陪伴', discussion: { support: '', missing: '', confirm: '' }, customTheme: '' },
       exhibits: [
         { id: 'exhibit-001', owner: '妈妈', number: '01', name: '搪瓷杯', year: '70年代', source: '外婆陪嫁', teller: '林雯',
