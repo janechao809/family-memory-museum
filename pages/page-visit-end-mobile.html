@@ -656,7 +656,45 @@
         return Promise.all(promises);
       }
 
-      /* 保存为图片：html2canvas 截取 main 内容并下载 PNG（增强版，处理跨域图片） */
+      /* 将克隆 DOM 中的 oklab/oklch 颜色函数替换为 rgb，解决 html2canvas 不支持问题 */
+      function fixOklabColors(cloneDoc) {
+        /* 方法1：移除克隆文档中的所有 <style> 标签和 <link> 样式表 */
+        var styles = cloneDoc.querySelectorAll('style, link[rel="stylesheet"]');
+        styles.forEach(function(s) { s.remove(); });
+        /* 方法2：对目标元素及其子元素内联计算样式（getComputedStyle 已将 oklab 解析为 rgb） */
+        var targetEl = cloneDoc.querySelector('main') || cloneDoc.body;
+        if (!targetEl) return;
+        var sourceEl = document.querySelector('main') || document.body;
+        function inlineStyles(srcEl, cloneEl) {
+          var cs = window.getComputedStyle(srcEl);
+          var inlineProps = [
+            'color','background-color','background','border-color','border','border-top-color','border-bottom-color',
+            'border-left-color','border-right-color','border-radius','border-width','border-style',
+            'padding','margin','font-size','font-weight','font-family','line-height','text-align',
+            'display','flex-direction','justify-content','align-items','gap','width','height','max-width',
+            'box-shadow','opacity','position','z-index','overflow','border-top-left-radius','border-top-right-radius',
+            'border-bottom-left-radius','border-bottom-right-radius','object-fit','text-decoration','letter-spacing',
+            'flex','flex-wrap','flex-grow','flex-shrink','flex-basis','align-self','justify-self','grid-template-columns',
+            'min-height','max-height','min-width','text-overflow','white-space','word-break'
+          ];
+          var styleStr = '';
+          inlineProps.forEach(function(prop) {
+            var val = cs.getPropertyValue(prop);
+            if (val && val !== '' && val !== 'normal' && val !== 'none' && val !== 'auto') {
+              styleStr += prop + ':' + val + ';';
+            }
+          });
+          cloneEl.setAttribute('style', styleStr);
+          var srcChildren = srcEl.children;
+          var cloneChildren = cloneEl.children;
+          for (var i = 0; i < srcChildren.length && i < cloneChildren.length; i++) {
+            inlineStyles(srcChildren[i], cloneChildren[i]);
+          }
+        }
+        inlineStyles(sourceEl, targetEl);
+      }
+
+      /* 保存为图片：html2canvas 截取 main 内容并下载 PNG（增强版，处理跨域图片 + oklab 颜色） */
       var saveImgBtn = document.querySelector('[data-dom-id="fmm-save-image"]');
       if (saveImgBtn) {
         saveImgBtn.addEventListener('click', function(){
@@ -677,7 +715,11 @@
               useCORS: true,
               allowTaint: true,
               logging: false,
-              foreignObjectRendering: false
+              foreignObjectRendering: false,
+              onclone: function(cloneDoc) {
+                /* 替换所有 oklab/oklch 颜色为安全值 */
+                try { fixOklabColors(cloneDoc); } catch(e) {}
+              }
             });
           }).then(function(canvas) {
             var dataUrl = canvas.toDataURL('image/png');
@@ -698,7 +740,15 @@
           }).catch(function(err){
             // Fallback: try simpler approach without image conversion
             console.warn('[FMM] html2canvas error:', err);
-            html2canvas(target, { scale: 1, backgroundColor: '#F5F3EE', allowTaint: true, logging: false }).then(function(canvas) {
+            html2canvas(target, {
+              scale: 1,
+              backgroundColor: '#F5F3EE',
+              allowTaint: true,
+              logging: false,
+              onclone: function(cloneDoc) {
+                try { fixOklabColors(cloneDoc); } catch(e) {}
+              }
+            }).then(function(canvas) {
               try {
                 var link = document.createElement('a');
                 link.download = 'family-memory-museum.png';
