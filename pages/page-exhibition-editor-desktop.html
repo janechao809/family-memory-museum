@@ -501,7 +501,7 @@
         });
       });
       document.querySelectorAll('[data-dom-id="fmm-nav-mine"]').forEach(function(el){
-        el.addEventListener('click', function(e){ e.preventDefault(); alert('个人中心 · 待开发'); });
+        el.addEventListener('click', function(e){ e.preventDefault(); location.href = 'page-mine-desktop.html'; });
       });
     });
   })();

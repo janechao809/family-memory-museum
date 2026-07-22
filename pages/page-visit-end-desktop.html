@@ -628,7 +628,37 @@
         });
       }
 
-      /* 保存为图片：html2canvas 截取 main 内容并下载 PNG */
+      /* 将容器内的跨域图片转为 data URL，避免 html2canvas 出现 tainted canvas / CORS 失败 */
+      function convertImagesToDataURL(container) {
+        var imgs = container.querySelectorAll('img');
+        var promises = [];
+        imgs.forEach(function(img) {
+          if (img.src.indexOf('data:') === 0) return; // already data URL
+          promises.push(new Promise(function(resolve) {
+            try {
+              var canvas = document.createElement('canvas');
+              var tempImg = new Image();
+              tempImg.crossOrigin = 'anonymous';
+              tempImg.onload = function() {
+                canvas.width = tempImg.naturalWidth;
+                canvas.height = tempImg.naturalHeight;
+                canvas.getContext('2d').drawImage(tempImg, 0, 0);
+                try {
+                  img.src = canvas.toDataURL('image/jpeg', 0.8);
+                } catch(e) {
+                  // If CORS fails, keep original src
+                }
+                resolve();
+              };
+              tempImg.onerror = function() { resolve(); };
+              tempImg.src = img.src;
+            } catch(e) { resolve(); }
+          }));
+        });
+        return Promise.all(promises);
+      }
+
+      /* 保存为图片：html2canvas 截取 main 内容并下载 PNG（增强版，处理跨域图片） */
       var saveImgBtn = document.querySelector('[data-dom-id="fmm-save-image"]');
       if (saveImgBtn) {
         saveImgBtn.addEventListener('click', function(){
@@ -639,14 +669,49 @@
           }
           saveImgBtn.setAttribute('disabled', 'disabled');
           saveImgBtn.style.opacity = '0.7';
-          html2canvas(target, { scale: 2, backgroundColor: '#F5F3EE', useCORS: true }).then(function(canvas){
+          saveImgBtn.textContent = '正在生成...';
+
+          // First convert images to data URLs to avoid CORS
+          convertImagesToDataURL(target).then(function() {
+            return html2canvas(target, {
+              scale: 2,
+              backgroundColor: '#F5F3EE',
+              useCORS: true,
+              allowTaint: true,
+              logging: false,
+              foreignObjectRendering: false
+            });
+          }).then(function(canvas) {
+            var dataUrl = canvas.toDataURL('image/png');
+            // Save to localStorage for "我的" page
+            try {
+              var d = FMM.load();
+              d.museum = d.museum || {};
+              d.museum.savedImage = dataUrl;
+              FMM.save(d);
+            } catch(e) { console.warn('[FMM] save image to storage failed:', e); }
+            // Download
             var link = document.createElement('a');
             link.download = 'family-memory-museum.png';
-            link.href = canvas.toDataURL('image/png');
+            link.href = dataUrl;
             link.click();
+            saveImgBtn.textContent = '已保存';
+            setTimeout(function(){ saveImgBtn.textContent = '保存为图片'; }, 2000);
           }).catch(function(err){
-            alert('图片生成失败，请重试');
+            // Fallback: try simpler approach without image conversion
             console.warn('[FMM] html2canvas error:', err);
+            html2canvas(target, { scale: 1, backgroundColor: '#F5F3EE', allowTaint: true, logging: false }).then(function(canvas) {
+              try {
+                var link = document.createElement('a');
+                link.download = 'family-memory-museum.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+              } catch(e2) {
+                alert('图片生成失败，请截图保存');
+              }
+            }).catch(function() {
+              alert('图片生成失败，请使用浏览器截图功能保存');
+            });
           }).then(function(){
             saveImgBtn.removeAttribute('disabled');
             saveImgBtn.style.opacity = '';

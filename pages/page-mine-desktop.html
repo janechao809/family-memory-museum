@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>①欢迎与建馆</title>
+    <title>我的 · 家记忆博物馆</title>
     <style id="theme-vars">
 @import "tailwindcss";
 
@@ -362,23 +362,23 @@
 </head>
 <body class="min-h-screen bg-background font-sans antialiased">
   <!--
-    ①欢迎与建馆 · 桌面端（document-scroll）
-    - 桌面策展人 shell：sticky 左侧栏 240px（home 高亮）+ 顶栏 + main
-    - 双列：左 7 列 hero 静物照 + 宋体大标题 + 序言 + 三步小标 / 右 5 列 建馆表单卡
+    我的展览 · 桌面端
+    - 桌面策展人 shell：sticky 左侧栏 240px（mine 高亮）+ 顶栏 + main
+    - 展示已保存的展览快照（FMM.load().museum.savedImage），无则空状态
   -->
   <div class="mx-auto flex w-full max-w-[1440px] min-h-screen bg-background">
-    <!-- 左侧栏：curatorSidebar 规范，home 高亮（activeItemClasses: text-primary bg-secondary font-medium） -->
+    <!-- 左侧栏：curatorSidebar 规范，mine 高亮（activeItemClasses: text-primary bg-secondary font-medium） -->
     <aside class="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-border bg-sidebar md:flex">
       <div class="flex items-center gap-2 px-6 py-5">
         <span class="h-2.5 w-2.5 rounded-full bg-primary"></span>
         <span class="font-serif text-lg text-foreground">家·记忆博物馆</span>
       </div>
       <nav class="flex flex-1 flex-col gap-1 px-3">
-        <a data-nav-item data-nav-key="home" data-dom-id="fmm-nav-home" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-primary bg-secondary font-medium"><i data-lucide="home" class="h-[18px] w-[18px]"></i>首页</a>
+        <a data-nav-item data-nav-key="home" data-dom-id="fmm-nav-home" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="home" class="h-[18px] w-[18px]"></i>首页</a>
         <a data-nav-item data-nav-key="create" data-dom-id="fmm-nav-create" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="plus" class="h-[18px] w-[18px]"></i>创建</a>
         <a data-nav-item data-nav-key="gallery" data-dom-id="fmm-nav-gallery" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="layout-grid" class="h-[18px] w-[18px]"></i>展馆</a>
         <a data-nav-item data-nav-key="visit" data-dom-id="fmm-nav-visit" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="eye" class="h-[18px] w-[18px]"></i>参观</a>
-        <a data-nav-item data-nav-key="mine" data-dom-id="fmm-nav-mine" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"><i data-lucide="user" class="h-[18px] w-[18px]"></i>我的</a>
+        <a data-nav-item data-nav-key="mine" data-dom-id="fmm-nav-mine" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-primary bg-secondary font-medium"><i data-lucide="user" class="h-[18px] w-[18px]"></i>我的</a>
       </nav>
     </aside>
 
@@ -386,116 +386,16 @@
     <div class="flex min-h-screen flex-1 flex-col">
       <!-- 顶栏：curatorTopbar 规范 -->
       <header class="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card/80 px-8 py-3 backdrop-blur">
-        <div class="text-sm text-muted-foreground">策展工作台 · 一件物品里的陪伴</div>
+        <div class="text-sm text-muted-foreground">策展工作台 · 我的展览</div>
         <div class="flex items-center gap-4">
         </div>
       </header>
 
-      <!-- 内容区 main slot：双列 左 7 / 右 5 -->
+      <!-- 内容区 main slot -->
       <main id="fmm-page-content" class="flex-1 bg-background p-8">
-        <div class="grid grid-cols-12 gap-8">
-
-          <!-- 左列 7：hero 静物照 + 宋体大标题 + 序言 + 三步小标 -->
-          <div class="col-span-7 flex flex-col gap-6">
-            <img src="../assets/hero-objects-stilllife.jpg" alt="家里的物品静物照" class="w-full aspect-[3/2] rounded-lg object-cover" />
-
-            <h1 class="font-serif text-[36px] leading-tight text-foreground">把家里的故事，放进一座小小博物馆</h1>
-
-            <p class="text-[15px] leading-7 text-muted-foreground">每位家人选一件有故事的物品，写下它承载的记忆。学生设计展签与参观路线，家人一起决定主题。最后，每个人回答：这件物品为什么值得被留下。</p>
-
-            <!-- 三步小标：mustard 编号圆 -->
-            <div class="mt-1 flex flex-col gap-4 border-t border-border pt-5">
-              <div class="flex items-start gap-4">
-                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-mustard/15 text-[14px] font-semibold text-mustard">1</span>
-                <div class="pt-1">
-                  <div class="text-[15px] font-medium text-foreground">选物品写故事</div>
-                  <div class="mt-0.5 text-[13px] leading-6 text-muted-foreground">每位家人挑一件有故事的物品，记下它承载的那段记忆。</div>
-                </div>
-              </div>
-              <div class="flex items-start gap-4">
-                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-mustard/15 text-[14px] font-semibold text-mustard">2</span>
-                <div class="pt-1">
-                  <div class="text-[15px] font-medium text-foreground">共同定主题搭路线</div>
-                  <div class="mt-0.5 text-[13px] leading-6 text-muted-foreground">学生设计展签与参观路线，家人一起商量展览主题。</div>
-                </div>
-              </div>
-              <div class="flex items-start gap-4">
-                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-mustard/15 text-[14px] font-semibold text-mustard">3</span>
-                <div class="pt-1">
-                  <div class="text-[15px] font-medium text-foreground">邀请参观留便签</div>
-                  <div class="mt-0.5 text-[13px] leading-6 text-muted-foreground">家人在线参观，留下便签与一句回答。</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 右列 5：建馆表单卡（sticky） -->
-          <div class="col-span-5">
-            <div class="sticky top-24 rounded-lg border border-border bg-card p-6">
-              <h2 class="font-serif text-[22px] leading-tight text-foreground">建立你们的博物馆</h2>
-              <p class="mt-1.5 text-[13px] leading-6 text-muted-foreground">先起一个名字，再决定谁能看见。</p>
-
-              <!-- 博物馆名称 -->
-              <div class="mt-6">
-                <label class="mb-2 block text-[13px] font-medium text-foreground">博物馆名称</label>
-                <input data-dom-id="fmm-museum-name" type="text" placeholder="给你们的博物馆起个名字" class="w-full rounded-lg border border-border bg-background px-3.5 py-2.5 text-[15px] text-foreground placeholder:text-muted-foreground/70 focus:border-primary focus:outline-none" />
-              </div>
-
-              <!-- 封面选择：1 张系统生成 + 1 张自定义上传 -->
-              <div class="mt-5">
-                <div class="mb-2 flex items-center justify-between">
-                  <span class="text-[13px] font-medium text-foreground">封面</span>
-                  <span class="text-[12px] text-muted-foreground">系统推荐或自定义上传</span>
-                </div>
-                <div class="grid grid-cols-2 gap-2.5">
-                  <button type="button" data-fmm-role="cover-option" data-idx="0" class="aspect-[4/3] overflow-hidden rounded-md border-2 border-primary ring-1 ring-primary/20 bg-background"><img src="../assets/hero-objects-stilllife.jpg" alt="系统封面" class="h-full w-full object-cover" /></button>
-                  <button type="button" id="fmm-cover-upload" data-fmm-role="cover-option" data-idx="1" class="relative flex aspect-[4/3] flex-col items-center justify-center gap-1.5 rounded-md border-2 border-border bg-background text-muted-foreground hover:border-primary/50">
-                    <i data-lucide="upload-cloud" class="h-6 w-6"></i>
-                    <span class="text-[12px]">上传自定义封面</span>
-                  </button>
-                  <input type="file" id="fmm-cover-file" accept="image/*" class="hidden" />
-                </div>
-              </div>
-
-              <!-- 身份选择：4 位家庭成员均可策展 -->
-              <div class="mt-5">
-                <div class="mb-2 flex items-center justify-between">
-                  <span class="text-[13px] font-medium text-foreground">选择策展成员</span>
-                  <span class="text-[12px] text-muted-foreground">每位家人都可上传展品</span>
-                </div>
-                <div class="grid grid-cols-5 gap-2">
-                  <button type="button" data-fmm-role="member-select" data-member="妈妈" class="flex flex-col items-center gap-1.5 rounded-lg border border-border bg-background px-2 py-2.5">
-                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-muted font-serif text-[13px] text-foreground">妈</span>
-                    <span class="text-[12px] text-foreground">妈妈</span>
-                  </button>
-                  <button type="button" data-fmm-role="member-select" data-member="外婆" class="flex flex-col items-center gap-1.5 rounded-lg border border-border bg-background px-2 py-2.5">
-                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-muted font-serif text-[13px] text-foreground">婆</span>
-                    <span class="text-[12px] text-foreground">外婆</span>
-                  </button>
-                  <button type="button" data-fmm-role="member-select" data-member="外公" class="flex flex-col items-center gap-1.5 rounded-lg border border-border bg-background px-2 py-2.5">
-                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-muted font-serif text-[13px] text-foreground">公</span>
-                    <span class="text-[12px] text-foreground">外公</span>
-                  </button>
-                  <button type="button" data-fmm-role="member-select" data-member="爸爸" class="flex flex-col items-center gap-1.5 rounded-lg border border-border bg-background px-2 py-2.5">
-                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-muted font-serif text-[13px] text-foreground">爸</span>
-                    <span class="text-[12px] text-foreground">爸爸</span>
-                  </button>
-                  <button type="button" data-fmm-role="member-select" data-member="孩子" class="flex flex-col items-center gap-1.5 rounded-lg border border-border bg-background px-2 py-2.5">
-                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-muted font-serif text-[13px] text-foreground">孩</span>
-                    <span class="text-[12px] text-foreground">孩子</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- 主按钮：记录第一件物品（bg-primary 满宽） -->
-              <button data-dom-id="fmm-cta-start" class="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground hover:bg-primary/90">
-                记录第一件物品
-                <i data-lucide="arrow-right" class="h-4 w-4"></i>
-              </button>
-              <p class="mt-3 text-center text-[12px] text-muted-foreground">第一步，从一件物品开始。</p>
-            </div>
-          </div>
-
+        <h1 class="font-serif text-[28px] leading-tight text-foreground mb-6">我的展览</h1>
+        <div id="saved-image-container" class="max-w-2xl mx-auto">
+          <!-- 快照或空状态由脚本注入 -->
         </div>
       </main>
     </div>
@@ -505,145 +405,56 @@
   <script src="../assets/fmm-app.js"></script>
 
   <script>
-  /* fmm-interaction-v2 · 数据持久化 */
-(function(){
-  function ready(fn){ if(document.readyState!=='loading'){fn();}else{document.addEventListener('DOMContentLoaded',fn);} }
-  function inIframe(){ try { return window.self !== window.top; } catch(e){ return false; } }
-  function bindJumps(jumps){
-    Object.keys(jumps).forEach(function(domId){
-      var el = document.querySelector('[data-dom-id="'+domId+'"]');
-      if(el){ el.addEventListener('click', function(){ if(inIframe()){return;} try{ location.href = jumps[domId]; }catch(_){} }); }
-    });
-  }
+  /* fmm-interaction · 我的展览快照展示 */
+  (function(){
+    function ready(fn){ if(document.readyState!=='loading'){fn();}else{document.addEventListener('DOMContentLoaded',fn);} }
+    ready(function(){
+      var FMM = window.FMM;
+      var d = FMM ? FMM.load() : {};
+      var container = document.getElementById('saved-image-container');
+      var savedImage = d.museum && d.museum.savedImage;
 
-  /* —— 封面选择（border-2 联动 + ring 选中）—— */
-  var COVER_ACTIVE = ['border-primary','ring-1','ring-primary/20'];
-  var COVER_INACTIVE = ['border-border','hover:border-primary/50'];
-
-  ready(function(){
-    var FMM = window.FMM;
-    var data = FMM ? FMM.load() : null;
-    var museum = data ? data.museum : null;
-
-    /* 身份选择 - 所有家庭成员均可策展 */
-    var memberButtons = document.querySelectorAll('[data-fmm-role="member-select"]');
-    var curIdentity = museum ? (museum.identity || '妈妈') : '妈妈';
-    memberButtons.forEach(function(btn){
-      var member = btn.getAttribute('data-member');
-      if(member === curIdentity){ btn.classList.add('border-primary','bg-secondary'); btn.classList.remove('border-border','bg-background'); }
-      btn.addEventListener('click', function(){
-        memberButtons.forEach(function(b){ b.classList.remove('border-primary','bg-secondary'); b.classList.add('border-border','bg-background'); });
-        btn.classList.add('border-primary','bg-secondary'); btn.classList.remove('border-border','bg-background');
-        var d = FMM.load(); d.museum.identity = member; FMM.save(d);
-      });
-    });
-
-    /* 博物馆名称：加载恢复 + input 持久化 */
-    var nameInput = document.querySelector('[data-dom-id="fmm-museum-name"]');
-    if(nameInput){
-      if(museum && museum.name){ nameInput.value = museum.name; }
-      nameInput.addEventListener('input', function(){
-        var d = FMM.load(); d.museum.name = nameInput.value; FMM.save(d);
-      });
-    }
-
-    /* 封面候选：1 系统生成 + 1 自定义上传 */
-    var coverOptionBtns = document.querySelectorAll('[data-fmm-role="cover-option"]');
-    var coverUpload = document.getElementById('fmm-cover-upload');
-    var coverFileInput = document.getElementById('fmm-cover-file');
-    var curCover = museum ? museum.cover : 0;
-
-    function selectCover(idx){
-      var d = FMM.load(); d.museum.cover = idx; FMM.save(d);
-      coverOptionBtns.forEach(function(b){
-        COVER_ACTIVE.forEach(function(c){ b.classList.remove(c); });
-        COVER_INACTIVE.forEach(function(c){ b.classList.remove(c); });
-        if(String(b.getAttribute('data-idx')) === String(idx)){
-          COVER_ACTIVE.forEach(function(c){ b.classList.add(c); });
-        } else {
-          COVER_INACTIVE.forEach(function(c){ b.classList.add(c); });
-        }
-      });
-    }
-
-    /* 初始化选中态 */
-    coverOptionBtns.forEach(function(b){
-      var bIdx = b.getAttribute('data-idx');
-      COVER_ACTIVE.forEach(function(c){ b.classList.remove(c); });
-      COVER_INACTIVE.forEach(function(c){ b.classList.remove(c); });
-      if(String(bIdx) === String(curCover)){
-        COVER_ACTIVE.forEach(function(c){ b.classList.add(c); });
+      if (savedImage) {
+        container.innerHTML =
+          '<div class="rounded-lg overflow-hidden shadow-lg border border-border bg-card p-4">' +
+            '<img src="' + savedImage + '" alt="展览快照" class="w-full rounded-md" />' +
+          '</div>' +
+          '<div class="mt-6 flex justify-center gap-3">' +
+            '<a href="' + savedImage + '" download="family-memory-museum.png" class="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-[15px] font-medium text-primary-foreground hover:bg-primary/90">' +
+              '<i data-lucide="download" class="h-4 w-4"></i>下载到本地' +
+            '</a>' +
+            '<a href="page-visit-end-desktop.html" class="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-6 py-3 text-[15px] font-medium text-foreground hover:bg-muted">' +
+              '<i data-lucide="rotate-ccw" class="h-4 w-4"></i>返回展览' +
+            '</a>' +
+          '</div>';
       } else {
-        COVER_INACTIVE.forEach(function(c){ b.classList.add(c); });
+        container.innerHTML =
+          '<div class="text-center py-16">' +
+            '<i data-lucide="image-off" class="h-12 w-12 mx-auto text-muted-foreground mb-4"></i>' +
+            '<p class="text-[16px] text-foreground mb-2">您还没有保存的展览快照</p>' +
+            '<p class="text-[14px] text-muted-foreground">完成参观后点击「保存为图片」即可在此查看</p>' +
+            '<a href="page-visit-end-desktop.html" class="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-[15px] font-medium text-primary-foreground hover:bg-primary/90 mt-6">' +
+              '<i data-lucide="arrow-right" class="h-4 w-4"></i>前往参观' +
+            '</a>' +
+          '</div>';
       }
-    });
 
-    /* 系统封面（idx=0）点击选中 */
-    coverOptionBtns.forEach(function(b){
-      if(String(b.getAttribute('data-idx')) === '0'){
-        b.addEventListener('click', function(){ selectCover(0); });
-      }
-    });
-
-    /* 恢复自定义封面预览 */
-    if(coverUpload && museum && museum.coverCustom){
-      coverUpload.style.backgroundImage = 'url(' + museum.coverCustom + ')';
-      coverUpload.style.backgroundSize = 'cover';
-      coverUpload.style.backgroundPosition = 'center';
-      coverUpload.innerHTML = '';
-    }
-
-    /* 上传按钮点击 → 触发 file input */
-    if(coverUpload){
-      coverUpload.addEventListener('click', function(e){
-        e.preventDefault();
-        if(coverFileInput){ coverFileInput.click(); }
+      /* 侧栏导航跳转 */
+      var navJumps = {
+        'fmm-nav-home': 'page-welcome-setup-desktop.html',
+        'fmm-nav-gallery': 'page-exhibition-editor-desktop.html',
+        'fmm-nav-create': 'page-archive-card-desktop.html',
+        'fmm-nav-visit': 'page-visit-exhibit-desktop.html',
+        'fmm-nav-mine': 'page-mine-desktop.html'
+      };
+      Object.keys(navJumps).forEach(function(domId){
+        document.querySelectorAll('[data-dom-id="'+domId+'"]').forEach(function(el){
+          el.addEventListener('click', function(e){ e.preventDefault(); location.href = navJumps[domId]; });
+        });
       });
-    }
-
-    /* 封面上传：FileReader 读取 → 预览 → 选中 */
-    if(coverFileInput){
-      coverFileInput.addEventListener('change', function(e){
-        var file = e.target.files[0];
-        if(!file) return;
-        var reader = new FileReader();
-        reader.onload = function(ev){
-          var rawUrl = ev.target.result;
-          /* 先用原图预览，压缩后再持久化 */
-          if(coverUpload){
-            coverUpload.style.backgroundImage = 'url(' + rawUrl + ')';
-            coverUpload.style.backgroundSize = 'cover';
-            coverUpload.style.backgroundPosition = 'center';
-            coverUpload.innerHTML = '';
-          }
-          selectCover(1);
-          FMM.compressImage(rawUrl, 1000, 0.72, function(dataUrl){
-            var d = FMM.load(); d.museum.coverCustom = dataUrl; FMM.save(d);
-            if(coverUpload){ coverUpload.style.backgroundImage = 'url(' + dataUrl + ')'; }
-          });
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
-    bindJumps({ 'fmm-cta-start': 'page-archive-card-desktop.html' });
-    var navJumps = {
-      'fmm-nav-home': 'page-welcome-setup-desktop.html',
-      'fmm-nav-gallery': 'page-exhibition-editor-desktop.html',
-      'fmm-nav-create': 'page-archive-card-desktop.html',
-      'fmm-nav-visit': 'page-visit-exhibit-desktop.html'
-    };
-    Object.keys(navJumps).forEach(function(domId){
-      document.querySelectorAll('[data-dom-id="'+domId+'"]').forEach(function(el){
-        el.addEventListener('click', function(e){ e.preventDefault(); location.href = navJumps[domId]; });
-      });
+      if(window.lucide){ lucide.createIcons(); }
     });
-    document.querySelectorAll('[data-dom-id="fmm-nav-mine"]').forEach(function(el){
-      el.addEventListener('click', function(e){ e.preventDefault(); location.href = 'page-mine-desktop.html'; });
-    });
-    if(window.lucide){ lucide.createIcons(); }
-  });
-})();
+  })();
   </script>
 </body>
 </html>
